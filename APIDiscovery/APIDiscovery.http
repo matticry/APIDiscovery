@@ -1,0 +1,6 @@
+@APIDiscovery_HostAddress = http://localhost:5031
+
+GET {{APIDiscovery_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

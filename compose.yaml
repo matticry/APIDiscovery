@@ -1,0 +1,6 @@
+﻿services:
+  apidiscovery:
+    image: apidiscovery
+    build:
+      context: .
+      dockerfile: APIDiscovery/Dockerfile
