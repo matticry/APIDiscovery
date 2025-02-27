@@ -1,10 +1,13 @@
 ﻿using APIDiscovery.Exceptions;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Models;
+using APIDiscovery.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIDiscovery.Controllers;
 [ApiController]
+[Authorize]
 [Route("api/usuarios")]
 public class UsuarioController : ControllerBase
 {
@@ -47,43 +50,20 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Usuario>> Create([FromBody] Usuario usuario)
+    public async Task<ActionResult<Usuario>> Create([FromBody] UsuarioRequest usuarioRequest)
     {
         try
         {
-            var newUser = await _usuarioService.CreateAsync(usuario);
+            var newUser = await _usuarioService.CreateAsync(usuarioRequest);
             return CreatedAtAction(nameof(GetById), new { id = newUser.id_us }, newUser);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
         }
         catch (BadRequestException ex)
         {
             return BadRequest(new { message = ex.Message });
-        }
-    }
-
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Usuario>> Update(int id, [FromBody] Usuario usuario)
-    {
-        try
-        {
-            return Ok(await _usuarioService.UpdateAsync(id, usuario));
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
-        }
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            await _usuarioService.DeleteAsync(id);
-            return NoContent();
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(new { message = ex.Message });
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace APIDiscovery.Models;
 
@@ -31,12 +32,13 @@ public class Usuario
     public int id_rol { get; set; }
         
     [ForeignKey("id_rol")]
-    
+    [JsonIgnore]
     public Rol Rol { get; set; }
         
     public int id_empresa { get; set; }
-        
+    
     [ForeignKey("id_empresa")]
+    [JsonIgnore]
     public Empresa Empresa { get; set; }
         
     [MaxLength(10)]

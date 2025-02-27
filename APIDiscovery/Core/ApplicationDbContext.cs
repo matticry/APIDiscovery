@@ -11,4 +11,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Empresa> Empresas { get; set; }
     public DbSet<Rol> Roles { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Token> Tokens { get; set; } 
+
 }
