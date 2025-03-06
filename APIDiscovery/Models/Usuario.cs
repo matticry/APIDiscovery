@@ -45,5 +45,5 @@ public class Usuario
     public string dni_us { get; set; }
         
     [MaxLength(250)]
-    public string image_us { get; set; }
+    public string? image_us { get; set; }
 }

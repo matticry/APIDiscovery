@@ -21,7 +21,6 @@ namespace APIDiscovery.Services.Security;
 
         public async Task<string> Authenticate(string email, string password)
         {
-            // Buscar usuario
             var user = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.email_us == email);
 

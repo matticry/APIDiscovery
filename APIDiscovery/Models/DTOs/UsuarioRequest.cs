@@ -18,11 +18,11 @@ public class UsuarioRequest
     public string password_us { get; set; }
 
     [Required]
-    public string empresa { get; set; } // Nombre de la empresa
+    public string empresa { get; set; } 
 
     [Required]
-    public string rol { get; set; } // Nombre del rol
+    public string rol { get; set; } 
 
     public string dni_us { get; set; }
-    public string image_us { get; set; }
+    public IFormFile? image_us { get; set; }
 }

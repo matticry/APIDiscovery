@@ -30,16 +30,29 @@ create table tbl_user
     lastname_us varchar(250) not null,
     email_us    varchar(250),
     password_us varchar(250) not null,
-    created_at  datetime default getdate(),
+    created_at  datetime    default getdate(),
     google_id   int,
-    id_rol      int
+    id_rol      int         default 1
         constraint tbl_user_tbl_rol_id_rol_fk
             references tbl_rol,
-    id_empresa  int
+    id_empresa  int         default 1
         constraint tbl_user_tbl_empresa_id_empresa_fk
             references tbl_empresa,
-    dni_us      varchar(10),
-    image_us    varchar(250)
+    dni_us      varchar(10) default '1000000000',
+    image_us    varchar(250),
+    status_us   char        default 'A'
+)
+go
+
+create table tbl_tokens
+(
+    id_token   int identity
+        primary key,
+    user_id    int           not null
+        references tbl_user,
+    token      nvarchar(max) not null,
+    created_at datetime default getdate(),
+    expires_at datetime      not null
 )
 go
 

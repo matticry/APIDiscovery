@@ -139,3 +139,5 @@ C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\obj\Debug\net8.0\APIDi
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Microsoft.Bcl.Memory.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\RabbitMQ.Client.dll

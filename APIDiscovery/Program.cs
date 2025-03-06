@@ -22,7 +22,7 @@ builder.Services
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(key),
-            ClockSkew = TimeSpan.Zero  // Sin tolerancia de tiempo
+            ClockSkew = TimeSpan.Zero  
         };
     });
 
@@ -34,9 +34,21 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddSingleton<RabbitMQService>();
+builder.Services.AddHostedService<UserActionConsumerService>();
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(corsPolicyBuilder =>
+    {
+        corsPolicyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -50,6 +62,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseAuthentication();
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

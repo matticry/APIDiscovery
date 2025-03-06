@@ -1,6 +1,8 @@
 ﻿using APIDiscovery.Exceptions;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Models;
+using APIDiscovery.Models.DTOs;
+using APIDiscovery.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,16 +13,29 @@ namespace APIDiscovery.Controllers;
 public class RolController : ControllerBase
 {
     private readonly IRolService _rolService;
+    private readonly RabbitMQService _rabbitMqService;
     
-    public RolController(IRolService rolService)
+    public RolController(IRolService rolService, RabbitMQService rabbitMqService)
     {
         _rolService = rolService;
+        _rabbitMqService = rabbitMqService;
     }
     
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Rol>>> GetAll()
     {
-        return Ok(await _rolService.GetAllAsync());
+        var roles = await _rolService.GetAllAsync();
+        
+        // Registrar la acción de consulta de roles
+        _rabbitMqService.PublishUserAction(new UserActionEvent
+        {
+            Action = "Consulta de roles",
+            CreatedAt = DateTime.Now,
+            Username = User.Identity?.Name ?? "admin@admin.com",
+            Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+        });
+        
+        return Ok(roles);
     }
     
     [HttpGet("{id}")]
@@ -28,10 +43,30 @@ public class RolController : ControllerBase
     {
         try
         {
-            return Ok(await _rolService.GetByIdAsync(id));
+            var rol = await _rolService.GetByIdAsync(id);
+            
+            // Registrar la acción de consulta de rol por ID
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Consulta de rol por ID: {id}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
+            return Ok(rol);
         }
         catch (NotFoundException ex)
         {
+            // Registrar intento fallido
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Consulta fallida de rol por ID: {id} - {ex.Message}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
             return NotFound(new { message = ex.Message });
         }
     }
@@ -42,14 +77,42 @@ public class RolController : ControllerBase
         try
         {
             var newRol = await _rolService.CreateAsync(rolRequest);
+            
+            // Registrar la creación de rol
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Creación de rol: {newRol.id_rol} - {newRol.name_rol}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
             return CreatedAtAction(nameof(GetById), new { id = newRol.id_rol }, newRol);
         }
         catch (NotFoundException ex)
         {
+            // Registrar intento fallido
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Creación fallida de rol (NotFound): {ex.Message}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
             return NotFound(new { message = ex.Message });
         }
         catch (BadRequestException ex)
         {
+            // Registrar intento fallido
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Creación fallida de rol (BadRequest): {ex.Message}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
             return BadRequest(new { message = ex.Message });
         }
     }
@@ -59,14 +122,43 @@ public class RolController : ControllerBase
     {
         try
         {
-            return Ok(await _rolService.UpdateAsync(id, rolRequest));
+            var updatedRol = await _rolService.UpdateAsync(id, rolRequest);
+            
+            // Registrar la actualización de rol
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Actualización de rol: {id} - {updatedRol.name_rol}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
+            return Ok(updatedRol);
         }
         catch (NotFoundException ex)
         {
+            // Registrar intento fallido
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Actualización fallida de rol (NotFound): {id} - {ex.Message}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
             return NotFound(new { message = ex.Message });
         }
         catch (BadRequestException ex)
         {
+            // Registrar intento fallido
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Actualización fallida de rol (BadRequest): {id} - {ex.Message}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
             return BadRequest(new { message = ex.Message });
         }
     }
@@ -76,12 +168,31 @@ public class RolController : ControllerBase
     {
         try
         {
-            return Ok(await _rolService.DeleteAsync(id));
+            var result = await _rolService.DeleteAsync(id);
+            
+            // Registrar la eliminación de rol
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Eliminación de rol: {id}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
+            return Ok(result);
         }
         catch (NotFoundException ex)
         {
+            // Registrar intento fallido
+            _rabbitMqService.PublishUserAction(new UserActionEvent
+            {
+                Action = $"Eliminación fallida de rol: {id} - {ex.Message}",
+                CreatedAt = DateTime.Now,
+                Username = User.Identity?.Name ?? "admin@admin.com",
+                Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            });
+            
             return NotFound(new { message = ex.Message });
         }
     }
-    
 }
