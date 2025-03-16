@@ -13,62 +13,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/CedulaController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Exceptions/CedulaInvalidaException.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/ICedulaService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/CedulaData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/CedulaInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/CedulaReponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/CedulaService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Utils/logs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Utils/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/commands" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/3ace6338-fd21-43bd-a761-6fbbcbb01a2a.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/3ace6338-fd21-43bd-a761-6fbbcbb01a2a/storage_v2/_src_/database/Ejemplo.pi6y_A.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/3ace6338-fd21-43bd-a761-6fbbcbb01a2a/storage_v2/_src_/database/Ejemplo.pi6y_A/schema/INFORMATION_SCHEMA.NBgcMw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/3ace6338-fd21-43bd-a761-6fbbcbb01a2a/storage_v2/_src_/database/Ejemplo.pi6y_A/schema/dbo.sYMBAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/3ace6338-fd21-43bd-a761-6fbbcbb01a2a/storage_v2/_src_/database/Ejemplo.pi6y_A/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/3ace6338-fd21-43bd-a761-6fbbcbb01a2a/storage_v2/_src_/database/master.YiqNvw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/3ace6338-fd21-43bd-a761-6fbbcbb01a2a/storage_v2/_src_/database/master.YiqNvw/schema/INFORMATION_SCHEMA.NBgcMw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/3ace6338-fd21-43bd-a761-6fbbcbb01a2a/storage_v2/_src_/database/master.YiqNvw/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/sqldialects.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/EmpresaController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/RolController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/UsuarioController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IEmpresaService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IRolService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IUsuarioService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Token.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Token.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Usuario.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Usuario.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/EmpresaService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/RabbitMQService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/RolService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/Security/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/Security/AuthService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/UserActionConsumerService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/UsuarioService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bd.sql" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bd.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.restore.info" afterDir="false" />
-    </list>
+    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="cedula" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -324,7 +269,7 @@
       <workItem from="1741729443654" duration="1353000" />
       <workItem from="1741903289649" duration="6760000" />
       <workItem from="1742139489435" duration="1484000" />
-      <workItem from="1742167871162" duration="413000" />
+      <workItem from="1742167871162" duration="1208000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -342,7 +287,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741231520973</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="cedula">
+      <option name="closed" value="true" />
+      <created>1742168454226</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1742168454226</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -365,7 +318,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Commit: I add security modules like JWT ,fixes: bug User" />
     <MESSAGE value="Commit: Add new modules" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: Add new modules" />
+    <MESSAGE value="cedula" />
+    <option name="LAST_COMMIT_MESSAGE" value="cedula" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
