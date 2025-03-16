@@ -46,4 +46,6 @@ public class Usuario
         
     [MaxLength(250)]
     public string? image_us { get; set; }
+    
+    public DateTime fecha_arriendo_us { get; set; }
 }

@@ -19,23 +19,29 @@ namespace APIDiscovery.Services.Security;
             _config = config;
         }
 
-        public async Task<string> Authenticate(string email, string password)
+        public async Task<(string? token, string? errorMessage)> Authenticate(string email, string password)
         {
             var user = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.email_us == email);
-
+            
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.password_us))
-                return null;
-
-            return await GenerateJwtToken(user);
+                return (null, "Credenciales inválidas");
+            
+            if (IsDateExpired(user.fecha_arriendo_us))
+            {
+                return (null, "Su periodo de arriendo ha expirado. Por favor, renueve su suscripción o contacte con soporte.");
+            }
+        
+            var token = await GenerateJwtToken(user);
+            return (token, null);
         }
 
         private async Task<string> GenerateJwtToken(Usuario user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"] ?? throw new InvalidOperationException()));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiration = DateTime.UtcNow.AddMinutes(int.Parse(_config["Jwt:ExpireMinutes"]));
+            var expiration = DateTime.UtcNow.AddMinutes(int.Parse(_config["Jwt:ExpireMinutes"] ?? throw new InvalidOperationException()));
 
             var claims = new[]
             {
@@ -53,7 +59,6 @@ namespace APIDiscovery.Services.Security;
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            // Guardar token en BD
             var tokenEntry = new Token
             {
                 UserId = user.id_us,
@@ -64,5 +69,11 @@ namespace APIDiscovery.Services.Security;
             await _context.SaveChangesAsync();
 
             return tokenString;
+        }
+
+        private static bool IsDateExpired(DateTime fechaArriendo)
+        {
+            var fechaActual = DateTime.Now;
+            return fechaActual > fechaArriendo;
         }
     }

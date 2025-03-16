@@ -4,6 +4,7 @@ using APIDiscovery.Interfaces;
 using APIDiscovery.Services;
 using APIDiscovery.Services.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -29,13 +30,11 @@ builder.Services
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Registrar servicios
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-builder.Services.AddScoped<IEmpresaService, EmpresaService>();
-builder.Services.AddScoped<IRolService, RolService>();
+
+builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<ICedulaService, CedulaService>();
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddSingleton<RabbitMQService>();
-builder.Services.AddHostedService<UserActionConsumerService>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
@@ -63,6 +62,10 @@ if (app.Environment.IsDevelopment())
 }
 app.UseAuthentication();
 app.UseStaticFiles();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

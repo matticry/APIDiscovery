@@ -25,7 +25,6 @@ public class Token
     [Column("expires_at")]
     public DateTime ExpiresAt { get; set; }
 
-    // Relación con Usuario
     [ForeignKey("UserId")]
     public virtual Usuario User { get; set; }
 }
