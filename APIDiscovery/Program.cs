@@ -60,6 +60,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseStaticFiles();
 app.UseForwardedHeaders(new ForwardedHeadersOptions

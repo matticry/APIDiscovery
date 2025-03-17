@@ -7,13 +7,32 @@
     <projectFile pubXmlPath="APIDiscovery/Properties/PublishProfiles/FTPProfile.pubxml">APIDiscovery/APIDiscovery.csproj</projectFile>
     <projectFile pubXmlPath="APIDiscovery/Properties/PublishProfiles/FolderProfile.pubxml">APIDiscovery/APIDiscovery.csproj</projectFile>
     <projectFile pubXmlPath="APIDiscovery/Properties/PublishProfiles/FolderProfile1.pubxml">APIDiscovery/APIDiscovery.csproj</projectFile>
+    <projectFile pubXmlPath="APIDiscovery/Properties/PublishProfiles/FolderProfile2.pubxml">APIDiscovery/APIDiscovery.csproj</projectFile>
     <projectFile>WebApplication1/WebApplication1.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="cedula" />
+    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/global.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,6 +45,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="JSON File" />
       </list>
     </option>
   </component>
@@ -89,6 +109,7 @@
     ".NET Launch Settings Profile.APIDiscovery: http.executor": "Run",
     ".NET Launch Settings Profile.APIDiscovery: https.executor": "Run",
     "Docker.APIDiscovery/Dockerfile.executor": "Run",
+    "Publish to folder.API.executor": "Run",
     "Publish to folder.Publish APIDiscovery to folder (1).executor": "Run",
     "Publish to folder.Publish APIDiscovery to folder.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -105,7 +126,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.APIDiscovery: http">
+  <component name="RunManager" selected="Docker.APIDiscovery/Dockerfile">
+    <configuration name="API" type="DotNetFolderPublish" factoryName="Publish to folder">
+      <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="Portable" target_folder="$USER_HOME$/Documents/api" target_framework="net8.0" uuid_high="4573383224094769778" uuid_low="-7538755640471143118" />
+      <method v="2" />
+    </configuration>
     <configuration name="Publish APIDiscovery to folder (1)" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" target_folder="$USER_HOME$/Documents/api" target_framework="net8.0" uuid_high="4573383224094769778" uuid_low="-7538755640471143118" />
       <method v="2" />
@@ -124,6 +149,10 @@
     </configuration>
     <configuration name="APIDiscovery: FolderProfile1" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile1.pubxml" pubxml_path="$PROJECT_DIR$/APIDiscovery/Properties/PublishProfiles/FolderProfile1.pubxml" uuid_high="4573383224094769778" uuid_low="-7538755640471143118" />
+      <method v="2" />
+    </configuration>
+    <configuration name="APIDiscovery: FolderProfile2" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
+      <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile2.pubxml" pubxml_path="$PROJECT_DIR$/APIDiscovery/Properties/PublishProfiles/FolderProfile2.pubxml" uuid_high="4573383224094769778" uuid_low="-7538755640471143118" />
       <method v="2" />
     </configuration>
     <configuration name="WebApplication1 - IIS Express" type="DotNetProject" factoryName=".NET Project">
@@ -269,7 +298,7 @@
       <workItem from="1741729443654" duration="1353000" />
       <workItem from="1741903289649" duration="6760000" />
       <workItem from="1742139489435" duration="1484000" />
-      <workItem from="1742167871162" duration="1208000" />
+      <workItem from="1742167871162" duration="9211000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -295,7 +324,23 @@
       <option name="project" value="LOCAL" />
       <updated>1742168454226</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="xxxddd">
+      <option name="closed" value="true" />
+      <created>1742169275808</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1742169275808</updated>
+    </task>
+    <task id="LOCAL-00005" summary="holaaa">
+      <option name="closed" value="true" />
+      <created>1742170060952</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1742170060952</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,7 +364,9 @@
     <MESSAGE value="Commit: I add security modules like JWT ,fixes: bug User" />
     <MESSAGE value="Commit: Add new modules" />
     <MESSAGE value="cedula" />
-    <option name="LAST_COMMIT_MESSAGE" value="cedula" />
+    <MESSAGE value="xxxddd" />
+    <MESSAGE value="holaaa" />
+    <option name="LAST_COMMIT_MESSAGE" value="holaaa" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
