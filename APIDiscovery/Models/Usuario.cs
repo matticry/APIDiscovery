@@ -26,6 +26,7 @@ public class Usuario
     public string password_us { get; set; }
         
     public DateTime created_at { get; set; } = DateTime.Now;
+    public DateTime update_at { get; set; } = DateTime.Now;
         
     public int? google_id { get; set; }
         
@@ -35,15 +36,27 @@ public class Usuario
     [JsonIgnore]
     public Rol Rol { get; set; }
         
-    public int id_empresa { get; set; }
-    
-    [ForeignKey("id_empresa")]
-    [JsonIgnore]
-    public Empresa Empresa { get; set; }
-        
     [MaxLength(10)]
     public string dni_us { get; set; }
         
     [MaxLength(250)]
     public string? image_us { get; set; }
+    
+    public int age_us { get; set; }
+    
+    public DateTime birthday_us { get; set; }
+    
+    [MaxLength(250)]
+    public string nationality_us { get; set; } = "Ecuatoriano(a)";
+    
+    [MaxLength(10)]
+    public string phone_us { get; set; }
+    
+    public char email_verified { get; set; } = 'N';
+    
+    public char terms_and_conditions { get; set; } = 'N';
+    
+    public string gender_us { get; set; }
+    
+    
 }

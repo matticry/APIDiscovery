@@ -20,15 +20,18 @@ public class RolService : IRolService
         
     }
 
-    public async Task<Rol> GetByIdAsync(int id)
+    public Task<Rol> GetByIdAsync(int id)
     {
         var rol = _context.Roles.FirstOrDefault(r => r.id_rol == id);
         if (rol == null)
         {
             throw new NotFoundException("Rol no encontrado.");
         }
-        return rol;
+        return Task.FromResult(rol);
     }
+    
+
+
 
     public async Task<Rol> CreateAsync(Rol entity)
     {

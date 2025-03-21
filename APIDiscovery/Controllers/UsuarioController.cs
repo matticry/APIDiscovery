@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APIDiscovery.Controllers;
 [ApiController]
-[Authorize]
 [Route("api/usuarios")]
 public class UsuarioController : ControllerBase
 {
@@ -58,7 +57,6 @@ public class UsuarioController : ControllerBase
         }
         catch (NotFoundException ex)
         {
-            // También podemos registrar los intentos fallidos
             _rabbitMqService.PublishUserAction(new UserActionEvent
             {
                 Action = $"FailedGetUserById: {id} - {ex.Message}",
@@ -70,6 +68,9 @@ public class UsuarioController : ControllerBase
             return NotFound(new { message = ex.Message });
         }
     }
+    
+    
+    
 
     [HttpGet("email/{email}")]
     public async Task<ActionResult<Usuario>> GetByEmail(string email)
@@ -78,7 +79,6 @@ public class UsuarioController : ControllerBase
         {
             var usuario = await _usuarioService.GetByEmailAsync(email);
             
-            // Registrar la acción de consulta por email
             _rabbitMqService.PublishUserAction(new UserActionEvent
             {
                 Action = $"GetUserByEmail: {email}",
@@ -110,7 +110,6 @@ public class UsuarioController : ControllerBase
         {
             var newUser = await _usuarioService.CreateAsync(usuarioRequest);
             
-            // Registrar la creación de usuario
             _rabbitMqService.PublishUserAction(new UserActionEvent
             {
                 Action = $"CreateUser: {newUser.id_us} - {newUser.email_us}",

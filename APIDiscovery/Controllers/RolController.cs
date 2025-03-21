@@ -3,6 +3,7 @@ using APIDiscovery.Interfaces;
 using APIDiscovery.Models;
 using APIDiscovery.Models.DTOs;
 using APIDiscovery.Services;
+using APIDiscovery.Services.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +15,23 @@ public class RolController : ControllerBase
 {
     private readonly IRolService _rolService;
     private readonly RabbitMQService _rabbitMqService;
+    private readonly CustomService _customService;
     
-    public RolController(IRolService rolService, RabbitMQService rabbitMqService)
+    public RolController(IRolService rolService, RabbitMQService rabbitMqService, CustomService customService)
     {
         _rolService = rolService;
         _rabbitMqService = rabbitMqService;
+        _customService = customService;
     }
+    
+    [HttpGet("enfermero-familiar")]
+    [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetEnfermeroFamiliarRoles()
+    {
+        var roles = await _customService.GetResultRoleByNameAsync();
+        return Ok(roles);
+    }
+    
     
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Rol>>> GetAll()
@@ -37,6 +49,7 @@ public class RolController : ControllerBase
         
         return Ok(roles);
     }
+    
     
     [HttpGet("{id}")]
     public async Task<ActionResult<Rol>> GetById(int id)

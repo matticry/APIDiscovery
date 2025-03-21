@@ -141,3 +141,4 @@ C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Micro
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Microsoft.Bcl.Memory.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\RabbitMQ.Client.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\dotenv.net.dll

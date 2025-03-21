@@ -2,10 +2,14 @@ using System.Text;
 using APIDiscovery.Core;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Services;
+using APIDiscovery.Services.Commands;
 using APIDiscovery.Services.Security;
+using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+// Configuración de variables de entorno
+DotEnv.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException());
@@ -36,6 +40,7 @@ builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddSingleton<RabbitMQService>();
 builder.Services.AddHostedService<UserActionConsumerService>();
+builder.Services.AddScoped<CustomService>();
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
@@ -63,6 +68,8 @@ if (app.Environment.IsDevelopment())
 }
 app.UseAuthentication();
 app.UseStaticFiles();
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
