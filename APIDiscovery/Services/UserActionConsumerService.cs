@@ -31,7 +31,7 @@ public class UserActionConsumerService : BackgroundService
             
             var factory = new ConnectionFactory
             {
-                HostName = _configuration["RabbitMQ:HostName"] ?? "154.223.16.80",
+                HostName = _configuration["RabbitMQ:HostName"] ?? "192.168.1.8",
                 Port = int.Parse(_configuration["RabbitMQ:Port"] ?? "5672"),
                 UserName = _configuration["RabbitMQ:UserName"] ?? "guest",
                 Password = _configuration["RabbitMQ:Password"] ?? "guest"

@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 DotEnv.Load();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseUrls("http://*:5031");
 var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException());
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
