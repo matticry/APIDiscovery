@@ -48,5 +48,37 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
     
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto request)
+    {
+        var response = await _authService.ForgotPassword(request.Email);
+    
+        _rabbitMqService.PublishUserAction(new UserActionEvent 
+        { 
+            Username = request.Email, 
+            Action = "forgot-password-request"
+        });
+    
+        return Ok(response);
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request)
+    {
+        var response = await _authService.VerifyCodeAndResetPassword(
+            request.Email,
+            request.Code,
+            request.NewPassword
+        );
+    
+        _rabbitMqService.PublishUserAction(new UserActionEvent 
+        { 
+            Username = request.Email, 
+            Action = "password-reset-successful"
+        });
+    
+        return Ok(response);
+    }
+    
 
 }

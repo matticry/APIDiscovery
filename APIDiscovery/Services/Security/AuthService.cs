@@ -16,12 +16,110 @@ namespace APIDiscovery.Services.Security;
     public class AuthService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _config;
+        private readonly IConfiguration _config; 
+        private readonly EmailService _emailService;
 
-        public AuthService(ApplicationDbContext context, IConfiguration config)
+        public AuthService(ApplicationDbContext context, IConfiguration config, EmailService emailService)
         {
             _context = context;
             _config = config;
+            _emailService = emailService;
+        }
+        public async Task<ForgotPasswordResponseDto> ForgotPassword(string email)
+        {
+            var startTime = DateTime.Now;
+            
+            // Verificar si el correo existe
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.email_us == email);
+            
+            if (usuario == null)
+            {
+                throw new BadRequestException("No existe un usuario con el correo proporcionado.");
+            }
+            
+            // Generar código de 6 dígitos
+            var random = new Random();
+            string verificationCode = random.Next(100000, 999999).ToString();
+            
+            // Crear o actualizar token
+            var existingToken = await _context.Tokens
+                .FirstOrDefaultAsync(t => t.UserId == usuario.id_us);
+            
+            if (existingToken != null)
+            {
+                existingToken.TokenString = verificationCode;
+                existingToken.ExpiresAt = DateTime.UtcNow.AddMinutes(15);
+                existingToken.CreatedAt = DateTime.UtcNow;
+            }
+            else
+            {
+                var token = new Token
+                {
+                    UserId = usuario.id_us,
+                    TokenString = verificationCode,
+                    ExpiresAt = DateTime.UtcNow.AddMinutes(15)
+                };
+                
+                _context.Tokens.Add(token);
+            }
+            
+            await _context.SaveChangesAsync();
+            
+            // Enviar correo con el código
+            await _emailService.SendVerificationCodeAsync(email, verificationCode);
+            
+            var endTime = DateTime.Now;
+            var responseTimeMs = (endTime - startTime).TotalMilliseconds;
+            
+            return new ForgotPasswordResponseDto
+            {
+                Message = "Se ha enviado un código de verificación a tu correo electrónico.",
+                ResponseTimeMs = responseTimeMs
+            };
+        }
+
+        public async Task<ResetPasswordResponseDto> VerifyCodeAndResetPassword(string email, string code, string newPassword)
+        {
+            var startTime = DateTime.Now;
+            
+            // Buscar usuario por email
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.email_us == email);
+            
+            if (usuario == null)
+            {
+                throw new BadRequestException("No existe un usuario con el correo proporcionado.");
+            }
+            
+            // Verificar si hay un token válido
+            var token = await _context.Tokens
+                .FirstOrDefaultAsync(t => t.UserId == usuario.id_us && 
+                                       t.TokenString == code && 
+                                       t.ExpiresAt > DateTime.UtcNow);
+            
+            if (token == null)
+            {
+                throw new BadRequestException("El código de verificación es inválido o ha expirado.");
+            }
+            
+            // Actualizar contraseña
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            usuario.password_us = hashedPassword;
+            
+            // Eliminar el token utilizado
+            _context.Tokens.Remove(token);
+            
+            await _context.SaveChangesAsync();
+            
+            var endTime = DateTime.Now;
+            var responseTimeMs = (endTime - startTime).TotalMilliseconds;
+            
+            return new ResetPasswordResponseDto
+            {
+                Message = "Tu contraseña ha sido actualizada exitosamente.",
+                ResponseTimeMs = responseTimeMs
+            };
         }
         
 

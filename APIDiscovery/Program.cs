@@ -44,6 +44,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddSingleton<RabbitMQService>();
 builder.Services.AddHostedService<UserActionConsumerService>();
 builder.Services.AddScoped<CustomService>();
+builder.Services.AddScoped<EmailService>();
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
