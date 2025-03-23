@@ -58,5 +58,9 @@ public class Usuario
     
     public string gender_us { get; set; }
     
+    public char status_us { get; set; }
+    public string reset_code { get; set; }
+    public DateTime? reset_code_expiry { get; set; }
+    
     
 }

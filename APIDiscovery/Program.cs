@@ -1,4 +1,5 @@
 using System.Text;
+using APIDiscovery.Controllers.Middleware;
 using APIDiscovery.Core;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Services;
@@ -70,6 +71,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseAuthentication();
 app.UseStaticFiles();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseCors();
 

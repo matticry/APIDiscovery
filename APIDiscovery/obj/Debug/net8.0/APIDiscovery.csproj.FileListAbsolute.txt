@@ -142,3 +142,8 @@ C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Micro
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\RabbitMQ.Client.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\dotenv.net.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\MailKit.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\MimeKit.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

@@ -1,7 +1,9 @@
 ﻿using APIDiscovery.Models.DTOs;
 using APIDiscovery.Services;
 using APIDiscovery.Services.Security;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using LoginRequest = APIDiscovery.Models.DTOs.LoginRequest;
 
 namespace APIDiscovery.Controllers;
 
@@ -25,4 +27,26 @@ public class AuthController : ControllerBase
         _rabbitMqService.PublishUserAction(new UserActionEvent { Username = loginRequest.Email, Action = "login" });
         return Ok(new { token });
     }
+    
+    [HttpPost("login-with-role")]
+    public async Task<IActionResult> LoginWithRole([FromBody] LoginWithRoleRequest loginRequest)
+    {
+        var response = await _authService.LoginWithRole(
+            loginRequest.Cedula, 
+            loginRequest.Password, 
+            loginRequest.Role
+        );
+    
+        _rabbitMqService.PublishUserAction(new UserActionEvent 
+        { 
+            Username = loginRequest.Cedula, 
+            Action = "login-with-role",
+            Dni = User.Claims.FirstOrDefault(c => c.Type == "dni")?.Value ?? "1755386099"
+            
+        });
+    
+        return Ok(response);
+    }
+    
+
 }

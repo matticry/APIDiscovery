@@ -2,9 +2,14 @@
 using System.Security.Claims;
 using System.Text;
 using APIDiscovery.Core;
+using APIDiscovery.Exceptions;
 using APIDiscovery.Models;
+using APIDiscovery.Models.DTOs;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MimeKit;
 
 namespace APIDiscovery.Services.Security;
 
@@ -17,6 +22,62 @@ namespace APIDiscovery.Services.Security;
         {
             _context = context;
             _config = config;
+        }
+        
+
+
+        public async Task<LoginResponseDto> LoginWithRole(string dni, string password, string role)
+        {
+            var startTime = DateTime.Now;
+    
+            var validateStatus = await _context.Usuarios.FirstOrDefaultAsync(u => u.status_us == 'I' && u.dni_us == dni);
+            if (validateStatus != null)
+            {
+                throw new BadRequestException("El usuario se encuentra inactivo.");
+            }
+    
+            var rol = await _context.Roles.FirstOrDefaultAsync(r => r.name_rol == role);
+            if (rol == null)
+            {
+                throw new NotFoundException("Rol no encontrado.");
+            }
+    
+            // Verificar si el correo está verificado
+            var emailVerified = await _context.Usuarios.FirstOrDefaultAsync(u => u.email_verified == 'N' && u.dni_us == dni);
+            if (emailVerified != null)
+            {
+                throw new BadRequestException("El correo no ha sido verificado.");
+            }
+    
+            // Buscar el usuario
+            var usuario = await _context.Usuarios
+                .Include(u => u.Rol)
+                .FirstOrDefaultAsync(u => u.dni_us == dni);
+    
+            if (usuario == null)
+            {
+                throw new BadRequestException("Credenciales inválidas.");
+            }
+    
+            if (usuario.Rol.name_rol != role)
+            {
+                throw new BadRequestException("El usuario no tiene el rol especificado.");
+            }
+            
+            bool passwordValid = BCrypt.Net.BCrypt.Verify(password, usuario.password_us);
+            if (!passwordValid)
+            {
+                throw new BadRequestException("Credenciales inválidas.");
+            }
+    
+            var endTime = DateTime.Now;
+            var responseTimeMs = (endTime - startTime).TotalMilliseconds;
+    
+            return new LoginResponseDto 
+            {
+                Message = "Inicio de sesión exitoso",
+                ResponseTimeMs = responseTimeMs
+            };
         }
 
         public async Task<string> Authenticate(string email, string password)

@@ -15,24 +15,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/Middleware/ErrorHandlingMiddleware.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ApiErrorResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/LoginResponseDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/LoginWithRoleRequest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Usuario.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Usuario.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/RabbitMQService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/RabbitMQService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/UserActionConsumerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/UserActionConsumerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/Security/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/Security/AuthService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.deps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/APIDiscovery.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/APIDiscovery.csproj.nuget.dgspec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/project.packagespec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.restore.info" afterDir="false" />
     </list>
@@ -69,6 +83,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/15e423bdf02b407a90b79c0b505b521911020/05/4aec480b/SqlCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/95e1e15aefff412084b99d4a4d301a3d1de910/99/d9c2b0a4/ControllerBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b6f976b71382cbf47119c95247af807dba2a3eab7bedcd829862ff5942d2196/ConnectionFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c1f1afd99206610af36112715141966f5937932d7539dd045ca271185486/ForgotPasswordRequest.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -241,7 +256,8 @@
       <workItem from="1742562945202" duration="2864000" />
       <workItem from="1742578347239" duration="3499000" />
       <workItem from="1742615797542" duration="2053000" />
-      <workItem from="1742658223132" duration="1047000" />
+      <workItem from="1742658223132" duration="4637000" />
+      <workItem from="1742740188265" duration="11629000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -251,7 +267,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740618493708</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Commit:  I do implement action for CORS">
+      <option name="closed" value="true" />
+      <created>1742659648536</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1742659648536</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,7 +297,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Commit: I add security modules like JWT ,fixes: bug User" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: I add security modules like JWT ,fixes: bug User" />
+    <MESSAGE value="Commit:  I do implement action for CORS" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit:  I do implement action for CORS" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
