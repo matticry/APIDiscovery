@@ -170,11 +170,29 @@ namespace APIDiscovery.Services.Security;
     
             var endTime = DateTime.Now;
             var responseTimeMs = (endTime - startTime).TotalMilliseconds;
+            
+            var token = await GenerateJwtToken(usuario);
     
             return new LoginResponseDto 
             {
-                Message = "Inicio de sesión exitoso",
-                ResponseTimeMs = responseTimeMs
+                Message = "Login exitoso.",
+                Token = token,
+                ResponseTimeMs = responseTimeMs,
+                User = new UserDto()
+                {
+                    id_us = usuario.id_us,
+                    name_us = usuario.name_us,
+                    lastname_us = usuario.lastname_us,
+                    email_us = usuario.email_us,
+                    dni_us = usuario.dni_us,
+                    rol = usuario.Rol.name_rol,
+                    age_us = usuario.age_us,
+                    nationality_us = usuario.nationality_us,
+                    gender_us = usuario.gender_us,
+                    phone_us = usuario.phone_us,
+                    terms_and_conditions = usuario.terms_and_conditions
+                    
+                }
             };
         }
 

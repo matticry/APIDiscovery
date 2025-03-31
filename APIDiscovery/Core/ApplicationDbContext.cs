@@ -12,5 +12,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Rol> Roles { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Token> Tokens { get; set; } 
+    public DbSet<Children> Children { get; set; }
 
 }
