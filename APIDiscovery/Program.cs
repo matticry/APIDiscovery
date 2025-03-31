@@ -46,6 +46,8 @@ builder.Services.AddHostedService<UserActionConsumerService>();
 builder.Services.AddScoped<CustomService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ChildrenService>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<VentaService>();
 
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();

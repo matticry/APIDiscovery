@@ -13,5 +13,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Token> Tokens { get; set; } 
     public DbSet<Children> Children { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Venta> Ventas { get; set; }
+    public DbSet<VentaProductoUsuario> VentaProductoUsuario { get; set; }
 
 }
