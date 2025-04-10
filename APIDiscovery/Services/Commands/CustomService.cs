@@ -75,11 +75,5 @@ public class CustomService
             Enterprises = userEnterprises
         };
     }
-    
-    public async Task<IEnumerable<Category>> GetByEnterpriseIdAsync(int enterpriseId)
-    {
-        return await _context.Categories
-            .Where(c => c.id_enterprise == enterpriseId)
-            .ToListAsync();
-    }
+
 }

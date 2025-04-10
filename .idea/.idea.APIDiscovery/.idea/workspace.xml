@@ -15,30 +15,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/CategoryController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/ICategoryService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/Branch.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/BranchDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/EnterpriseWithBranchesDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/UserEnterprisesDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/Enterprise.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/EnterpriseUser.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/CategoryService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Utils/generate_models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/ChildrenController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/CategoryController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/CategoryController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Core/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Core/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IChildrenService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IEmpresaService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Children.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Empresa.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/ChildrenService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/ICategoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/ICategoryService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/CategoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/CategoryService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/EmpresaService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/Security/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/Security/AuthService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
@@ -50,7 +32,6 @@
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
