@@ -38,15 +38,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Registrar servicios
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddSingleton<RabbitMQService>();
 builder.Services.AddHostedService<UserActionConsumerService>();
 builder.Services.AddScoped<CustomService>();
 builder.Services.AddScoped<EmailService>();
-builder.Services.AddScoped<ChildrenService>();
-
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 

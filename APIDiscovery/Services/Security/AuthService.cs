@@ -38,11 +38,9 @@ namespace APIDiscovery.Services.Security;
                 throw new BadRequestException("No existe un usuario con el correo proporcionado.");
             }
             
-            // Generar código de 6 dígitos
             var random = new Random();
-            string verificationCode = random.Next(100000, 999999).ToString();
+            var verificationCode = random.Next(100000, 999999).ToString();
             
-            // Crear o actualizar token
             var existingToken = await _context.Tokens
                 .FirstOrDefaultAsync(t => t.UserId == usuario.id_us);
             
@@ -66,7 +64,6 @@ namespace APIDiscovery.Services.Security;
             
             await _context.SaveChangesAsync();
             
-            // Enviar correo con el código
             await _emailService.SendVerificationCodeAsync(email, verificationCode);
             
             var endTime = DateTime.Now;
@@ -83,7 +80,6 @@ namespace APIDiscovery.Services.Security;
         {
             var startTime = DateTime.Now;
             
-            // Buscar usuario por email
             var usuario = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.email_us == email);
             
@@ -92,7 +88,6 @@ namespace APIDiscovery.Services.Security;
                 throw new BadRequestException("No existe un usuario con el correo proporcionado.");
             }
             
-            // Verificar si hay un token válido
             var token = await _context.Tokens
                 .FirstOrDefaultAsync(t => t.UserId == usuario.id_us && 
                                        t.TokenString == code && 
@@ -103,11 +98,9 @@ namespace APIDiscovery.Services.Security;
                 throw new BadRequestException("El código de verificación es inválido o ha expirado.");
             }
             
-            // Actualizar contraseña
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
             usuario.password_us = hashedPassword;
             
-            // Eliminar el token utilizado
             _context.Tokens.Remove(token);
             
             await _context.SaveChangesAsync();
@@ -139,15 +132,14 @@ namespace APIDiscovery.Services.Security;
             {
                 throw new NotFoundException("Rol no encontrado.");
             }
+            
     
-            // Verificar si el correo está verificado
             var emailVerified = await _context.Usuarios.FirstOrDefaultAsync(u => u.email_verified == 'N' && u.dni_us == dni);
             if (emailVerified != null)
             {
                 throw new BadRequestException("El correo no ha sido verificado.");
             }
     
-            // Buscar el usuario
             var usuario = await _context.Usuarios
                 .Include(u => u.Rol)
                 .FirstOrDefaultAsync(u => u.dni_us == dni);
@@ -162,7 +154,15 @@ namespace APIDiscovery.Services.Security;
                 throw new BadRequestException("El usuario no tiene el rol especificado.");
             }
             
-            bool passwordValid = BCrypt.Net.BCrypt.Verify(password, usuario.password_us);
+            var enterpriseUser = await _context.EnterpriseUsers
+                .FirstOrDefaultAsync(eu => eu.id_user == usuario.id_us && eu.status == 'A');
+    
+            if (enterpriseUser == null)
+            {
+                throw new BadRequestException("El usuario no está asociado a ninguna empresa activa.");
+            }
+            
+            var  passwordValid = BCrypt.Net.BCrypt.Verify(password, usuario.password_us);
             if (!passwordValid)
             {
                 throw new BadRequestException("Credenciales inválidas.");
@@ -202,7 +202,7 @@ namespace APIDiscovery.Services.Security;
                 .FirstOrDefaultAsync(u => u.email_us == email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.password_us))
-                return null;
+                return null!;
 
             return await GenerateJwtToken(user);
         }
@@ -230,7 +230,6 @@ namespace APIDiscovery.Services.Security;
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            // Guardar token en BD
             var tokenEntry = new Token
             {
                 UserId = user.id_us,

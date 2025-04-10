@@ -1,5 +1,6 @@
 ﻿using APIDiscovery.Models.DTOs;
 using APIDiscovery.Services;
+using APIDiscovery.Services.Commands;
 using APIDiscovery.Services.Security;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,20 @@ public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
     private readonly RabbitMQService _rabbitMqService;
+    private readonly CustomService _customService;
 
-    public AuthController(AuthService authService, RabbitMQService rabbitMqService)
+    public AuthController(AuthService authService, RabbitMQService rabbitMqService, CustomService customService)
     {
         _authService = authService;
         _rabbitMqService = rabbitMqService;
+        _customService = customService;
+    }
+    
+    [HttpGet("getBranchesAndEnterpriseByUserId/{userId}")]
+    public async Task<IActionResult> GetBranchesAndEnterpriseByUserId(int userId)
+    {
+        var response = await _customService.GetUserEnterprisesAndBranches(userId);
+        return Ok(response);
     }
 
     [HttpPost("login")]
