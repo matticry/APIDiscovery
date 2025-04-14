@@ -1,4 +1,5 @@
-﻿using APIDiscovery.Core;
+﻿using System.Diagnostics;
+using APIDiscovery.Core;
 using APIDiscovery.Exceptions;
 using APIDiscovery.Models;
 using APIDiscovery.Models.DTOs;
@@ -75,5 +76,37 @@ public class CustomService
             Enterprises = userEnterprises
         };
     }
-
+    
+    public async Task<ResponseDto> GetCategoriesByEnterprise(int enterpriseId)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        var response = new ResponseDto();
+        
+        try
+        {
+            var categories = await _context.Categories
+                .Where(c => c.id_enterprise == enterpriseId && c.status == 'A')
+                .Select(c => new
+                {
+                    Id = c.id_ca,
+                    Name = c.name,
+                    Description = c.description
+                })
+                .ToListAsync();
+                
+            response.Result = categories;
+            response.DisplayMessage = "Categorías obtenidas exitosamente.";
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.DisplayMessage = "Error al obtener las categorías.";
+            response.ErrorMessages = new List<string> { ex.Message };
+        }
+        
+        stopwatch.Stop();
+        response.ResponseTimeMs = stopwatch.Elapsed.TotalMilliseconds;
+        
+        return response;
+    }
 }

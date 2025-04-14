@@ -14,6 +14,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<Enterprise> Enterprises { get; set; }
     public DbSet<EnterpriseUser> EnterpriseUsers { get; set; }
     public DbSet<Branch> Branches { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Tax> Taxes { get; set; }
+    public DbSet<Article> Articles { get; set; }
+    public DbSet<Fare> Fares { get; set; }
+    public DbSet<TariffArticle> TariffArticles { get; set; }
+
+
     
     
     

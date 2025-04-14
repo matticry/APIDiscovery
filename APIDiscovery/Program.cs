@@ -15,6 +15,7 @@ DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseUrls("http://*:5031");
+
 var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException());
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -44,6 +45,9 @@ builder.Services.AddSingleton<RabbitMQService>();
 builder.Services.AddHostedService<UserActionConsumerService>();
 builder.Services.AddScoped<CustomService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IFareService, FareService>();
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 

@@ -20,7 +20,7 @@ public class RabbitMQService : IDisposable
         {
             var factory = new ConnectionFactory
             {
-                HostName = configuration["RabbitMQ:HostName"] ?? "192.168.1.8",
+                HostName = configuration["RabbitMQ:HostName"] ?? "192.168.1.12",
                 Port = int.Parse(configuration["RabbitMQ:Port"] ?? "5672"),
                 UserName = configuration["RabbitMQ:UserName"] ?? "guest",
                 Password = configuration["RabbitMQ:Password"] ?? "guest"

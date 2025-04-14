@@ -2,7 +2,7 @@
 
 namespace APIDiscovery.Interfaces;
 
-public interface ICategoryService 
+public interface ICategoryService : ICrudService<Category>
 {
     
 }
