@@ -10,7 +10,7 @@ public class ArticleDto
     public string Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdateAt { get; set; }
-    public string Image { get; set; }
+    public string? Image { get; set; }
     public string Description { get; set; }
     public int IdEnterprise { get; set; }
     public int IdCategory { get; set; }

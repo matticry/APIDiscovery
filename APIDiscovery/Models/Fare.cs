@@ -13,6 +13,8 @@ public class Fare
     [Column(TypeName = "decimal(5, 2)")]
     public decimal percentage { get; set; }
     
+    public string code { get; set; }
+    
     public string description { get; set; }
     
     public int id_tax { get; set; }

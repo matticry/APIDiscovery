@@ -8,8 +8,10 @@ using APIDiscovery.Services.Security;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-// Configuración de variables de entorno
+
+
 DotEnv.Load();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +50,7 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IFareService, FareService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 
@@ -74,6 +77,13 @@ if (app.Environment.IsDevelopment())
 }
 app.UseAuthentication();
 app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
+    RequestPath = "/uploads"
+});
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseCors();

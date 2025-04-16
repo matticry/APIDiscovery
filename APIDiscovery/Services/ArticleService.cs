@@ -11,10 +11,12 @@ namespace APIDiscovery.Services;
 public class ArticleService : IArticleService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IImageService _imageService;
     
-    public ArticleService(ApplicationDbContext context)
+    public ArticleService(ApplicationDbContext context, IImageService imageService)
     {
         _context = context;
+        _imageService = imageService;
     }
     
     public async Task<ResponseDto> CreateArticle(ArticleCreateDto articleDto)
@@ -67,6 +69,8 @@ public class ArticleService : IArticleService
                 return response;
             }
             
+            var imagePath = await _imageService.SaveImageAsync(articleDto.Image);
+            
             // Crear el artículo
             var article = new Article
             {
@@ -77,7 +81,7 @@ public class ArticleService : IArticleService
                 status = 'A',
                 created_at = DateTime.Now,
                 update_at = DateTime.Now,
-                image = articleDto.Image,
+                image = imagePath,
                 description = articleDto.Description,
                 id_enterprise = articleDto.IdEnterprise,
                 id_category = articleDto.IdCategory
@@ -110,7 +114,7 @@ public class ArticleService : IArticleService
         {
             response.Success = false;
             response.DisplayMessage = "Error al crear el artículo.";
-            response.ErrorMessages = new List<string> { ex.Message };
+            response.ErrorMessages = [ex.Message];
         }
         
         stopwatch.Stop();
@@ -127,14 +131,7 @@ public class ArticleService : IArticleService
         try
         {
             var articleDto = await GetArticleDetailById(id);
-            
-            if (articleDto == null)
-            {
-                response.Success = false;
-                response.DisplayMessage = "Artículo no encontrado.";
-                return response;
-            }
-            
+
             response.Result = articleDto;
             response.DisplayMessage = "Artículo obtenido exitosamente.";
         }
@@ -245,13 +242,19 @@ public class ArticleService : IArticleService
                 return response;
             }
             
+            var imagePath = article.image;
+            if (articleDto.Image != null)
+            {
+                imagePath = await _imageService.UpdateImageAsync(article.image, articleDto.Image);
+            }
+            
             // Actualizar los datos del artículo
             article.name = articleDto.Name;
             article.code = articleDto.Code;
             article.price_unit = articleDto.PriceUnit;
             article.stock = articleDto.Stock;
             article.update_at = DateTime.Now;
-            article.image = articleDto.Image;
+            article.image = imagePath;
             article.description = articleDto.Description;
             article.id_category = articleDto.IdCategory;
             
@@ -309,6 +312,11 @@ public class ArticleService : IArticleService
                 response.Success = false;
                 response.DisplayMessage = "Artículo no encontrado.";
                 return response;
+            }
+            
+            if (!string.IsNullOrEmpty(article.image))
+            {
+                _imageService.DeleteImage(article.image);
             }
             
             // Marcar como inactivo en lugar de eliminar físicamente

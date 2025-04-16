@@ -28,6 +28,7 @@ public class FareService : IFareService
                 {
                     Id = f.id_fare,
                     Percentage = f.percentage,
+                    Code = f.code,
                     Description = f.description,
                     IdTax = f.id_tax,
                     TaxDescription = f.Tax.description
