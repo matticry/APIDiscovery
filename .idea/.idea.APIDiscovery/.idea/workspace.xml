@@ -14,23 +14,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="Commit: Module Article">
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/SubscriptionDatesDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" afterDir="false" />
-    </list>
+    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,7 +33,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -98,7 +82,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;diego&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/matticry/RiderProjects/APIDiscovery&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -263,6 +247,7 @@
       <workItem from="1744743653381" duration="8368000" />
       <workItem from="1744765865040" duration="8256000" />
       <workItem from="1744832302110" duration="4912000" />
+      <workItem from="1744850161566" duration="128000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -320,7 +305,23 @@
       <option name="project" value="LOCAL" />
       <updated>1744832432068</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="extras">
+      <option name="closed" value="true" />
+      <created>1744850207894</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1744850207894</updated>
+    </task>
+    <task id="LOCAL-00009" summary="primer commit de diego">
+      <option name="closed" value="true" />
+      <created>1744850237648</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1744850237648</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -348,7 +349,9 @@
     <MESSAGE value="fix bug" />
     <MESSAGE value="Commit: I fix new bugs aplication and created new modules Category.cs and Article.cs" />
     <MESSAGE value="Commit: Module Article" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: Module Article" />
+    <MESSAGE value="extras" />
+    <MESSAGE value="primer commit de diego" />
+    <option name="LAST_COMMIT_MESSAGE" value="primer commit de diego" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
