@@ -23,6 +23,48 @@ public class CustomService
             .Select(r => r.name_rol)
             .ToListAsync();
     }
+    
+    public async Task<ResponseDto> GetUserSubscriptionDates(int enterpriseId, int userId)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        var response = new ResponseDto();
+    
+        try
+        {
+            var subscription = await _context.EnterpriseUsers
+                .Where(eu => eu.id_enterprise == enterpriseId && eu.id_user == userId)
+                .Select(eu => new SubscriptionDatesDto
+                {
+                    StartDate = eu.start_date_subscription,
+                    EndDate = eu.end_date_subscription,
+                    Status = eu.status
+                })
+                .FirstOrDefaultAsync();
+            
+            if (subscription == null)
+            {
+                response.Success = false;
+                response.DisplayMessage = "No se encontró una relación entre el usuario y la empresa especificados.";
+                return response;
+            }
+        
+            response.Result = subscription;
+            response.DisplayMessage = "Fechas de suscripción obtenidas exitosamente.";
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.DisplayMessage = "Error al obtener las fechas de suscripción.";
+            response.ErrorMessages = new List<string> { ex.Message };
+        }
+    
+        stopwatch.Stop();
+        response.ResponseTimeMs = stopwatch.Elapsed.TotalMilliseconds;
+    
+        return response;
+    }
+    
+    
 
     public async Task<UserEnterprisesDto> GetUserEnterprisesAndBranches(int userId)
     {

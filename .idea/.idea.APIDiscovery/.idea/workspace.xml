@@ -14,23 +14,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/IImageService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/ImageService.cs" afterDir="false" />
+    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="Commit: Module Article">
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/SubscriptionDatesDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleCreateDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleCreateDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/FareDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/FareDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Fare.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Fare.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/ArticleService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/ArticleService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/FareService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/FareService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" afterDir="false" />
@@ -271,6 +262,7 @@
       <workItem from="1744675100734" duration="411000" />
       <workItem from="1744743653381" duration="8368000" />
       <workItem from="1744765865040" duration="8256000" />
+      <workItem from="1744832302110" duration="4912000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -320,7 +312,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744639724062</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Commit: Module Article">
+      <option name="closed" value="true" />
+      <created>1744832432068</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1744832432068</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -347,7 +347,8 @@
     <MESSAGE value="Commit New Modules" />
     <MESSAGE value="fix bug" />
     <MESSAGE value="Commit: I fix new bugs aplication and created new modules Category.cs and Article.cs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: I fix new bugs aplication and created new modules Category.cs and Article.cs" />
+    <MESSAGE value="Commit: Module Article" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit: Module Article" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

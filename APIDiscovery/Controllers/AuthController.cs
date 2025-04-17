@@ -29,6 +29,13 @@ public class AuthController : ControllerBase
         var response = await _customService.GetUserEnterprisesAndBranches(userId);
         return Ok(response);
     }
+    
+    [HttpGet("getSubcriptionDates/{enterpriseId}/{userId}")]
+    public async Task<IActionResult> GetSubcriptionDates(int enterpriseId, int userId)
+    {
+        var response = await _customService.GetUserSubscriptionDates(enterpriseId, userId);
+        return Ok(response);
+    }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
