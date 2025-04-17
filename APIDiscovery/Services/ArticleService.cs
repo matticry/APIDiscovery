@@ -319,7 +319,7 @@ public class ArticleService : IArticleService
                 _imageService.DeleteImage(article.image);
             }
             
-            // Marcar como inactivo en lugar de eliminar físicamente
+            // Marcaar como inactivo en lugar de eliminar físicamente
             article.status = 'I';
             article.update_at = DateTime.Now;
             
