@@ -147,3 +147,6 @@ C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\MailK
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\MimeKit.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Microsoft.Bcl.Cryptography.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\System.Formats.Asn1.dll
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll

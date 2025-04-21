@@ -19,6 +19,16 @@ public class ApplicationDbContext : DbContext
     public DbSet<Article> Articles { get; set; }
     public DbSet<Fare> Fares { get; set; }
     public DbSet<TariffArticle> TariffArticles { get; set; }
+    public DbSet<EmissionPoint> EmissionPoints { get; set; }
+    public DbSet<Sequence> Sequences { get; set; }
+    public DbSet<Client> Clients { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
+    public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+    public DbSet<DocumentType> DocumentTypes { get; set; }
+    public DbSet<InvoicePayment> InvoicePayments { get; set; }
+    public DbSet<Payment> Payments { get; set; }
+    public DbSet<TypeDni> TypeDnis { get; set; }
+
 
 
     

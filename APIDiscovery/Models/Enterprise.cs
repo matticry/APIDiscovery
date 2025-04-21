@@ -65,7 +65,7 @@ public class Enterprise
     [MaxLength(250)]
     public string retention_agent { get; set; }
     
-    public char environment { get; set; }
+    public int environment { get; set; }
     
     [JsonIgnore]
     public ICollection<EnterpriseUser> EnterpriseUsers { get; set; }

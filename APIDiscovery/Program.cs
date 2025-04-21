@@ -5,8 +5,10 @@ using APIDiscovery.Interfaces;
 using APIDiscovery.Services;
 using APIDiscovery.Services.Commands;
 using APIDiscovery.Services.Security;
+using APIDiscovery.Utils;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -50,9 +52,11 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IFareService, FareService>();
+builder.Services.AddScoped<ICertificadoService, CertificadoService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
+builder.Services.AddSingleton<EncryptionHelper>();
 
 builder.Services.AddCors(options =>
 {
@@ -62,6 +66,11 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
+});
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 15 * 1024 * 1024; // 15 MB
 });
 
 
