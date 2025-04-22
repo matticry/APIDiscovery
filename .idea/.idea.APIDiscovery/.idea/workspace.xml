@@ -14,57 +14,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="Commit: Module Article">
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/CertificadosController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/EmissionPointsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/ICertificadoService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IEmissionPointService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/Client.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/CertificadoRequestDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/CertificadoResponseDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/EmissionPointWithSequenceDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/SequenceDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DocumentType.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/EmissionPoint.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/Invoice.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/InvoiceDetail.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/InvoicePayment.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/Payment.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/Sequence.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/TypeDni.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/CertificadoService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/EmissionPointService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Utils/EncryptionHelper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIDiscovery/Utils/clave.py" afterDir="false" />
+    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/BranchDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/ClientDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/DocumentTypeDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/EmissionPointDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/EnterpriseDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/InvoiceDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/InvoiceDetailDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/InvoicePaymentDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/SequenceDTO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/APIDiscovery.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Core/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Core/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Enterprise.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Enterprise.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bd.sql" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bd.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/APIDiscovery.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/APIDiscovery.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,6 +68,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b6f976b71382cbf47119c95247af807dba2a3eab7bedcd829862ff5942d2196/ConnectionFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c1f1afd99206610af36112715141966f5937932d7539dd045ca271185486/ForgotPasswordRequest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/matticry/RiderProjects/APIDiscovery/APIDiscovery/Core/ApplicationDbContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/matticry/RiderProjects/APIDiscovery/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -300,7 +261,7 @@
       <workItem from="1744765865040" duration="8256000" />
       <workItem from="1744832302110" duration="4912000" />
       <workItem from="1745172379068" duration="4149000" />
-      <workItem from="1745240714290" duration="11930000" />
+      <workItem from="1745240714290" duration="13510000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -358,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744832432068</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="NEW MODULES">
+      <option name="closed" value="true" />
+      <created>1745257960581</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1745257960581</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -386,7 +355,8 @@
     <MESSAGE value="fix bug" />
     <MESSAGE value="Commit: I fix new bugs aplication and created new modules Category.cs and Article.cs" />
     <MESSAGE value="Commit: Module Article" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: Module Article" />
+    <MESSAGE value="NEW MODULES" />
+    <option name="LAST_COMMIT_MESSAGE" value="NEW MODULES" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
