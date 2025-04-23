@@ -14,16 +14,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="Commit: Module Inoice">
+    <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="Commit: New updates into code, now generate xml of invoice">
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Utils/validation_xml.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Branch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Branch.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/ClientDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/ClientDTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Enterprise.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Enterprise.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Invoice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Invoice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/InvoiceDetail.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/InvoiceDetail.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/InvoicePayment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/InvoicePayment.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/XmlFacturaService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/XmlFacturaService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
@@ -274,7 +267,7 @@
       <workItem from="1745240714290" duration="13510000" />
       <workItem from="1745327133376" duration="11058000" />
       <workItem from="1745357134600" duration="7146000" />
-      <workItem from="1745414212719" duration="9737000" />
+      <workItem from="1745414212719" duration="11915000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -356,7 +349,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745416174772</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Commit: New updates into code, now generate xml of invoice">
+      <option name="closed" value="true" />
+      <created>1745424294468</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1745424294468</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -387,7 +388,8 @@
     <MESSAGE value="NEW MODULES" />
     <MESSAGE value="Commit news updates &#10;More Dtos" />
     <MESSAGE value="Commit: Module Inoice" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: Module Inoice" />
+    <MESSAGE value="Commit: New updates into code, now generate xml of invoice" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit: New updates into code, now generate xml of invoice" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
