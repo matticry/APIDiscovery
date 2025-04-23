@@ -16,48 +16,43 @@ public class InvoiceDetail
     public string description { get; set; }
 
     public int amount { get; set; }
-    
-    [Column(TypeName = "decimal(10, 2)")]
+
     public decimal price_unit { get; set; }
 
     public int discount { get; set; }
-    
-    [Column(TypeName = "decimal(18, 2)")]
+
     public decimal price_with_discount { get; set; }
-    
-    [Column(TypeName = "decimal(18, 2)")]
+
     public decimal neto { get; set; }
-    
-    [Column(TypeName = "decimal(5, 2)")]
+
     public decimal iva_porc { get; set; }
 
-    [Column(TypeName = "decimal(18, 2)")]
     public decimal iva_valor { get; set; }
 
-    [Column(TypeName = "decimal(5, 2)")]
     public decimal ice_porc { get; set; }
-    
-    [Column(TypeName = "decimal(5, 2)")]
+
     public decimal ice_valor { get; set; }
 
-    [Column(TypeName = "decimal(5, 2)")]
     public decimal irbp_valor { get; set; }
-    
-    [Column(TypeName = "decimal(5, 2)")]
+
     public decimal subtotal { get; set; }
-    
-    [Column(TypeName = "decimal(5, 2)")]
+
     public decimal total { get; set; }
 
+    // Clave foránea correcta
     public int id_invoice { get; set; }
 
+    [ForeignKey("id_invoice")]
+    public virtual Invoice Invoice { get; set; }
+    
     public string note1 { get; set; }
 
     public string note2 { get; set; }
 
     public string note3 { get; set; }
 
-    public int id_tariff { get; set; }
+    public int? id_tariff { get; set; }
+    
 
     public int id_article { get; set; }
 }

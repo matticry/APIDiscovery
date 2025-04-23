@@ -2,5 +2,6 @@
 
 public class DocumentTypeDTO
 {
+    public int IdDocumentType { get; set; }
     public string NameDocument { get; set; }
 }

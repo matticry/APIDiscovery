@@ -51,6 +51,8 @@ builder.Services.AddScoped<CustomService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IXmlFacturaService, XmlFacturaService>();
 builder.Services.AddScoped<IFareService, FareService>();
 builder.Services.AddScoped<ICertificadoService, CertificadoService>();
 builder.Services.AddScoped<IImageService, ImageService>();

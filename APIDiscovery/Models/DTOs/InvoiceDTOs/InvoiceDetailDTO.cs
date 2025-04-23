@@ -6,6 +6,7 @@ public class InvoiceDetailDTO
     public string Description { get; set; }
     public int Amount { get; set; }
     public decimal PriceUnit { get; set; }
+    public int Discount { get; set; }  // Agregado
     public decimal PriceWithDiscount { get; set; }
     public decimal Neto { get; set; }
     public decimal IvaPorc { get; set; }
@@ -17,4 +18,8 @@ public class InvoiceDetailDTO
     public string Note1 { get; set; }
     public string Note2 { get; set; }
     public string Note3 { get; set; }
+
+    // Opcionales para referencia
+    public int? TariffId { get; set; }
+    public int ArticleId { get; set; }
 }

@@ -10,4 +10,8 @@ public class DocumentType
 
     [MaxLength(250)]
     public string name_document { get; set; }
+    
+    [MaxLength(5)]
+    public string code { get; set; }
+    
 }

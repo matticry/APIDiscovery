@@ -10,6 +10,7 @@ public class InvoiceDTO
     public SequenceDTO Sequence { get; set; }
     public List<InvoiceDetailDTO> Details { get; set; }
     public List<InvoicePaymentDTO> Payments { get; set; }
+
     public DateTime EmissionDate { get; set; }
     public decimal TotalWithoutTaxes { get; set; }
     public decimal TotalDiscount { get; set; }
@@ -22,4 +23,15 @@ public class InvoiceDTO
     public DateTime? AuthorizationDate { get; set; }
     public string AdditionalInfo { get; set; }
     public string Message { get; set; }
+
+    // Campos adicionales que usaste en el servicio
+    public string Type { get; set; }
+    public string Identifier { get; set; }
+
+    // IDs para persistencia
+    public int BranchId { get; set; }
+    public int CompanyId { get; set; }
+    public int EmissionPointId { get; set; }
+    public int ReceiptId { get; set; }
+    public int SequenceId { get; set; }
 }

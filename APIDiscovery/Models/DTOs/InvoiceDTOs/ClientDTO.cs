@@ -7,5 +7,5 @@ public class ClientDTO
     public string Address { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
-    public string TypeDniCode { get; set; }
+    public int TypeDniId { get; set; }
 }
