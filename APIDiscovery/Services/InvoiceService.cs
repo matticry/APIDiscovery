@@ -24,7 +24,7 @@ public class InvoiceService : IInvoiceService
 
         bool isConsumerFinal = invoiceDto.TotalAmount <= 50;
 
-        Client clientEntity = null;
+        Client clientEntity;
 
         if (isConsumerFinal)
         {
@@ -39,6 +39,7 @@ public class InvoiceService : IInvoiceService
                     address = "CONSUMIDOR FINAL",
                     phone = "099999999",
                     email = "consumidorfinal@email.com",
+                    info = "Factura generada para consumidor final",
                     id_type_dni = 7
                 };
                 _context.Clients.Add(clientEntity);
@@ -57,6 +58,7 @@ public class InvoiceService : IInvoiceService
                 address = invoiceDto.Client.Address,
                 phone = invoiceDto.Client.Phone,
                 email = invoiceDto.Client.Email,
+                info = invoiceDto.Client.Info,
                 id_type_dni = invoiceDto.Client.TypeDniId
             };
             _context.Clients.Add(clientEntity);

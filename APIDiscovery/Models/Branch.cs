@@ -11,18 +11,18 @@ public class Branch
     public int id_br { get; set; }
     
     [MaxLength(250)]
-    public string code { get; set; }
+    public string? code { get; set; }
     
     [MaxLength(250)]
-    public string description { get; set; }
+    public string? description { get; set; }
     
     public int id_enterprise { get; set; }
     
     [MaxLength(250)]
-    public string address { get; set; }
+    public string? address { get; set; }
     
     [MaxLength(10)]
-    public string phone { get; set; }
+    public string? phone { get; set; }
     
     public char status { get; set; } = 'A';
     

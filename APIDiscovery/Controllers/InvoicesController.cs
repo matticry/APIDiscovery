@@ -58,7 +58,11 @@ public class InvoicesController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Error al generar el XML: {ex.Message}");
+            var errorDetail = ex.InnerException != null
+                ? $"{ex.Message} | Inner: {ex.InnerException.Message} | StackTrace: {ex.InnerException.StackTrace}"
+                : $"{ex.Message} | StackTrace: {ex.StackTrace}";
+
+            return StatusCode(500, $"Error al generar el XML: {errorDetail}");
         }
     }
 }
