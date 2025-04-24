@@ -1,0 +1,90 @@
+﻿{
+  "enterprise": {
+    "idEnterprise": 1,
+    "companyName": "DIEGO EDMUNDO ROMAN NOBOA",
+    "comercialName": "DIEGO EDMUNDO ROMAN NOBOA",
+    "ruc": "1717219586001",
+    "addressMatriz": "EL CONDADO OE7B Y N85",
+    "phone": "022094017",
+    "email": "info@empresa.com",
+    "accountant": "y"
+  },
+  "client": {
+    "razonSocial": "CONSUMIDOR FINAL",
+    "dni": "9999999999999",
+    "address": "CONSUMIDOR FINAL",
+    "phone": "099999999",
+    "info": "CONSUMIDOR FINAL",
+    "email": "consumidorfinal@email.com",
+    "typeDniId": 7
+  },
+  "emissionPoint": {
+    "idEmissionPoint": 1,
+    "code": "001",
+    "details": "Punto de emisión principal para la Sucursal en Sur"
+  },
+  "branch": {
+    "idBranch": 1,
+    "code": "001",
+    "description": "Sucursal en Sur",
+    "address": "LA MARIN",
+    "phone": "0992810669"
+  },
+  "documentType": {
+    "idDocumentType": 1,
+    "nameDocument": "FACTURA"
+  },
+  "sequence": {
+    "idSequence": 1,
+    "code": "000000011"
+  },
+  "details": [
+    {
+      "codeStub": "0301009",
+      "description": "INSTALACION RN2 SOFTWARE",
+      "amount": 1,
+      "priceUnit": 120.54,
+      "discount": 0,
+      "priceWithDiscount": 120.54,
+      "neto": 120.54,
+      "ivaPorc": 12,
+      "ivaValor": 14.46,
+      "icePorc": 0,
+      "iceValor": 0,
+      "subtotal": 120.54,
+      "total": 135.00,
+      "note1": "Licencia indefinida",
+      "note2": "",
+      "note3": "",
+      "tariffId": 3,
+      "articleId": 1
+    }
+  ],
+  "payments": [
+    {
+      "total": 135.00,
+      "deadline": 30,
+      "unitTime": "dias",
+      "paymentId": 1
+    }
+  ],
+  "emissionDate": "2025-04-22T13:53:18.783Z",
+  "totalWithoutTaxes": 120.54,
+  "totalDiscount": 0,
+  "tip": 0,
+  "totalAmount": 135.00,
+  "currency": "DOLAR",
+  "accessKey": "",
+  "electronicStatus": "PENDIENTE",
+  "authorizationNumber": "",
+  "authorizationDate": null,
+  "additionalInfo": "Factura generada para consumidor final",
+  "message": "TODOBIEN",
+  "type": "01",
+  "identifier": "9999999999999",
+  "branchId": 1,
+  "companyId": 1,
+  "emissionPointId": 1,
+  "receiptId": 1,
+  "sequenceId": 1
+}

@@ -22,9 +22,9 @@ public class Invoice
 
     public int sequence_id { get; set; }
 
-    [MaxLength(50)] public string electronic_status { get; set; }
+    [MaxLength(50)] public string electronic_status { get; set; } = "PENDIENTE";
 
-    [MaxLength(50)] public string invoice_status { get; set; }
+    [MaxLength(50)] public string invoice_status { get; set; } = "NO AUTORIZADO";
 
     public int id_emission_point { get; set; }
 
