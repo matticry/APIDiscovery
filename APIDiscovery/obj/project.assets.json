@@ -94,6 +94,18 @@
           }
         }
       },
+      "Infoware.Microsoft.Xades/1.0.5": {
+        "type": "package",
+        "dependencies": {
+          "System.Security.Cryptography.Xml": "8.0.1"
+        },
+        "compile": {
+          "lib/net8.0/Infoware.Microsoft.Xades.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/Infoware.Microsoft.Xades.dll": {}
+        }
+      },
       "MailKit/4.11.0": {
         "type": "package",
         "dependencies": {
@@ -2519,6 +2531,18 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "Infoware.Microsoft.Xades/1.0.5": {
+      "sha512": "PGEZnTk3NjjbyvzAjvJ5fAevJtTgK6KonoI1oC/DWrPOeAMASh4nocfhFYQ+X1cEi5BBpl08ZnqI74oDuWwA7g==",
+      "type": "package",
+      "path": "infoware.microsoft.xades/1.0.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "infoware.microsoft.xades.1.0.5.nupkg.sha512",
+        "infoware.microsoft.xades.nuspec",
+        "lib/net8.0/Infoware.Microsoft.Xades.dll"
       ]
     },
     "MailKit/4.11.0": {
@@ -7180,6 +7204,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "BCrypt.Net-Next >= 4.0.3",
+      "Infoware.Microsoft.Xades >= 1.0.5",
       "MailKit >= 4.11.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.0",
       "Microsoft.AspNetCore.OpenApi >= 8.0.13",
@@ -7247,6 +7272,10 @@
           "BCrypt.Net-Next": {
             "target": "Package",
             "version": "[4.0.3, )"
+          },
+          "Infoware.Microsoft.Xades": {
+            "target": "Package",
+            "version": "[1.0.5, )"
           },
           "MailKit": {
             "target": "Package",

@@ -151,3 +151,4 @@ C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Micro
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\System.Formats.Asn1.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\System.Security.Cryptography.Xml.dll
 C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Utils\create_invoice.json
+C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\bin\Debug\net8.0\Infoware.Microsoft.Xades.dll

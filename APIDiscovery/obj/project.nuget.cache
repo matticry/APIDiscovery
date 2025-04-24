@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Z5nfTP2aiRs=",
+  "dgSpecHash": "woUuZRZRYQk=",
   "success": true,
   "projectFilePath": "C:\\Users\\matticry\\RiderProjects\\APIDiscovery\\APIDiscovery\\APIDiscovery.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "C:\\Users\\matticry\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
     "C:\\Users\\matticry\\.nuget\\packages\\dotenv.net\\3.2.1\\dotenv.net.3.2.1.nupkg.sha512",
     "C:\\Users\\matticry\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\matticry\\.nuget\\packages\\infoware.microsoft.xades\\1.0.5\\infoware.microsoft.xades.1.0.5.nupkg.sha512",
     "C:\\Users\\matticry\\.nuget\\packages\\mailkit\\4.11.0\\mailkit.4.11.0.nupkg.sha512",
     "C:\\Users\\matticry\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.0\\microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512",
     "C:\\Users\\matticry\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.13\\microsoft.aspnetcore.openapi.8.0.13.nupkg.sha512",

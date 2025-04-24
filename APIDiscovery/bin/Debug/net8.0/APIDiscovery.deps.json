@@ -9,6 +9,7 @@
       "APIDiscovery/1.0.0": {
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
+          "Infoware.Microsoft.Xades": "1.0.5",
           "MailKit": "4.11.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.0",
           "Microsoft.AspNetCore.OpenApi": "8.0.13",
@@ -90,6 +91,17 @@
           "lib/net6.0/Humanizer.dll": {
             "assemblyVersion": "2.14.0.0",
             "fileVersion": "2.14.1.48190"
+          }
+        }
+      },
+      "Infoware.Microsoft.Xades/1.0.5": {
+        "dependencies": {
+          "System.Security.Cryptography.Xml": "10.0.0-preview.3.25171.5"
+        },
+        "runtime": {
+          "lib/net8.0/Infoware.Microsoft.Xades.dll": {
+            "assemblyVersion": "1.0.7.0",
+            "fileVersion": "1.0.7.0"
           }
         }
       },
@@ -1401,6 +1413,13 @@
       "sha512": "sha512-lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw==",
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
+    },
+    "Infoware.Microsoft.Xades/1.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PGEZnTk3NjjbyvzAjvJ5fAevJtTgK6KonoI1oC/DWrPOeAMASh4nocfhFYQ+X1cEi5BBpl08ZnqI74oDuWwA7g==",
+      "path": "infoware.microsoft.xades/1.0.5",
+      "hashPath": "infoware.microsoft.xades.1.0.5.nupkg.sha512"
     },
     "MailKit/4.11.0": {
       "type": "package",

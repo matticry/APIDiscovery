@@ -53,6 +53,10 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Infoware.Microsoft.Xades": {
+              "target": "Package",
+              "version": "[1.0.5, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[4.11.0, )"

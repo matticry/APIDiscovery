@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 
 DotEnv.Load();
@@ -52,6 +53,7 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<ISriComprobantesService, SriComprobantesService>();
 builder.Services.AddScoped<IXmlFacturaService, XmlFacturaService>();
 builder.Services.AddScoped<IFareService, FareService>();
 builder.Services.AddScoped<ICertificadoService, CertificadoService>();
@@ -75,6 +77,20 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = 15 * 1024 * 1024; // 15 MB
 });
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "API de Facturación Electrónica",
+        Version = "v1",
+        Description = "API para integración con el sistema de facturación electrónica del SRI Ecuador",
+        Contact = new OpenApiContact
+        {
+            Name = "Soporte",
+            Email = "soporte@empresa.com"
+        }
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

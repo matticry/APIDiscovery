@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
@@ -13,10 +14,10 @@ namespace APIDiscovery.Services;
 
 public class XmlFacturaService : IXmlFacturaService
 {
-    private readonly ApplicationDbContext _context;
-    private readonly string _xmlOutputDirectory;
     private readonly string _certificadosPath;
+    private readonly ApplicationDbContext _context;
     private readonly EncryptionHelper _encryptionHelper;
+    private readonly string _xmlOutputDirectory;
 
 
     public XmlFacturaService(ApplicationDbContext context, IConfiguration config, EncryptionHelper encryptionHelper)
@@ -85,7 +86,7 @@ public class XmlFacturaService : IXmlFacturaService
 
         return rutaCompleta;
     }
-    
+
     public async Task<string> ObtenerCertificadoPath(string ruc)
     {
         var empresa = await _context.Enterprises.FirstOrDefaultAsync(e => e.ruc == ruc);
@@ -106,53 +107,116 @@ public class XmlFacturaService : IXmlFacturaService
 
     private void FirmarXml(XDocument doc, string certificadoPath, string clavePrivada)
     {
-        // Cargar el XML en XmlDocument para firmar
+        // Convertir el XDocument a XmlDocument para trabajar con la API de firma
         var xmlDoc = new XmlDocument();
         using (var xmlReader = doc.CreateReader())
         {
             xmlDoc.Load(xmlReader);
         }
 
-        // Cargar certificado con clave privada
-        var cert = new X509Certificate2(certificadoPath, clavePrivada, X509KeyStorageFlags.MachineKeySet);
+        // Cargar el certificado con la clave privada
+        var cert = new X509Certificate2(certificadoPath, clavePrivada, X509KeyStorageFlags.Exportable);
 
-        // Crear SignedXml con el documento
+        // Crear el objeto SignedXml para XAdES_BES
         var signedXml = new SignedXml(xmlDoc)
         {
             SigningKey = cert.GetRSAPrivateKey()
         };
 
-        // Crear referencia al nodo a firmar (el nodo raíz "factura")
+        // Especificar el algoritmo RSA-SHA1 como requiere el SRI
+        signedXml.SignedInfo.SignatureMethod = SignedXml.XmlDsigRSASHA1Url;
+
+        // Referencia al documento completo (enveloped)
         var reference = new Reference
         {
-            Uri = "#comprobante"
+            Uri = "#comprobante",
+            DigestMethod = SignedXml.XmlDsigSHA1Url // Usar SHA1 como indica el SRI
         };
-
-        // Agregar transformaciones necesarias
         reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
-        reference.AddTransform(new XmlDsigC14NTransform());
-
+        reference.AddTransform(new XmlDsigC14NTransform(false));
         signedXml.AddReference(reference);
 
-        // Agregar KeyInfo con el certificado
+        // KeyInfo - Incluir el certificado completo codificado en base64
         var keyInfo = new KeyInfo();
         keyInfo.AddClause(new KeyInfoX509Data(cert));
         signedXml.KeyInfo = keyInfo;
 
+        // Agregar propiedades firmadas (SignedProperties) requeridas por XAdES_BES
+        var signatureProperties =
+            xmlDoc.CreateElement("xades", "SignedProperties", "http://uri.etsi.org/01903/v1.3.2#");
+        signatureProperties.SetAttribute("Id", "SignedProperties");
+
+        // Agregar SignedSignatureProperties
+        var signedSignatureProperties =
+            xmlDoc.CreateElement("xades", "SignedSignatureProperties", "http://uri.etsi.org/01903/v1.3.2#");
+
+        // Agregar SigningTime - Tiempo de firma
+        var signingTime = xmlDoc.CreateElement("xades", "SigningTime", "http://uri.etsi.org/01903/v1.3.2#");
+        signingTime.InnerText = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+        signedSignatureProperties.AppendChild(signingTime);
+
+        // Agregar SigningCertificate
+        var signingCertificate =
+            xmlDoc.CreateElement("xades", "SigningCertificate", "http://uri.etsi.org/01903/v1.3.2#");
+        var cert2 = xmlDoc.CreateElement("xades", "Cert", "http://uri.etsi.org/01903/v1.3.2#");
+
+        // Agregar CertDigest
+        var certDigest = xmlDoc.CreateElement("xades", "CertDigest", "http://uri.etsi.org/01903/v1.3.2#");
+        var digestMethod = xmlDoc.CreateElement("ds", "DigestMethod", SignedXml.XmlDsigNamespaceUrl);
+        digestMethod.SetAttribute("Algorithm", SignedXml.XmlDsigSHA1Url);
+        certDigest.AppendChild(digestMethod);
+
+        // Calcular digest del certificado
+        var digestValue = xmlDoc.CreateElement("ds", "DigestValue", SignedXml.XmlDsigNamespaceUrl);
+        using (SHA1 sha1 = SHA1.Create())
+        {
+            byte[] certHash = sha1.ComputeHash(cert.RawData);
+            digestValue.InnerText = Convert.ToBase64String(certHash);
+        }
+
+        certDigest.AppendChild(digestValue);
+        cert2.AppendChild(certDigest);
+
+        // Agregar IssuerSerial
+        var issuerSerial = xmlDoc.CreateElement("xades", "IssuerSerial", "http://uri.etsi.org/01903/v1.3.2#");
+        var x509IssuerName = xmlDoc.CreateElement("ds", "X509IssuerName", SignedXml.XmlDsigNamespaceUrl);
+        x509IssuerName.InnerText = cert.IssuerName.Name;
+        issuerSerial.AppendChild(x509IssuerName);
+
+        var x509SerialNumber = xmlDoc.CreateElement("ds", "X509SerialNumber", SignedXml.XmlDsigNamespaceUrl);
+        x509SerialNumber.InnerText = cert.SerialNumber;
+        issuerSerial.AppendChild(x509SerialNumber);
+
+        cert2.AppendChild(issuerSerial);
+        signingCertificate.AppendChild(cert2);
+        signedSignatureProperties.AppendChild(signingCertificate);
+
+        signatureProperties.AppendChild(signedSignatureProperties);
+
         // Computar la firma
         signedXml.ComputeSignature();
 
-        // Obtener el XML de la firma
-        var xmlDigitalSignature = signedXml.GetXml();
+        // Obtener el nodo de firma
+        var xmlSignature = signedXml.GetXml();
 
-        // Agregar la firma al documento XML (al final del nodo factura)
-        var facturaNode = xmlDoc.GetElementsByTagName("factura")[0];
-        if (facturaNode != null) facturaNode.AppendChild(xmlDoc.ImportNode(xmlDigitalSignature, true));
+        // Agregar el nodo de firma al documento
+        XmlElement facturaNode = (XmlElement)xmlDoc.GetElementsByTagName("factura")[0];
+        if (facturaNode != null)
+        {
+            // Insertar el nodo de firma como hijo directo de la factura
+            facturaNode.AppendChild(xmlSignature);
 
-        // Sobrescribir el XDocument original con el firmado
-        if (xmlDoc.DocumentElement != null)
-            if (doc.Root != null)
-                doc.Root.ReplaceWith(XElement.Parse(xmlDoc.DocumentElement.OuterXml));
+            // Insertar las propiedades firmadas en el nodo de firma
+            var signatureValueNodes = xmlSignature.GetElementsByTagName("SignatureValue");
+            if (signatureValueNodes.Count > 0)
+            {
+                var signatureValueNode = signatureValueNodes[0];
+                xmlSignature.InsertAfter(signatureProperties, signatureValueNode);
+            }
+
+            // Actualizar el documento XDocument con los cambios
+            doc.Root?.ReplaceWith(XElement.Parse(xmlDoc.DocumentElement?.OuterXml ?? string.Empty));
+        }
     }
 
     private XDocument CrearEstructuraXml(Invoice invoice)
@@ -227,14 +291,21 @@ public class XmlFacturaService : IXmlFacturaService
         return infoTributaria;
     }
 
+
     private XElement CrearInfoFactura(Invoice invoice)
     {
+        var obligadoContabilidad = invoice.Enterprise.accountant switch
+        {
+            'Y' => "SI",
+            'N' => "NO",
+            _ => "NO" // Valor por defecto si no está claro
+        };
         var fechaEmision = invoice.emission_date.ToString("dd/MM/yyyy");
 
         var infoFactura = new XElement("infoFactura",
             new XElement("fechaEmision", fechaEmision),
             new XElement("dirEstablecimiento", invoice.Branch.address),
-            new XElement("obligadoContabilidad", invoice.Enterprise.accountant),
+            new XElement("obligadoContabilidad", obligadoContabilidad),
             new XElement("tipoIdentificacionComprador", invoice.Client.id_type_dni.ToString("D2")),
             new XElement("razonSocialComprador", invoice.Client.razon_social),
             new XElement("identificacionComprador", invoice.Client.dni),
@@ -375,7 +446,7 @@ public class XmlFacturaService : IXmlFacturaService
 
         if (!string.IsNullOrEmpty(invoice.Client.email))
             infoAdicional.Add(new XElement("campoAdicional",
-                new XAttribute("nombre", "EmaiL"),
+                new XAttribute("nombre", "Email"),
                 invoice.Client.email));
 
         if (!string.IsNullOrEmpty(invoice.additional_info))
