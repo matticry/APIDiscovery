@@ -96,9 +96,9 @@ public class XmlFacturaService : IXmlFacturaService
             SignatureMethod = SignatureMethod.RSAwithSHA1,
             DigestMethod = DigestMethod.SHA1,
             SigningDate = DateTime.Now,
-            SignaturePackaging = SignaturePackaging.ENVELOPED
+            SignaturePackaging = SignaturePackaging.ENVELOPED,
+            Signer = new Signer(cert)
         };
-        parameters.Signer = new Signer(cert);
 
         XmlDocument xmlFirmado;
         using (var fs = new FileStream(rutaTemp, FileMode.Open, FileAccess.Read))
@@ -107,14 +107,16 @@ public class XmlFacturaService : IXmlFacturaService
             xmlFirmado = result.Document;
         }
 
-        // 9) Insertar saltos de línea en Base64
-        var sigNode = xmlFirmado.GetElementsByTagName("SignatureValue")[0] as XmlElement;
-        if (sigNode != null)
-            sigNode.InnerText = InsertarSaltos(sigNode.InnerText);
+        // 9) Insertar saltos de línea en SignatureValue y DigestValue
+        var signatureValues = xmlFirmado.GetElementsByTagName("SignatureValue");
+        foreach (XmlElement sigNode in signatureValues)
+            if (sigNode != null && !string.IsNullOrEmpty(sigNode.InnerText))
+                sigNode.InnerText = InsertarSaltos(sigNode.InnerText);
 
-        var digests = xmlFirmado.GetElementsByTagName("DigestValue");
-        foreach (XmlElement dv in digests)
-            dv.InnerText = InsertarSaltos(dv.InnerText);
+        var digestValues = xmlFirmado.GetElementsByTagName("DigestValue");
+        foreach (XmlElement digestNode in digestValues)
+            if (digestNode != null && !string.IsNullOrEmpty(digestNode.InnerText))
+                digestNode.InnerText = InsertarSaltos(digestNode.InnerText);
 
         // 10) Guardar firmado y limpiar temporal
         xmlFirmado.Save(rutaFinal);
