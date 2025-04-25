@@ -53,7 +53,15 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddTransient<
+    Infoware.SRI.Firmar.ICertificadoService, 
+    Infoware.SRI.Firmar.CertificadoService>();
+
+// Registra tus servicios de facturación que dependen de ICertificadoService:
+builder.Services.AddScoped<IXmlFacturaService, XmlFacturaService>();
 builder.Services.AddScoped<ISriComprobantesService, SriComprobantesService>();
+
+
 builder.Services.AddScoped<IXmlFacturaService, XmlFacturaService>();
 builder.Services.AddScoped<IFareService, FareService>();
 builder.Services.AddScoped<ICertificadoService, CertificadoService>();

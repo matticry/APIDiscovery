@@ -1,38 +1,49 @@
 ﻿using System.Globalization;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography.Xml;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using APIDiscovery.Core;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Models;
 using APIDiscovery.Utils;
+using FirmaXadesNet;
+using FirmaXadesNet.Crypto;
+using FirmaXadesNet.Signature.Parameters;
 using Microsoft.EntityFrameworkCore;
+using ICertificadoService = Infoware.SRI.Firmar.ICertificadoService;
+
 
 namespace APIDiscovery.Services;
 
 public class XmlFacturaService : IXmlFacturaService
 {
+    private readonly ICertificadoService _certificadoService;
     private readonly string _certificadosPath;
+    private readonly IConfiguration _config;
     private readonly ApplicationDbContext _context;
     private readonly EncryptionHelper _encryptionHelper;
     private readonly string _xmlOutputDirectory;
 
-
-    public XmlFacturaService(ApplicationDbContext context, IConfiguration config, EncryptionHelper encryptionHelper)
+    public XmlFacturaService(
+        ApplicationDbContext context,
+        IConfiguration config,
+        EncryptionHelper encryptionHelper,
+        ICertificadoService certificadoService)
     {
         _context = context;
+        _config = config;
+        _encryptionHelper = encryptionHelper;
+        _certificadoService = certificadoService;
+
         _xmlOutputDirectory = config.GetValue<string>("XmlOutputDirectory") ?? "FacturasXml";
         _certificadosPath = config.GetValue<string>("CertificadosPath") ?? "Certificados";
-        _encryptionHelper = encryptionHelper;
-
         if (!Directory.Exists(_xmlOutputDirectory)) Directory.CreateDirectory(_xmlOutputDirectory);
     }
 
     public async Task<string> GenerarXmlFacturaAsync(int invoiceId)
     {
-        // Obtener todos los datos necesarios para la factura
+        // 1) Cargar y validar la factura
         var invoice = await _context.Invoices
             .Include(i => i.Client)
             .Include(i => i.Branch)
@@ -40,51 +51,92 @@ public class XmlFacturaService : IXmlFacturaService
             .Include(i => i.EmissionPoint)
             .Include(i => i.DocumentType)
             .Include(i => i.Sequence)
-            .Include(i => i.InvoiceDetails)
-            .ThenInclude(d => d.Tariff)
-            .Include(i => i.InvoicePayments)
-            .ThenInclude(p => p.Payment) // Aquí debe coincidir con el nombre exacto
+            .Include(i => i.InvoiceDetails).ThenInclude(d => d.Tariff)
+            .Include(i => i.InvoicePayments).ThenInclude(p => p.Payment)
             .FirstOrDefaultAsync(i => i.inv_id == invoiceId);
 
         if (invoice == null)
             throw new Exception($"No se encontró la factura con ID {invoiceId}");
 
-        if (invoice.Client == null)
-            throw new Exception($"La factura {invoiceId} no tiene cliente asociado");
-        if (invoice.Branch == null)
-            throw new Exception($"La factura {invoiceId} no tiene sucursal asociada");
-        if (invoice.Enterprise == null)
-            throw new Exception($"La factura {invoiceId} no tiene empresa asociada");
-        if (invoice.EmissionPoint == null)
-            throw new Exception($"La factura {invoiceId} no tiene punto de emisión asociado");
-        if (invoice.DocumentType == null)
-            throw new Exception($"La factura {invoiceId} no tiene tipo de documento asociado");
-        if (invoice.Sequence == null)
-            throw new Exception($"La factura {invoiceId} no tiene secuencia asociada");
-        if (invoice.InvoiceDetails == null || !invoice.InvoiceDetails.Any())
-            throw new Exception($"La factura {invoiceId} no tiene detalles");
-
-
+        // 2) Generar el XML crudo
         var doc = CrearEstructuraXml(invoice);
 
+        // 3) Definir rutas temporal y final
+        var baseName = invoice.access_key;
+        var rutaTemp = Path.Combine(_xmlOutputDirectory, $"temp_{baseName}.xml");
+        var rutaFinal = Path.Combine(_xmlOutputDirectory, $"{baseName}.xml");
 
-        if (invoice.Enterprise.ruc != null)
+        // 4) Guardar temporalmente
+        await Task.Run(() => doc.Save(rutaTemp));
+
+        // 5) Si no hay RUC, renombrar y devolver
+        if (string.IsNullOrEmpty(invoice.Enterprise?.ruc))
         {
-            var certificadoPath = await ObtenerCertificadoPath(invoice.Enterprise.ruc);
-            var clavePrivada = await ObtenerClaveDesencriptada(invoice.Enterprise.ruc);
-
-            if (certificadoPath == null || clavePrivada == null)
-                throw new Exception("No se encontró certificado o clave privada para la empresa.");
-
-            FirmarXml(doc, certificadoPath, clavePrivada);
+            File.Move(rutaTemp, rutaFinal, true);
+            return rutaFinal;
         }
 
-        var nombreArchivo = $"{invoice.access_key}.xml";
-        var rutaCompleta = Path.Combine(_xmlOutputDirectory, nombreArchivo);
+        // 6) Obtener certificado y clave desencriptada
+        var certPath = await ObtenerCertificadoPath(invoice.Enterprise.ruc)
+                       ?? throw new Exception("No se encontró certificado para la empresa.");
+        var clavePriv = await ObtenerClaveDesencriptada(invoice.Enterprise.ruc)
+                        ?? throw new Exception("No se encontró clave privada de la empresa.");
 
-        await Task.Run(() => { doc.Save(rutaCompleta); });
+        // 7) Cargar el certificado
+        var cert = new X509Certificate2(
+            certPath,
+            clavePriv,
+            X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet
+        );
 
-        return rutaCompleta;
+        // 8) Firmar con FirmaXadesNet
+        var xadesService = new XadesService();
+        var parameters = new SignatureParameters
+        {
+            SignatureMethod = SignatureMethod.RSAwithSHA1,
+            DigestMethod = DigestMethod.SHA1,
+            SigningDate = DateTime.Now,
+            SignaturePackaging = SignaturePackaging.ENVELOPED
+        };
+        parameters.Signer = new Signer(cert);
+
+        XmlDocument xmlFirmado;
+        using (var fs = new FileStream(rutaTemp, FileMode.Open, FileAccess.Read))
+        {
+            var result = xadesService.Sign(fs, parameters);
+            xmlFirmado = result.Document;
+        }
+
+        // 9) Insertar saltos de línea en Base64
+        var sigNode = xmlFirmado.GetElementsByTagName("SignatureValue")[0] as XmlElement;
+        if (sigNode != null)
+            sigNode.InnerText = InsertarSaltos(sigNode.InnerText);
+
+        var digests = xmlFirmado.GetElementsByTagName("DigestValue");
+        foreach (XmlElement dv in digests)
+            dv.InnerText = InsertarSaltos(dv.InnerText);
+
+        // 10) Guardar firmado y limpiar temporal
+        xmlFirmado.Save(rutaFinal);
+        File.Delete(rutaTemp);
+
+        return rutaFinal;
+    }
+
+    private static string InsertarSaltos(string base64, int largoLinea = 76)
+    {
+        if (string.IsNullOrEmpty(base64) || base64.Length <= largoLinea)
+            return base64;
+
+        var sb = new StringBuilder();
+        for (var i = 0; i < base64.Length; i += largoLinea)
+        {
+            var chunk = Math.Min(largoLinea, base64.Length - i);
+            sb.Append(base64.Substring(i, chunk));
+            sb.Append('\n');
+        }
+
+        return sb.ToString().TrimEnd('\n');
     }
 
     public async Task<string> ObtenerCertificadoPath(string ruc)
@@ -105,119 +157,6 @@ public class XmlFacturaService : IXmlFacturaService
         return _encryptionHelper.Decrypt(empresa.key_signature);
     }
 
-    private void FirmarXml(XDocument doc, string certificadoPath, string clavePrivada)
-    {
-        // Convertir el XDocument a XmlDocument para trabajar con la API de firma
-        var xmlDoc = new XmlDocument();
-        using (var xmlReader = doc.CreateReader())
-        {
-            xmlDoc.Load(xmlReader);
-        }
-
-        // Cargar el certificado con la clave privada
-        var cert = new X509Certificate2(certificadoPath, clavePrivada, X509KeyStorageFlags.Exportable);
-
-        // Crear el objeto SignedXml para XAdES_BES
-        var signedXml = new SignedXml(xmlDoc)
-        {
-            SigningKey = cert.GetRSAPrivateKey()
-        };
-
-        // Especificar el algoritmo RSA-SHA1 como requiere el SRI
-        signedXml.SignedInfo.SignatureMethod = SignedXml.XmlDsigRSASHA1Url;
-
-        // Referencia al documento completo (enveloped)
-        var reference = new Reference
-        {
-            Uri = "#comprobante",
-            DigestMethod = SignedXml.XmlDsigSHA1Url // Usar SHA1 como indica el SRI
-        };
-        reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
-        reference.AddTransform(new XmlDsigC14NTransform(false));
-        signedXml.AddReference(reference);
-
-        // KeyInfo - Incluir el certificado completo codificado en base64
-        var keyInfo = new KeyInfo();
-        keyInfo.AddClause(new KeyInfoX509Data(cert));
-        signedXml.KeyInfo = keyInfo;
-
-        // Agregar propiedades firmadas (SignedProperties) requeridas por XAdES_BES
-        var signatureProperties =
-            xmlDoc.CreateElement("xades", "SignedProperties", "http://uri.etsi.org/01903/v1.3.2#");
-        signatureProperties.SetAttribute("Id", "SignedProperties");
-
-        // Agregar SignedSignatureProperties
-        var signedSignatureProperties =
-            xmlDoc.CreateElement("xades", "SignedSignatureProperties", "http://uri.etsi.org/01903/v1.3.2#");
-
-        // Agregar SigningTime - Tiempo de firma
-        var signingTime = xmlDoc.CreateElement("xades", "SigningTime", "http://uri.etsi.org/01903/v1.3.2#");
-        signingTime.InnerText = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-        signedSignatureProperties.AppendChild(signingTime);
-
-        // Agregar SigningCertificate
-        var signingCertificate =
-            xmlDoc.CreateElement("xades", "SigningCertificate", "http://uri.etsi.org/01903/v1.3.2#");
-        var cert2 = xmlDoc.CreateElement("xades", "Cert", "http://uri.etsi.org/01903/v1.3.2#");
-
-        // Agregar CertDigest
-        var certDigest = xmlDoc.CreateElement("xades", "CertDigest", "http://uri.etsi.org/01903/v1.3.2#");
-        var digestMethod = xmlDoc.CreateElement("ds", "DigestMethod", SignedXml.XmlDsigNamespaceUrl);
-        digestMethod.SetAttribute("Algorithm", SignedXml.XmlDsigSHA1Url);
-        certDigest.AppendChild(digestMethod);
-
-        // Calcular digest del certificado
-        var digestValue = xmlDoc.CreateElement("ds", "DigestValue", SignedXml.XmlDsigNamespaceUrl);
-        using (SHA1 sha1 = SHA1.Create())
-        {
-            byte[] certHash = sha1.ComputeHash(cert.RawData);
-            digestValue.InnerText = Convert.ToBase64String(certHash);
-        }
-
-        certDigest.AppendChild(digestValue);
-        cert2.AppendChild(certDigest);
-
-        // Agregar IssuerSerial
-        var issuerSerial = xmlDoc.CreateElement("xades", "IssuerSerial", "http://uri.etsi.org/01903/v1.3.2#");
-        var x509IssuerName = xmlDoc.CreateElement("ds", "X509IssuerName", SignedXml.XmlDsigNamespaceUrl);
-        x509IssuerName.InnerText = cert.IssuerName.Name;
-        issuerSerial.AppendChild(x509IssuerName);
-
-        var x509SerialNumber = xmlDoc.CreateElement("ds", "X509SerialNumber", SignedXml.XmlDsigNamespaceUrl);
-        x509SerialNumber.InnerText = cert.SerialNumber;
-        issuerSerial.AppendChild(x509SerialNumber);
-
-        cert2.AppendChild(issuerSerial);
-        signingCertificate.AppendChild(cert2);
-        signedSignatureProperties.AppendChild(signingCertificate);
-
-        signatureProperties.AppendChild(signedSignatureProperties);
-
-        // Computar la firma
-        signedXml.ComputeSignature();
-
-        // Obtener el nodo de firma
-        var xmlSignature = signedXml.GetXml();
-
-        // Agregar el nodo de firma al documento
-        XmlElement facturaNode = (XmlElement)xmlDoc.GetElementsByTagName("factura")[0];
-        if (facturaNode != null)
-        {
-            // Insertar el nodo de firma como hijo directo de la factura
-            facturaNode.AppendChild(xmlSignature);
-
-            // Insertar las propiedades firmadas en el nodo de firma
-            var signatureValueNodes = xmlSignature.GetElementsByTagName("SignatureValue");
-            if (signatureValueNodes.Count > 0)
-            {
-                var signatureValueNode = signatureValueNodes[0];
-                xmlSignature.InsertAfter(signatureProperties, signatureValueNode);
-            }
-
-            // Actualizar el documento XDocument con los cambios
-            doc.Root?.ReplaceWith(XElement.Parse(xmlDoc.DocumentElement?.OuterXml ?? string.Empty));
-        }
-    }
 
     private XDocument CrearEstructuraXml(Invoice invoice)
     {
