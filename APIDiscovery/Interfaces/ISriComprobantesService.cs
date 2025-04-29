@@ -5,7 +5,7 @@ namespace APIDiscovery.Interfaces;
 public interface ISriComprobantesService
 {
     
-    Task<SriResponse> EnviarComprobanteAsync(int invoiceId);
+    Task<SriResponse> EnviarComprobanteAsync(string base64Xml);
 
     
 }

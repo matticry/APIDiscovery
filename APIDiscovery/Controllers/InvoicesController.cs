@@ -74,112 +74,41 @@ public class InvoicesController : ControllerBase
             return StatusCode(500, $"Error al generar el XML: {errorDetail}");
         }
     }
-
+    
     /// <summary>
-    /// Envía la factura al servicio web del SRI para validación.
+    /// Genera el XML en Base64 y lo envía al servicio del SRI.
     /// </summary>
     [HttpPost("send-to-sri/{invoiceId}")]
     public async Task<IActionResult> SendToSriAsync(int invoiceId)
     {
         try
         {
-            // Primero generamos el XML si no existe
-            string filePath;
-            try
-            {
-                filePath = await _xmlService.GenerarXmlFacturaAsync(invoiceId);
-                if (!System.IO.File.Exists(filePath))
-                {
-                    return NotFound($"No se pudo generar el archivo XML para la factura ID: {invoiceId}");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al generar XML para envío al SRI, factura ID: {InvoiceId}", invoiceId);
-                return BadRequest($"Error al generar XML: {ex.Message}");
-            }
-
-            // Enviamos al SRI
-            var sriResponse = await _sriService.EnviarComprobanteAsync(invoiceId);
-            
-            // Determinamos el código de estado HTTP basado en la respuesta del SRI
-            if (sriResponse.Estado == "RECIBIDA")
-            {
-                return Ok(new
-                {
-                    Success = true,
-                    Message = "Comprobante recibido correctamente por el SRI",
-                    Response = sriResponse
-                });
-            }
-            else if (sriResponse.Estado == "DEVUELTA")
-            {
-                return BadRequest(new
-                {
-                    Success = false,
-                    Message = "El comprobante fue devuelto por el SRI",
-                    Response = sriResponse
-                });
-            }
-            else
-            {
-                return StatusCode(500, new
-                {
-                    Success = false,
-                    Message = $"Estado desconocido: {sriResponse.Estado}",
-                    Response = sriResponse
-                });
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error al enviar factura al SRI, ID: {InvoiceId}", invoiceId);
-            return StatusCode(500, $"Error al comunicarse con el SRI: {ex.Message}");
-        }
-    }
-
-    /// <summary>
-    /// Genera el XML y lo envía al SRI, devolviendo un informe completo del proceso.
-    /// </summary>
-    [HttpPost("process-electronic-invoice/{invoiceId}")]
-    public async Task<IActionResult> ProcessElectronicInvoiceAsync(int invoiceId)
-    {
-        try
-        {
-            // Paso 1: Generar XML
-            _logger.LogInformation("Iniciando proceso de facturación electrónica para factura ID: {InvoiceId}", invoiceId);
+            // Generar el XML (usa el servicio existente)
             var filePath = await _xmlService.GenerarXmlFacturaAsync(invoiceId);
-            
+        
             if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound("No se pudo generar el XML de la factura.");
-            }
-            
-            // Paso 2: Enviar al SRI
-            var sriResponse = await _sriService.EnviarComprobanteAsync(invoiceId);
-            
-            // Paso 3: Devolver resultado completo
-            return Ok(new
-            {
-                InvoiceId = invoiceId,
-                XmlPath = filePath,
-                SriResponse = sriResponse,
-                ProcessDate = DateTime.Now,
-                Status = sriResponse.Estado,
-                Messages = sriResponse.Mensajes?.Select(m => $"{m.Identificador}: {m.Mensaje}").ToList() ?? new List<string>()
-            });
+                return NotFound($"Archivo XML no encontrado para la factura {invoiceId}");
+
+            // Leer el contenido del XML y codificarlo en Base64
+            var xmlBytes = System.IO.File.ReadAllBytes(filePath);
+            var base64Xml = Convert.ToBase64String(xmlBytes);
+
+            // Enviar al servicio del SRI
+            var sriResponse = await _sriService.EnviarComprobanteAsync(base64Xml);
+
+            // Devolver respuesta del SRI
+            return Ok(sriResponse);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error en el proceso de facturación electrónica para factura ID: {InvoiceId}", invoiceId);
-            return StatusCode(500, new
-            {
-                Success = false,
-                Message = "Error en el proceso de facturación electrónica",
-                Error = ex.Message,
-                InnerError = ex.InnerException?.Message,
-                InvoiceId = invoiceId
-            });
+            var errorDetail = ex.InnerException != null
+                ? $"{ex.Message} | Inner: {ex.InnerException.Message}"
+                : ex.Message;
+
+            _logger.LogError(ex, "Error al enviar factura al SRI: {InvoiceId}", invoiceId);
+            return StatusCode(500, $"Error SRI: {errorDetail}");
         }
     }
+
+   
 }

@@ -10,15 +10,14 @@
     "accountant": "y"
   },
   "client": {
-    "razonSocial": "CONSUMIDOR FINAL",
-    "dni": "9999999999999",
-    "address": "CONSUMIDOR FINAL",
+    "razonSocial": "DIEGO EDMUNDO ROMAN NOBOA", 
+    "dni": "1717219586", 
+    "address": "La Rio Coca", 
     "phone": "099999999",
-    "info": "CONSUMIDOR FINAL",
-    "email": "consumidorfinal@email.com",
-    "typeDniId": 7
+    "info": "CLIENTE IDENTIFICADO",
+    "email": "diego.roman@email.com",
+    "typeDniId": 5 
   },
-
   "emissionPoint": {
     "idEmissionPoint": 1,
     "code": "001",
@@ -36,46 +35,53 @@
     "nameDocument": "FACTURA"
   },
   "sequence": {
-    "idSequence": 2,
-    "code": "000000012"
+    "idSequence": 1,
+    "code": "000000011"
   },
   "details": [
     {
       "codeStub": "0301009",
-      "description": "COMPRA DE TOMATES",
+      "description": "INSTALACION RN2 SOFTWARE",
       "amount": 1,
+      "priceUnit": 40.00,
       "discount": 0,
-      "ivaPorc": 15,
+      "priceWithDiscount": 40.00,
+      "neto": 40.00,
+      "ivaPorc": 12,
+      "ivaValor": 4.80,
       "icePorc": 0,
       "iceValor": 0,
+      "subtotal": 40.00,
+      "total": 44.80,
       "note1": "Licencia indefinida",
       "note2": "",
       "note3": "",
-      "tariffId": 1,
+      "tariffId": 3,
       "articleId": 1
     }
   ],
   "payments": [
     {
-      "total": 22.99,
+      "total": 44.80,
       "deadline": 30,
       "unitTime": "dias",
       "paymentId": 1
-    }  ],
-  "emissionDate": "2025-04-29T15:21:15.263Z",
-  "totalWithoutTaxes": 19.99,
+    }
+  ],
+  "emissionDate": "2025-04-28T13:53:18.783Z",
+  "totalWithoutTaxes": 40.00,
   "totalDiscount": 0,
   "tip": 0,
-  "totalAmount": 22.99,
-  "currency": "USD",
-  "accessKey": "string",
+  "totalAmount": 44.80,
+  "currency": "DOLAR",
+  "accessKey": "",
   "electronicStatus": "PENDIENTE",
-  "authorizationNumber": "string",
-  "authorizationDate": "2025-04-29T15:21:15.263Z",
-  "additionalInfo": "EXELENTE SERVICIO",
-  "message": "string",
+  "authorizationNumber": "",
+  "authorizationDate": null,
+  "additionalInfo": "Factura generada para cliente identificado",
+  "message": "TODOBIEN",
   "type": "01",
-  "identifier": "string",
+  "identifier": "1717219586",
   "branchId": 1,
   "companyId": 1,
   "emissionPointId": 1,

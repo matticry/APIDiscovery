@@ -20,7 +20,8 @@ public class InvoiceDetail
     [Column(TypeName = "decimal(10, 2)")]
     public decimal price_unit { get; set; }
 
-    public int discount { get; set; }
+    [Column(TypeName = "decimal(10, 2)")]
+    public decimal discount { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")]
     public decimal price_with_discount { get; set; }

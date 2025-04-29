@@ -58,10 +58,8 @@ public class XmlFacturaService : IXmlFacturaService
         if (invoice == null)
             throw new Exception($"No se encontró la factura con ID {invoiceId}");
 
-        // 2) Generar el XML crudo
         var doc = CrearEstructuraXml(invoice);
 
-        // 3) Definir rutas temporal y final
         var baseName = invoice.access_key;
         var rutaTemp = Path.Combine(_xmlOutputDirectory, $"temp_{baseName}.xml");
         var rutaFinal = Path.Combine(_xmlOutputDirectory, $"{baseName}.xml");
@@ -69,37 +67,45 @@ public class XmlFacturaService : IXmlFacturaService
         // 4) Guardar temporalmente
         await Task.Run(() => doc.Save(rutaTemp));
 
-        // 5) Si no hay RUC, renombrar y devolver
         if (string.IsNullOrEmpty(invoice.Enterprise?.ruc))
         {
             File.Move(rutaTemp, rutaFinal, true);
             return rutaFinal;
         }
 
-        // 6) Obtener certificado y clave desencriptada
         var certPath = await ObtenerCertificadoPath(invoice.Enterprise.ruc)
                        ?? throw new Exception("No se encontró certificado para la empresa.");
         var clavePriv = await ObtenerClaveDesencriptada(invoice.Enterprise.ruc)
                         ?? throw new Exception("No se encontró clave privada de la empresa.");
 
-        // 7) Cargar el certificado
         var cert = new X509Certificate2(
             certPath,
             clavePriv,
             X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet
         );
 
-        // 8) Firmar con FirmaXadesNet
         var xadesService = new XadesService();
         var parameters = new SignatureParameters
         {
-            SignatureMethod = SignatureMethod.RSAwithSHA1,
-            DigestMethod = DigestMethod.SHA1,
-            SigningDate = DateTime.Now,
             SignaturePackaging = SignaturePackaging.ENVELOPED,
-            Signer = new Signer(cert)
-        };
 
+            DigestMethod      = DigestMethod.SHA1,
+            SignatureMethod   = SignatureMethod.RSAwithSHA1,
+
+            SigningDate       = DateTime.Now,
+
+            Signer            = new Signer(cert),
+
+            ElementIdToSign   = "comprobante",
+            
+
+            DataFormat = new DataFormat
+            {
+                MimeType    = "text/xml",
+                Description = "contenido comprobante"
+            }
+        };
+        
         XmlDocument xmlFirmado;
         using (var fs = new FileStream(rutaTemp, FileMode.Open, FileAccess.Read))
         {
@@ -107,16 +113,6 @@ public class XmlFacturaService : IXmlFacturaService
             xmlFirmado = result.Document;
         }
 
-        // 9) Insertar saltos de línea en SignatureValue y DigestValue
-        var signatureValues = xmlFirmado.GetElementsByTagName("SignatureValue");
-        foreach (XmlElement sigNode in signatureValues)
-            if (sigNode != null && !string.IsNullOrEmpty(sigNode.InnerText))
-                sigNode.InnerText = InsertarSaltos(sigNode.InnerText);
-
-        var digestValues = xmlFirmado.GetElementsByTagName("DigestValue");
-        foreach (XmlElement digestNode in digestValues)
-            if (digestNode != null && !string.IsNullOrEmpty(digestNode.InnerText))
-                digestNode.InnerText = InsertarSaltos(digestNode.InnerText);
 
         // 10) Guardar firmado y limpiar temporal
         xmlFirmado.Save(rutaFinal);
@@ -124,22 +120,7 @@ public class XmlFacturaService : IXmlFacturaService
 
         return rutaFinal;
     }
-
-    private static string InsertarSaltos(string base64, int largoLinea = 76)
-    {
-        if (string.IsNullOrEmpty(base64) || base64.Length <= largoLinea)
-            return base64;
-
-        var sb = new StringBuilder();
-        for (var i = 0; i < base64.Length; i += largoLinea)
-        {
-            var chunk = Math.Min(largoLinea, base64.Length - i);
-            sb.Append(base64.Substring(i, chunk));
-            sb.Append('\n');
-        }
-
-        return sb.ToString().TrimEnd('\n');
-    }
+    
 
     public async Task<string> ObtenerCertificadoPath(string ruc)
     {
@@ -162,7 +143,6 @@ public class XmlFacturaService : IXmlFacturaService
 
     private XDocument CrearEstructuraXml(Invoice invoice)
     {
-        // Validaciones explícitas con log o excepción para encontrar el campo null
         if (invoice.Enterprise == null) throw new Exception("invoice.Enterprise es null");
         if (invoice.Enterprise.company_name == null) throw new Exception("invoice.Enterprise.company_name es null");
         if (invoice.Enterprise.ruc == null) throw new Exception("invoice.Enterprise.ruc es null");

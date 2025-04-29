@@ -1,4 +1,5 @@
 ﻿using APIDiscovery.Core;
+using APIDiscovery.Exceptions;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Models;
 using APIDiscovery.Models.DTOs.InvoiceDTOs;
@@ -8,178 +9,343 @@ namespace APIDiscovery.Services;
 
 public class InvoiceService : IInvoiceService
 {
-    
     private readonly ApplicationDbContext _context;
 
     public InvoiceService(ApplicationDbContext context)
     {
         _context = context;
     }
-    
-    
+
     public async Task<InvoiceDTO> CreateInvoiceAsync(InvoiceDTO invoiceDto)
     {
-        if (invoiceDto == null || invoiceDto.Details == null || !invoiceDto.Details.Any())
-            throw new ArgumentException("La factura debe tener al menos un detalle.");
-
-        bool isConsumerFinal = invoiceDto.TotalAmount <= 50;
-
-        Client clientEntity;
-
-        if (isConsumerFinal)
+        try
         {
-            clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == "9999999999999") ?? throw new InvalidOperationException();
-            
-            if (clientEntity == null)
+            // 1. Validaciones iniciales
+            if (invoiceDto == null)
+                throw new BusinessException("No se proporcionó información de la factura");
+
+            if (invoiceDto.Details == null || !invoiceDto.Details.Any())
+                throw new BusinessException("La factura debe tener al menos un detalle");
+
+            // 2. Validar existencia de Enterprise, Branch, EmissionPoint y Sequence
+            var enterprise = await _context.Enterprises
+                                 .FirstOrDefaultAsync(e => e.id_en == invoiceDto.Enterprise.IdEnterprise)
+                             ?? throw new EntityNotFoundException(
+                                 $"Empresa con ID {invoiceDto.Enterprise.IdEnterprise} no encontrada");
+
+            var branch = await _context.Branches
+                             .FirstOrDefaultAsync(b => b.id_br == invoiceDto.Branch.IdBranch)
+                         ?? throw new EntityNotFoundException(
+                             $"Sucursal con ID {invoiceDto.Branch.IdBranch} no encontrada");
+
+            var emissionPoint = await _context.EmissionPoints
+                                    .FirstOrDefaultAsync(e => e.id_e_p == invoiceDto.EmissionPoint.IdEmissionPoint)
+                                ?? throw new EntityNotFoundException(
+                                    $"Punto de emisión con ID {invoiceDto.EmissionPoint.IdEmissionPoint} no encontrado");
+
+            var sequence = await _context.Sequences
+                               .FirstOrDefaultAsync(s => s.id_sequence == invoiceDto.Sequence.IdSequence)
+                           ?? throw new EntityNotFoundException(
+                               $"Secuencia con ID {invoiceDto.Sequence.IdSequence} no encontrada");
+
+            var documentType = await _context.DocumentTypes
+                                   .FirstOrDefaultAsync(d => d.id_d_t == invoiceDto.DocumentType.IdDocumentType)
+                               ?? throw new EntityNotFoundException(
+                                   $"Tipo de documento con ID {invoiceDto.DocumentType.IdDocumentType} no encontrado");
+
+            // 3. Determinar si es consumidor final
+            var isConsumerFinal = invoiceDto.TotalAmount <= 50;
+
+            // 4. Gestión del cliente
+            Client clientEntity;
+
+            if (isConsumerFinal)
             {
-                clientEntity = new Client
+                // Buscar cliente "CONSUMIDOR FINAL" existente
+                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == "9999999999999");
+
+                if (clientEntity == null)
                 {
-                    razon_social = "CONSUMIDOR FINAL",
-                    dni = "9999999999999",
-                    address = "CONSUMIDOR FINAL",
-                    phone = "099999999",
-                    email = "consumidorfinal@email.com",
-                    info = "Factura generada para consumidor final",
-                    id_type_dni = 7
-                };
-                _context.Clients.Add(clientEntity);
-                await _context.SaveChangesAsync();
+                    clientEntity = new Client
+                    {
+                        razon_social = "CONSUMIDOR FINAL",
+                        dni = "9999999999999",
+                        address = "CONSUMIDOR FINAL",
+                        phone = "099999999",
+                        email = "consumidorfinal@email.com",
+                        info = "Factura generada para consumidor final",
+                        id_type_dni = 7
+                    };
+                    _context.Clients.Add(clientEntity);
+                    await _context.SaveChangesAsync();
+                }
             }
-        }
-        else
-        {
-            if (invoiceDto.Client == null)
-                throw new ArgumentException("Para montos mayores a $50 debe enviar datos del adquirente.");
-
-            clientEntity = new Client
+            else
             {
-                razon_social = invoiceDto.Client.RazonSocial,
-                dni = invoiceDto.Client.Dni,
-                address = invoiceDto.Client.Address,
-                phone = invoiceDto.Client.Phone,
-                email = invoiceDto.Client.Email,
-                info = invoiceDto.Client.Info,
-                id_type_dni = invoiceDto.Client.TypeDniId
+                // Validar que se proporcionó información del cliente
+                if (invoiceDto.Client == null)
+                    throw new BusinessException("Para montos mayores a $50 debe enviar datos del adquirente");
+
+                // Buscar cliente existente por DNI
+                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == invoiceDto.Client.Dni);
+
+                if (clientEntity == null)
+                {
+                    // Crear nuevo cliente
+                    clientEntity = new Client
+                    {
+                        razon_social = invoiceDto.Client.RazonSocial,
+                        dni = invoiceDto.Client.Dni,
+                        address = invoiceDto.Client.Address,
+                        phone = invoiceDto.Client.Phone,
+                        email = invoiceDto.Client.Email,
+                        info = invoiceDto.Client.Info,
+                        id_type_dni = invoiceDto.Client.TypeDniId
+                    };
+                    _context.Clients.Add(clientEntity);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    // Actualizar información del cliente si es necesario
+                    clientEntity.razon_social = invoiceDto.Client.RazonSocial;
+                    clientEntity.address = invoiceDto.Client.Address;
+                    clientEntity.phone = invoiceDto.Client.Phone;
+                    clientEntity.email = invoiceDto.Client.Email;
+                    clientEntity.info = invoiceDto.Client.Info;
+                    clientEntity.id_type_dni = invoiceDto.Client.TypeDniId;
+
+                    _context.Clients.Update(clientEntity);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            var branchCode = branch.code.PadLeft(3, '0');
+            var emissionPointCode = emissionPoint.code.PadLeft(3, '0');
+            var serie = branchCode + emissionPointCode;
+            var ambiente = enterprise.environment;
+            var tipoComprobante = documentType.id_d_t.ToString("D2");
+            var ruc = enterprise.ruc.PadLeft(13, '0');
+            var numeroFactura = sequence.code.PadLeft(9, '0');
+            var codigoNumerico = GenerarCodigoNumerico();
+            var tipoEmision = "1"; // Emisión normal
+
+            // 6. Generar clave de acceso
+            var claveAcceso = GenerarClaveAcceso(
+                invoiceDto.EmissionDate,
+                tipoComprobante,
+                ruc,
+                ambiente.ToString(),
+                serie,
+                numeroFactura,
+                codigoNumerico,
+                tipoEmision
+            );
+
+            // NUEVO: Calcular totales de la factura correctamente basados en los detalles
+            decimal totalSinImpuestos = 0;
+            decimal totalDescuento = 0;
+            decimal totalImpuestos = 0;
+
+            // Lista para almacenar los detalles calculados
+            var detallesCalculados = new List<(
+                int ArticleId,
+                int TariffId,
+                decimal Amount,
+                decimal PrecioUnitario,
+                decimal Descuento,
+                decimal Neto,
+                decimal IvaPorc,
+                decimal IvaValor,
+                string Note1,
+                string Note2,
+                string Note3)>();
+
+            // Precalcular los valores de cada detalle
+            foreach (var detailDto in invoiceDto.Details)
+            {
+                // Validar existencia del artículo
+                var article = await _context.Articles
+                                  .FirstOrDefaultAsync(a => a.id_ar == detailDto.ArticleId)
+                              ?? throw new EntityNotFoundException(
+                                  $"Artículo con ID {detailDto.ArticleId} no encontrado");
+
+                // Validar existencia de la tarifa
+                var tariff = await _context.Fares
+                                 .FirstOrDefaultAsync(t => t.id_fare == detailDto.TariffId)
+                             ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
+
+                // Obtener la relación entre artículo y tarifa
+                var articleTariff = await _context.TariffArticles
+                                        .FirstOrDefaultAsync(at =>
+                                            at.id_article == detailDto.ArticleId && at.id_fare == detailDto.TariffId)
+                                    ?? throw new BusinessException(
+                                        $"No existe relación entre el artículo {detailDto.ArticleId} y la tarifa {detailDto.TariffId}");
+
+                var fare = await _context.Fares
+                               .FirstOrDefaultAsync(f => f.id_fare == articleTariff.id_fare)
+                           ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
+
+                // CORREGIDO: Cálculo de valores según la fórmula del SRI
+                var precioUnitario = article.price_unit;
+                var cantidad = detailDto.Amount;
+
+                // CORREGIDO: El descuento debe ser un valor monetario, no un porcentaje
+                // Si detailDto.Discount es un porcentaje, convertirlo a valor monetario
+                var descuentoPorcentaje = detailDto.Discount;
+                var descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
+
+                // CORREGIDO: Aplicar fórmula SRI: precioTotalSinImpuesto = (cantidad * precioUnitario) - descuento
+                var subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
+
+                var ivaPorc = fare.percentage;
+                var ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
+
+                // Acumular totales
+                totalSinImpuestos += subtotal;
+                totalDescuento += descuentoMonetario;
+                totalImpuestos += ivaValor;
+
+                // Guardar detalle calculado
+                detallesCalculados.Add(
+                    ((int ArticleId, int TariffId, decimal Amount, decimal PrecioUnitario, decimal Descuento, decimal
+                        Neto, decimal IvaPorc, decimal IvaValor, string Note1, string Note2, string Note3))(
+                        detailDto.ArticleId,
+                        detailDto.TariffId,
+                        cantidad,
+                        precioUnitario,
+                        descuentoMonetario,
+                        subtotal,
+                        ivaPorc,
+                        ivaValor,
+                        detailDto.Note1,
+                        detailDto.Note2,
+                        detailDto.Note3
+                    ));
+            }
+
+            // CORREGIDO: Recalcular el total de la factura según fórmula SRI
+            // importeTotal = totalSinImpuestos - totalDescuento + totalImpuestos + propina
+            var propina = invoiceDto.Tip;
+            var importeTotal = Math.Round(totalSinImpuestos + totalImpuestos + propina, 2);
+
+            // 7. Crear la factura con los totales calculados
+            var invoice = new Invoice
+            {
+                emission_date = invoiceDto.EmissionDate,
+                total_without_taxes = Math.Round(totalSinImpuestos, 2),
+                total_discount = Math.Round(totalDescuento, 2),
+                tip = propina,
+                total_amount = importeTotal,
+                currency = invoiceDto.Currency,
+                sequence_id = invoiceDto.Sequence.IdSequence,
+                id_emission_point = invoiceDto.EmissionPoint.IdEmissionPoint,
+                company_id = invoiceDto.Enterprise.IdEnterprise,
+                client_id = clientEntity.id_client,
+                branch_id = invoiceDto.Branch.IdBranch,
+                receipt_id = invoiceDto.DocumentType.IdDocumentType,
+                electronic_status = "PENDIENTE",
+                access_key = claveAcceso,
+                authorization_number = invoiceDto.AuthorizationNumber,
+                authorization_date = invoiceDto.AuthorizationDate,
+                additional_info = invoiceDto.AdditionalInfo,
+                message = invoiceDto.Message,
+                identifier = invoiceDto.Client?.Dni ?? "9999999999999",
+                type = invoiceDto.Type
             };
-            _context.Clients.Add(clientEntity);
+
+            _context.Invoices.Add(invoice);
             await _context.SaveChangesAsync();
-        }
-        var branchCode = await _context.Branches
-            .Where(b => b.id_br == invoiceDto.Branch.IdBranch)
-            .Select(b => b.code)
-            .FirstOrDefaultAsync();
 
-        if (string.IsNullOrEmpty(branchCode))
-            throw new Exception($"Código de sucursal no encontrado para ID {invoiceDto.Branch.IdBranch}");
-
-        branchCode = branchCode.PadLeft(3, '0');
-
-        var emissionPointCode = await _context.EmissionPoints
-            .Where(e => e.id_e_p == invoiceDto.EmissionPoint.IdEmissionPoint)
-            .Select(e => e.code)
-            .FirstOrDefaultAsync();
-
-        if (string.IsNullOrEmpty(emissionPointCode))
-            throw new Exception($"Código de punto de emisión no encontrado para ID {invoiceDto.EmissionPoint.IdEmissionPoint}");
-
-
-        emissionPointCode = emissionPointCode.PadLeft(3, '0');
-
-        string serie = branchCode + emissionPointCode;
-
-        var ambiente = "1"; 
-        var tipoComprobante = invoiceDto.DocumentType.IdDocumentType.ToString("D2");
-        var ruc = invoiceDto.Enterprise.Ruc.PadLeft(13, '0');
-        var numeroFactura = invoiceDto.Sequence.Code.PadLeft(9, '0');
-        var codigoNumerico = GenerarCodigoNumerico();
-        var tipoEmision = "1";
-
-        var claveAcceso = GenerarClaveAcceso(invoiceDto.EmissionDate, tipoComprobante, ruc, ambiente, serie, numeroFactura, codigoNumerico, tipoEmision);
-        var invoice = new Invoice
-        {
-            emission_date = invoiceDto.EmissionDate,
-            total_without_taxes = invoiceDto.TotalWithoutTaxes,
-            total_discount = invoiceDto.TotalDiscount,
-            tip = invoiceDto.Tip,
-            total_amount = invoiceDto.TotalAmount,
-            currency = invoiceDto.Currency,
-            sequence_id = invoiceDto.Sequence.IdSequence,
-            id_emission_point = invoiceDto.EmissionPoint.IdEmissionPoint,
-            company_id = invoiceDto.Enterprise.IdEnterprise,
-            client_id = clientEntity.id_client,
-            branch_id = invoiceDto.Branch.IdBranch,
-            receipt_id = invoiceDto.DocumentType.IdDocumentType,
-            electronic_status = "PENDIENTE",
-            access_key = claveAcceso,
-            authorization_number = invoiceDto.AuthorizationNumber,
-            authorization_date = invoiceDto.AuthorizationDate,
-            additional_info = invoiceDto.AdditionalInfo,
-            message = invoiceDto.Message,
-            identifier = invoiceDto.Client?.Dni ?? "9999999999999",
-            type = invoiceDto.Type
-        };
-
-        _context.Invoices.Add(invoice);
-        await _context.SaveChangesAsync();
-
-        foreach (var detailDto in invoiceDto.Details)
-        {
-            var detail = new InvoiceDetail
+            // 8. Crear detalles de la factura con valores calculados correctamente
+            foreach (var detalle in detallesCalculados)
             {
-                code_stub = detailDto.CodeStub,
-                description = detailDto.Description,
-                amount = detailDto.Amount,
-                price_unit = detailDto.PriceUnit,
-                discount = detailDto.Discount, 
-                price_with_discount = detailDto.PriceWithDiscount,
-                neto = detailDto.Neto,
-                iva_porc = detailDto.IvaPorc,
-                iva_valor = detailDto.IvaValor,
-                ice_porc = detailDto.IcePorc,
-                ice_valor = detailDto.IceValor,
-                subtotal = detailDto.Subtotal,
-                total = detailDto.Total,
-                note1 = detailDto.Note1,
-                note2 = detailDto.Note2,
-                note3 = detailDto.Note3,
-                id_tariff = detailDto.TariffId,  
-                id_article = detailDto.ArticleId, 
-                id_invoice = invoice.inv_id
-            };
-            _context.InvoiceDetails.Add(detail);
-        }
+                var article = await _context.Articles.FirstOrDefaultAsync(a => a.id_ar == detalle.ArticleId);
 
-        foreach (var paymentDto in invoiceDto.Payments)
-        {
-            var payment = new InvoicePayment
+                var detail = new InvoiceDetail
+                {
+                    code_stub = article.code,
+                    description = article.description,
+                    amount = (int)detalle.Amount,
+                    price_unit = detalle.PrecioUnitario,
+                    discount = detalle.Descuento, // Descuento monetario
+                    neto = detalle.Neto, // PrecioTotalSinImpuesto
+                    iva_porc = detalle.IvaPorc,
+                    iva_valor = detalle.IvaValor,
+                    ice_porc = 0,
+                    ice_valor = 0,
+                    subtotal = detalle.Neto, // Mismo que neto
+                    total = detalle.Neto + detalle.IvaValor, // Neto + IVA
+                    note1 = detalle.Note1,
+                    note2 = detalle.Note2,
+                    note3 = detalle.Note3,
+                    id_tariff = detalle.TariffId,
+                    id_article = detalle.ArticleId,
+                    id_invoice = invoice.inv_id
+                };
+
+                _context.InvoiceDetails.Add(detail);
+            }
+
+            // 9. Crear pagos
+            foreach (var paymentDto in invoiceDto.Payments)
             {
-                id_invoice = invoice.inv_id,
-                total = paymentDto.Total,
-                deadline = paymentDto.Deadline,
-                unit_time = paymentDto.UnitTime,
-                id_payment = paymentDto.PaymentId
-            };
-            _context.InvoicePayments.Add(payment);
+                // Validar que el método de pago existe
+                var paymentMethod = await _context.Payments
+                                        .FirstOrDefaultAsync(p => p.id_payment == paymentDto.PaymentId)
+                                    ?? throw new EntityNotFoundException(
+                                        $"Método de pago con ID {paymentDto.PaymentId} no encontrado");
+
+                // Crear el pago
+                var payment = new InvoicePayment
+                {
+                    id_invoice = invoice.inv_id,
+                    total = paymentDto.Total,
+                    id_payment = paymentDto.PaymentId
+                };
+
+                // Si NO es pago en efectivo (código 01 "SIN UTILIZACION DEL SISTEMA FINANCIERO")
+                if (paymentMethod.sri_detail != "01")
+                {
+                    payment.deadline = paymentDto.Deadline;
+                    payment.unit_time = paymentDto.UnitTime;
+                }
+
+                _context.InvoicePayments.Add(payment);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // 10. Retornar la factura creada
+            return await GetInvoiceDtoById(invoice.inv_id);
         }
-
-        await _context.SaveChangesAsync();
-
-        invoiceDto = await GetInvoiceDtoById(invoice.inv_id);
-
-        return invoiceDto;
+        catch (EntityNotFoundException ex)
+        {
+            throw; // Propagar la excepción tal cual
+        }
+        catch (BusinessException ex)
+        {
+            throw; // Propagar la excepción tal cual
+        }
+        catch (Exception ex)
+        {
+            // Capturar excepciones no esperadas y convertirlas en un formato estándar
+            throw new ApplicationException($"Error al crear la factura: {ex.Message}", ex);
+        }
     }
-    
-    public static string GenerarClaveAcceso(DateTime fechaEmision, string tipoComprobante, string ruc, string ambiente,
+
+    private static string GenerarClaveAcceso(DateTime fechaEmision, string tipoComprobante, string ruc, string ambiente,
         string serie, string numeroFactura, string codigoNumerico, string tipoEmision)
     {
-        string fecha = fechaEmision.ToString("ddMMyyyy");
-        string claveSinDigito = fecha + tipoComprobante + ruc + ambiente + serie + numeroFactura + codigoNumerico + tipoEmision;
+        var fecha = fechaEmision.ToString("ddMMyyyy");
+        var claveSinDigito = fecha + tipoComprobante + ruc + ambiente + serie + numeroFactura + codigoNumerico +
+                             tipoEmision;
 
-        int digitoVerificador = CalcularDigitoVerificadorModulo11(claveSinDigito);
+        var digitoVerificador = CalcularDigitoVerificadorModulo11(claveSinDigito);
 
-        return claveSinDigito + digitoVerificador.ToString();
+        return claveSinDigito + digitoVerificador;
     }
-    
+
     private string GenerarCodigoNumerico()
     {
         var random = new Random();
@@ -189,25 +355,25 @@ public class InvoiceService : IInvoiceService
     private static int CalcularDigitoVerificadorModulo11(string clave)
     {
         int[] pesos = { 2, 3, 4, 5, 6, 7 };
-        int suma = 0;
-        int pesoIndex = 0;
+        var suma = 0;
+        var pesoIndex = 0;
 
-        for (int i = clave.Length - 1; i >= 0; i--)
+        for (var i = clave.Length - 1; i >= 0; i--)
         {
-            int valor = int.Parse(clave[i].ToString());
+            var valor = int.Parse(clave[i].ToString());
             suma += valor * pesos[pesoIndex];
             pesoIndex = (pesoIndex + 1) % pesos.Length;
         }
 
-        int residuo = suma % 11;
-        int digito = 11 - residuo;
+        var residuo = suma % 11;
+        var digito = 11 - residuo;
 
         if (digito == 11) digito = 0;
         else if (digito == 10) digito = 1;
 
         return digito;
     }
-    
+
     private async Task<InvoiceDTO> GetInvoiceDtoById(int invoiceId)
     {
         var invoice = await _context.Invoices
@@ -221,12 +387,14 @@ public class InvoiceService : IInvoiceService
             .Include(i => i.InvoicePayments)
             .FirstOrDefaultAsync(i => i.inv_id == invoiceId);
 
-        if (invoice == null) return null;
+        if (invoice == null)
+            throw new EntityNotFoundException($"Factura con ID {invoiceId} no encontrada");
 
         var dto = new InvoiceDTO
         {
             EmissionDate = invoice.emission_date,
             TotalAmount = invoice.total_amount,
+            TotalWithoutTaxes = invoice.total_without_taxes,
             TotalDiscount = invoice.total_discount,
             Tip = invoice.tip,
             Currency = invoice.currency,
@@ -247,6 +415,7 @@ public class InvoiceService : IInvoiceService
             },
             Branch = new BranchDTO
             {
+                IdBranch = invoice.Branch.id_br,
                 Code = invoice.Branch.code,
                 Description = invoice.Branch.description,
                 Address = invoice.Branch.address,
@@ -254,14 +423,17 @@ public class InvoiceService : IInvoiceService
             },
             Sequence = new SequenceDTO
             {
+                IdSequence = invoice.Sequence.id_sequence,
                 Code = invoice.Sequence.code
             },
             DocumentType = new DocumentTypeDTO
             {
+                IdDocumentType = invoice.DocumentType.id_d_t,
                 NameDocument = invoice.DocumentType.name_document
             },
             Enterprise = new EnterpriseDTO
             {
+                IdEnterprise = invoice.Enterprise.id_en,
                 CompanyName = invoice.Enterprise.company_name,
                 ComercialName = invoice.Enterprise.comercial_name,
                 Ruc = invoice.Enterprise.ruc,
@@ -272,6 +444,7 @@ public class InvoiceService : IInvoiceService
             },
             EmissionPoint = new EmissionPointDTO
             {
+                IdEmissionPoint = invoice.EmissionPoint.id_e_p,
                 Code = invoice.EmissionPoint.code,
                 Details = invoice.EmissionPoint.details
             },
@@ -281,6 +454,7 @@ public class InvoiceService : IInvoiceService
                 Description = d.description,
                 Amount = d.amount,
                 PriceUnit = d.price_unit,
+                Discount = d.discount,
                 PriceWithDiscount = d.price_with_discount,
                 Neto = d.neto,
                 IvaPorc = d.iva_porc,
@@ -292,7 +466,8 @@ public class InvoiceService : IInvoiceService
                 Note1 = d.note1,
                 Note2 = d.note2,
                 Note3 = d.note3,
-                
+                ArticleId = d.id_article,
+                TariffId = d.id_tariff
             }).ToList(),
             Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO
             {
@@ -305,6 +480,4 @@ public class InvoiceService : IInvoiceService
 
         return dto;
     }
-
-    
 }

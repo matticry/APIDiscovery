@@ -6,7 +6,7 @@ public class InvoiceDetailDTO
     public string Description { get; set; }
     public int Amount { get; set; }
     public decimal PriceUnit { get; set; }
-    public int Discount { get; set; }  // Agregado
+    public decimal Discount { get; set; }  // Agregado
     public decimal PriceWithDiscount { get; set; }
     public decimal Neto { get; set; }
     public decimal IvaPorc { get; set; }
