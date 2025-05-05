@@ -5,11 +5,14 @@ using APIDiscovery.Interfaces;
 using APIDiscovery.Services;
 using APIDiscovery.Services.Commands;
 using APIDiscovery.Services.Security;
+using APIDiscovery.Utils;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 
 DotEnv.Load();
@@ -49,10 +52,25 @@ builder.Services.AddScoped<CustomService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddTransient<
+    Infoware.SRI.Firmar.ICertificadoService, 
+    Infoware.SRI.Firmar.CertificadoService>();
+
+// Registra tus servicios de facturación que dependen de ICertificadoService:
+builder.Services.AddScoped<IXmlFacturaService, XmlFacturaService>();
+builder.Services.AddScoped<ISriComprobantesService, SriComprobantesService>();
+
+
+builder.Services.AddScoped<IXmlFacturaService, XmlFacturaService>();
 builder.Services.AddScoped<IFareService, FareService>();
+builder.Services.AddScoped<IClientService , ClientService>();
+builder.Services.AddScoped<ICertificadoService, CertificadoService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IEmissionPointService , EmissionPointService>();
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
+builder.Services.AddSingleton<EncryptionHelper>();
 
 builder.Services.AddCors(options =>
 {
@@ -64,6 +82,25 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 15 * 1024 * 1024; // 15 MB
+});
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "API de Facturación Electrónica",
+        Version = "v1",
+        Description = "API para integración con el sistema de facturación electrónica del SRI Ecuador",
+        Contact = new OpenApiContact
+        {
+            Name = "Soporte",
+            Email = "soporte@empresa.com"
+        }
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

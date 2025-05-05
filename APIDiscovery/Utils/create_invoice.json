@@ -1,0 +1,85 @@
+﻿{
+  "enterprise": {
+    "idEnterprise": 1,
+    "companyName": "DIEGO EDMUNDO ROMAN NOBOA",
+    "comercialName": "DIEGO EDMUNDO ROMAN NOBOA",
+    "ruc": "1717219586001",
+    "addressMatriz": "EL CONDADO OE7B Y N85",
+    "phone": "022094017",
+    "email": "info@empresa.com",
+    "accountant": "y"
+  },
+  "client": {
+    "razonSocial": "CONSUMIDOR FINAL",
+    "dni": "9999999999999",
+    "address": "CONSUMIDOR FINAL",
+    "phone": "099999999",
+    "info": "CONSUMIDOR FINAL",
+    "email": "consumidorfinal@email.com",
+    "typeDniId": 7
+  },
+
+  "emissionPoint": {
+    "idEmissionPoint": 1,
+    "code": "001",
+    "details": "Punto de emisión principal para la Sucursal en Sur"
+  },
+  "branch": {
+    "idBranch": 1,
+    "code": "001",
+    "description": "Sucursal en Sur",
+    "address": "LA MARIN",
+    "phone": "0992810669"
+  },
+  "documentType": {
+    "idDocumentType": 1,
+    "nameDocument": "FACTURA"
+  },
+  "sequence": {
+    "idSequence": 1,
+    "code": "000000010"
+  },
+  "details": [
+    {
+      "codeStub": "0301009",
+      "description": "COMPRA DE FRIJOLES",
+      "amount": 1,
+      "discount": 0,
+      "ivaPorc": 15,
+      "icePorc": 0,
+      "iceValor": 0,
+      "note1": "Licencia indefinida",
+      "note2": "",
+      "note3": "",
+      "tariffId": 1,
+      "articleId": 1
+    }
+  ],
+  "payments": [
+    {
+      "total": 22.99,
+      "deadline": 30,
+      "unitTime": "dias",
+      "paymentId": 1
+    }  ],
+  "emissionDate": "2025-04-29T15:21:15.263Z",
+  "totalWithoutTaxes": 19.99,
+  "totalDiscount": 0,
+  "tip": 0,
+  "totalAmount": 22.99,
+  "currency": "USD",
+  "accessKey": "string",
+  "sequenceNumber": "string",
+  "electronicStatus": "PENDIENTE",
+  "authorizationNumber": "string",
+  "authorizationDate": "2025-04-29T15:21:15.263Z",
+  "additionalInfo": "EXELENTE SERVICIO",
+  "message": "string",
+  "type": "01",
+  "identifier": "string",
+  "branchId": 1,
+  "companyId": 1,
+  "emissionPointId": 1,
+  "receiptId": 1,
+  "sequenceId": 1
+}
