@@ -47,16 +47,36 @@ public class InvoiceService : IInvoiceService
                                .FirstOrDefaultAsync(s => s.id_sequence == invoiceDto.Sequence.IdSequence)
                            ?? throw new EntityNotFoundException(
                                $"Secuencia con ID {invoiceDto.Sequence.IdSequence} no encontrada");
+            
+            
+             string nextSequenceNumber;
+             
+             var lastInvoice = await _context.Invoices
+                 .Where(i => i.sequence_id == sequence.id_sequence)
+                 .OrderByDescending(i => i.inv_id)
+                 .FirstOrDefaultAsync();
+
+
+             if (lastInvoice != null && !string.IsNullOrEmpty(lastInvoice.sequence))
+             {
+                 var lastSequenceValue = int.Parse(lastInvoice.sequence);
+                 nextSequenceNumber = (lastSequenceValue + 1).ToString().PadLeft(lastInvoice.sequence.Length, '0');
+             }
+             else
+             {
+                 var initialSequenceValue = int.Parse(sequence.code);
+                 nextSequenceNumber = (initialSequenceValue + 1).ToString().PadLeft(sequence.code.Length, '0');
+             }
 
             var documentType = await _context.DocumentTypes
                                    .FirstOrDefaultAsync(d => d.id_d_t == invoiceDto.DocumentType.IdDocumentType)
                                ?? throw new EntityNotFoundException(
                                    $"Tipo de documento con ID {invoiceDto.DocumentType.IdDocumentType} no encontrado");
+            
+            
 
-            // 3. Determinar si es consumidor final
             var isConsumerFinal = invoiceDto.TotalAmount <= 50;
 
-            // 4. Gestión del cliente
             Client clientEntity;
 
             if (isConsumerFinal)
@@ -82,16 +102,13 @@ public class InvoiceService : IInvoiceService
             }
             else
             {
-                // Validar que se proporcionó información del cliente
                 if (invoiceDto.Client == null)
                     throw new BusinessException("Para montos mayores a $50 debe enviar datos del adquirente");
 
-                // Buscar cliente existente por DNI
-                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == invoiceDto.Client.Dni);
+                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == invoiceDto.Client.Dni) ?? throw new InvalidOperationException();
 
                 if (clientEntity == null)
                 {
-                    // Crear nuevo cliente
                     clientEntity = new Client
                     {
                         razon_social = invoiceDto.Client.RazonSocial,
@@ -120,17 +137,16 @@ public class InvoiceService : IInvoiceService
                 }
             }
 
-            var branchCode = branch.code.PadLeft(3, '0');
+            var branchCode = branch.code?.PadLeft(3, '0');
             var emissionPointCode = emissionPoint.code.PadLeft(3, '0');
             var serie = branchCode + emissionPointCode;
             var ambiente = enterprise.environment;
             var tipoComprobante = documentType.id_d_t.ToString("D2");
-            var ruc = enterprise.ruc.PadLeft(13, '0');
-            var numeroFactura = sequence.code.PadLeft(9, '0');
+            var ruc = enterprise.ruc?.PadLeft(13, '0');
+            var numeroFactura = nextSequenceNumber.PadLeft(9, '0');
             var codigoNumerico = GenerarCodigoNumerico();
             var tipoEmision = "1"; // Emisión normal
 
-            // 6. Generar clave de acceso
             var claveAcceso = GenerarClaveAcceso(
                 invoiceDto.EmissionDate,
                 tipoComprobante,
@@ -142,12 +158,10 @@ public class InvoiceService : IInvoiceService
                 tipoEmision
             );
 
-            // NUEVO: Calcular totales de la factura correctamente basados en los detalles
             decimal totalSinImpuestos = 0;
             decimal totalDescuento = 0;
             decimal totalImpuestos = 0;
 
-            // Lista para almacenar los detalles calculados
             var detallesCalculados = new List<(
                 int ArticleId,
                 int TariffId,
@@ -161,21 +175,17 @@ public class InvoiceService : IInvoiceService
                 string Note2,
                 string Note3)>();
 
-            // Precalcular los valores de cada detalle
             foreach (var detailDto in invoiceDto.Details)
             {
-                // Validar existencia del artículo
                 var article = await _context.Articles
                                   .FirstOrDefaultAsync(a => a.id_ar == detailDto.ArticleId)
                               ?? throw new EntityNotFoundException(
                                   $"Artículo con ID {detailDto.ArticleId} no encontrado");
 
-                // Validar existencia de la tarifa
                 var tariff = await _context.Fares
                                  .FirstOrDefaultAsync(t => t.id_fare == detailDto.TariffId)
                              ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
 
-                // Obtener la relación entre artículo y tarifa
                 var articleTariff = await _context.TariffArticles
                                         .FirstOrDefaultAsync(at =>
                                             at.id_article == detailDto.ArticleId && at.id_fare == detailDto.TariffId)
@@ -186,50 +196,39 @@ public class InvoiceService : IInvoiceService
                                .FirstOrDefaultAsync(f => f.id_fare == articleTariff.id_fare)
                            ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
 
-                // CORREGIDO: Cálculo de valores según la fórmula del SRI
                 var precioUnitario = article.price_unit;
                 var cantidad = detailDto.Amount;
-
-                // CORREGIDO: El descuento debe ser un valor monetario, no un porcentaje
-                // Si detailDto.Discount es un porcentaje, convertirlo a valor monetario
                 var descuentoPorcentaje = detailDto.Discount;
                 var descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
-
-                // CORREGIDO: Aplicar fórmula SRI: precioTotalSinImpuesto = (cantidad * precioUnitario) - descuento
                 var subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
-
                 var ivaPorc = fare.percentage;
                 var ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
 
-                // Acumular totales
                 totalSinImpuestos += subtotal;
                 totalDescuento += descuentoMonetario;
                 totalImpuestos += ivaValor;
 
-                // Guardar detalle calculado
-                detallesCalculados.Add(
-                    ((int ArticleId, int TariffId, decimal Amount, decimal PrecioUnitario, decimal Descuento, decimal
-                        Neto, decimal IvaPorc, decimal IvaValor, string Note1, string Note2, string Note3))(
-                        detailDto.ArticleId,
-                        detailDto.TariffId,
-                        cantidad,
-                        precioUnitario,
-                        descuentoMonetario,
-                        subtotal,
-                        ivaPorc,
-                        ivaValor,
-                        detailDto.Note1,
-                        detailDto.Note2,
-                        detailDto.Note3
-                    ));
+                if (detailDto.TariffId != null)
+                    detallesCalculados.Add(
+                        ((int ArticleId, int TariffId, decimal Amount, decimal PrecioUnitario, decimal Descuento,
+                            decimal
+                            Neto, decimal IvaPorc, decimal IvaValor, string Note1, string Note2, string Note3))(
+                            detailDto.ArticleId,
+                            detailDto.TariffId,
+                            cantidad,
+                            precioUnitario,
+                            descuentoMonetario,
+                            subtotal,
+                            ivaPorc,
+                            ivaValor,
+                            detailDto.Note1,
+                            detailDto.Note2,
+                            detailDto.Note3
+                        ));
             }
 
-            // CORREGIDO: Recalcular el total de la factura según fórmula SRI
-            // importeTotal = totalSinImpuestos - totalDescuento + totalImpuestos + propina
             var propina = invoiceDto.Tip;
             var importeTotal = Math.Round(totalSinImpuestos + totalImpuestos + propina, 2);
-
-            // 7. Crear la factura con los totales calculados
             var invoice = new Invoice
             {
                 emission_date = invoiceDto.EmissionDate,
@@ -251,13 +250,13 @@ public class InvoiceService : IInvoiceService
                 additional_info = invoiceDto.AdditionalInfo,
                 message = invoiceDto.Message,
                 identifier = invoiceDto.Client?.Dni ?? "9999999999999",
-                type = invoiceDto.Type
+                type = invoiceDto.Type,
+                sequence = nextSequenceNumber
             };
 
             _context.Invoices.Add(invoice);
             await _context.SaveChangesAsync();
 
-            // 8. Crear detalles de la factura con valores calculados correctamente
             foreach (var detalle in detallesCalculados)
             {
                 var article = await _context.Articles.FirstOrDefaultAsync(a => a.id_ar == detalle.ArticleId);
@@ -268,14 +267,14 @@ public class InvoiceService : IInvoiceService
                     description = article.description,
                     amount = (int)detalle.Amount,
                     price_unit = detalle.PrecioUnitario,
-                    discount = detalle.Descuento, // Descuento monetario
-                    neto = detalle.Neto, // PrecioTotalSinImpuesto
+                    discount = detalle.Descuento,
+                    neto = detalle.Neto,
                     iva_porc = detalle.IvaPorc,
                     iva_valor = detalle.IvaValor,
                     ice_porc = 0,
                     ice_valor = 0,
-                    subtotal = detalle.Neto, // Mismo que neto
-                    total = detalle.Neto + detalle.IvaValor, // Neto + IVA
+                    subtotal = detalle.Neto,
+                    total = detalle.Neto + detalle.IvaValor,
                     note1 = detalle.Note1,
                     note2 = detalle.Note2,
                     note3 = detalle.Note3,
@@ -287,16 +286,13 @@ public class InvoiceService : IInvoiceService
                 _context.InvoiceDetails.Add(detail);
             }
 
-            // 9. Crear pagos
             foreach (var paymentDto in invoiceDto.Payments)
             {
-                // Validar que el método de pago existe
                 var paymentMethod = await _context.Payments
                                         .FirstOrDefaultAsync(p => p.id_payment == paymentDto.PaymentId)
                                     ?? throw new EntityNotFoundException(
                                         $"Método de pago con ID {paymentDto.PaymentId} no encontrado");
 
-                // Crear el pago
                 var payment = new InvoicePayment
                 {
                     id_invoice = invoice.inv_id,
@@ -304,7 +300,6 @@ public class InvoiceService : IInvoiceService
                     id_payment = paymentDto.PaymentId
                 };
 
-                // Si NO es pago en efectivo (código 01 "SIN UTILIZACION DEL SISTEMA FINANCIERO")
                 if (paymentMethod.sri_detail != "01")
                 {
                     payment.deadline = paymentDto.Deadline;
@@ -316,20 +311,18 @@ public class InvoiceService : IInvoiceService
 
             await _context.SaveChangesAsync();
 
-            // 10. Retornar la factura creada
             return await GetInvoiceDtoById(invoice.inv_id);
         }
         catch (EntityNotFoundException ex)
         {
-            throw; // Propagar la excepción tal cual
+            throw;
         }
         catch (BusinessException ex)
         {
-            throw; // Propagar la excepción tal cual
+            throw;
         }
         catch (Exception ex)
         {
-            // Capturar excepciones no esperadas y convertirlas en un formato estándar
             throw new ApplicationException($"Error al crear la factura: {ex.Message}", ex);
         }
     }

@@ -113,16 +113,18 @@ public class XmlFacturaService : IXmlFacturaService
             xmlFirmado = result.Document;
         }
 
-
-        // 10) Guardar firmado y limpiar temporal
+        
         xmlFirmado.Save(rutaFinal);
         File.Delete(rutaTemp);
 
+        
+        invoice.xml = rutaFinal;
+        await _context.SaveChangesAsync();
         return rutaFinal;
     }
     
 
-    public async Task<string> ObtenerCertificadoPath(string ruc)
+    private async Task<string> ObtenerCertificadoPath(string ruc)
     {
         var empresa = await _context.Enterprises.FirstOrDefaultAsync(e => e.ruc == ruc);
         if (empresa == null || string.IsNullOrEmpty(empresa.electronic_signature))
@@ -131,7 +133,7 @@ public class XmlFacturaService : IXmlFacturaService
         return Path.Combine(_certificadosPath, empresa.electronic_signature);
     }
 
-    public async Task<string> ObtenerClaveDesencriptada(string ruc)
+    private async Task<string> ObtenerClaveDesencriptada(string ruc)
     {
         var empresa = await _context.Enterprises.FirstOrDefaultAsync(e => e.ruc == ruc);
         if (empresa == null || string.IsNullOrEmpty(empresa.key_signature))
@@ -193,7 +195,7 @@ public class XmlFacturaService : IXmlFacturaService
 
         var estab = invoice.Branch.code.PadLeft(3, '0');
         var ptoEmi = invoice.EmissionPoint.code.PadLeft(3, '0');
-        var secuencial = invoice.Sequence.code.PadLeft(9, '0');
+        var secuencial = invoice.sequence.PadLeft(9, '0');
 
         var infoTributaria = new XElement("infoTributaria",
             new XElement("ambiente", ambiente),

@@ -28,9 +28,6 @@ public class Client
 
     public string info { get; set; }
 
-    public int id_type_dni { get; set; }
-
-    [ForeignKey("id_type_dni")]
-    [JsonIgnore]
-    public TypeDni TypeDni { get; set; }
+    [ForeignKey("id_type_dni")] public int id_type_dni { get; set; }
+    
 }

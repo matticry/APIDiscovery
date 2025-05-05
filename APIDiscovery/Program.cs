@@ -64,8 +64,10 @@ builder.Services.AddScoped<ISriComprobantesService, SriComprobantesService>();
 
 builder.Services.AddScoped<IXmlFacturaService, XmlFacturaService>();
 builder.Services.AddScoped<IFareService, FareService>();
+builder.Services.AddScoped<IClientService , ClientService>();
 builder.Services.AddScoped<ICertificadoService, CertificadoService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IEmissionPointService , EmissionPointService>();
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<EncryptionHelper>();

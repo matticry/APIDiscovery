@@ -7,4 +7,6 @@ public class EmissionPointWithSequenceDto
     public string Details { get; set; }
     public bool Type { get; set; }
     public List<SequenceDto> Sequences { get; set; }
+    public List<LastSequenceInfoDto> LastSequences { get; set; } // New property
+
 }

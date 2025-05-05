@@ -19,6 +19,8 @@ public class Invoice
     [Column(TypeName = "decimal(18, 2)")] public decimal total_amount { get; set; }
 
     [MaxLength(10)] public string currency { get; set; }
+    [MaxLength(250)] public string? xml { get; set; }
+
 
     public int sequence_id { get; set; }
 
@@ -35,6 +37,7 @@ public class Invoice
     [MaxLength(250)] public string? access_key { get; set; }
 
     public int branch_id { get; set; }
+
 
     public int receipt_id { get; set; }
 

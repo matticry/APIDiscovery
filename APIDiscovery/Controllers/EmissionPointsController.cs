@@ -24,4 +24,6 @@ public class EmissionPointsController : ControllerBase
 
         return Ok(emissionPoints);
     }
+    
+
 }

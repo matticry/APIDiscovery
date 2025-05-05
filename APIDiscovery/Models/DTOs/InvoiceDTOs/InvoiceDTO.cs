@@ -18,6 +18,8 @@ public class InvoiceDTO
     public decimal TotalAmount { get; set; }
     public string Currency { get; set; }
     public string AccessKey { get; set; }
+    public string SequenceNumber { get; set; }
+
     public string ElectronicStatus { get; set; }
     public string AuthorizationNumber { get; set; }
     public DateTime? AuthorizationDate { get; set; }
