@@ -18,25 +18,6 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
-    <data-source name="@156.244.32.23" uuid="6f562dd5-f814-4f76-8fc9-bffb9e7c4bc1">
-      <database-info product="Microsoft SQL Server" version="16.00.4185" jdbc-version="4.2" driver-name="JetBrains JDBC Driver for SQL Server" driver-version="1.0" dbms="MSSQL" exact-version="16.0.4185" exact-driver-version="1.0">
-        <extra-name-characters>$#@</extra-name-characters>
-        <identifier-quote-string>&quot;</identifier-quote-string>
-      </database-info>
-      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
-      <secret-storage>master_key</secret-storage>
-      <auth-provider>no-auth</auth-provider>
-      <schema-mapping>
-        <introspection-scope>
-          <node negative="1">
-            <node kind="database" qname="DB_health">
-              <node kind="schema" qname="dbo" />
-            </node>
-            <node kind="database" qname="DB_Health" />
-          </node>
-        </introspection-scope>
-      </schema-mapping>
-    </data-source>
     <data-source name="Microsoft SQL Server (JetBrains)" uuid="a33b1170-6357-42ab-8353-7b3e3f61b11d">
       <database-info product="Microsoft SQL Server" version="16.00.1000" jdbc-version="4.2" driver-name="JetBrains JDBC Driver for SQL Server" driver-version="1.0" dbms="MSSQL" exact-version="16.0.1000" exact-driver-version="1.0">
         <extra-name-characters>$#@</extra-name-characters>
@@ -48,6 +29,21 @@
       <schema-mapping>
         <introspection-scope>
           <node kind="database" qname="DB_Health">
+            <node kind="schema" qname="dbo" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+    <data-source name="@156.244.32.23" uuid="513707d4-8102-4b55-adb3-082a9a5b3b1b">
+      <database-info product="Microsoft SQL Server" version="16.00.4185" jdbc-version="4.2" driver-name="JetBrains JDBC Driver for SQL Server" driver-version="1.0" dbms="MSSQL" exact-version="16.0.4185" exact-driver-version="1.0">
+        <extra-name-characters>$#@</extra-name-characters>
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
+      <user-name>sa</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="DB_health">
             <node kind="schema" qname="dbo" />
           </node>
         </introspection-scope>

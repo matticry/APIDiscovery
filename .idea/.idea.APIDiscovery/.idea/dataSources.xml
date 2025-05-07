@@ -9,7 +9,15 @@
       <jdbc-url>Server=207.246.69.9;User Id=infoelect;Password=vcsnfaM$1;TrustServerCertificate=True;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="@156.244.32.23" uuid="6f562dd5-f814-4f76-8fc9-bffb9e7c4bc1">
+    <data-source source="LOCAL" name="Microsoft SQL Server (JetBrains)" uuid="a33b1170-6357-42ab-8353-7b3e3f61b11d">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=DESKTOP-1UK1EKL\INFOELECT;Integrated Security=True;</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="@156.244.32.23" uuid="513707d4-8102-4b55-adb3-082a9a5b3b1b">
       <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>
@@ -20,14 +28,6 @@
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
         <property name="com.intellij.clouds.kubernetes.db.container.port" />
       </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="Microsoft SQL Server (JetBrains)" uuid="a33b1170-6357-42ab-8353-7b3e3f61b11d">
-      <driver-ref>sqlserver.jb</driver-ref>
-      <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
-      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
-      <jdbc-url>Server=DESKTOP-1UK1EKL\INFOELECT;Integrated Security=True;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

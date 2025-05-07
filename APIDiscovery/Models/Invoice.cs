@@ -25,6 +25,8 @@ public class Invoice
     public int sequence_id { get; set; }
 
     [MaxLength(50)] public string electronic_status { get; set; } = "PENDIENTE";
+    
+    [Column(TypeName = "varchar(max)")] public string? XmlBase64  { get; set; }
 
     [MaxLength(50)] public string invoice_status { get; set; } = "NO AUTORIZADO";
 
@@ -55,9 +57,7 @@ public class Invoice
 
     public string? additional_info { get; set; }
 
-    [MaxLength(250)] public string? identifier { get; set; }
 
-    [MaxLength(50)] public string? type { get; set; }
 
     [MaxLength(50)] public string? modified_doc_number { get; set; }
 

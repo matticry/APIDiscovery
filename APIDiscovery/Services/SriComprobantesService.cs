@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using APIDiscovery.Core;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Models.DTOs.SriDTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace APIDiscovery.Services;
 
@@ -14,6 +15,8 @@ public class SriComprobantesService : ISriComprobantesService
     private readonly ILogger<SriComprobantesService> _logger;
     private readonly string _sriEndpointAutorizacion_Pruebas;
     private readonly string _sriEndpointEnvioPruebas;
+    private readonly string _sriEndpointAutorizacion_Produccion;
+    private readonly string _sriEndpointEnvioProduccion;
     private readonly IXmlFacturaService _xmlFacturaService;
 
     public SriComprobantesService(
@@ -25,38 +28,62 @@ public class SriComprobantesService : ISriComprobantesService
         _configuration = configuration;
         _logger = logger;
         _context = context;
+        
+        // Endpoints de pruebas
         _sriEndpointEnvioPruebas = _configuration.GetValue<string>("SriEndpoints:Enviar_Pruebas") ??
                                    "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline";
         _sriEndpointAutorizacion_Pruebas = _configuration.GetValue<string>("SriEndpoints:Autorizar_Pruebas") ??
                                            "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline";
+        
+        // Endpoints de producción
+        _sriEndpointEnvioProduccion = _configuration.GetValue<string>("SriEndpoints:Enviar_Produccion") ??
+                                      "https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline";
+        _sriEndpointAutorizacion_Produccion = _configuration.GetValue<string>("SriEndpoints:Autorizar_Produccion") ??
+                                              "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline";
     }
 
-    public async Task<SriResponse> EnviarComprobanteAsync(int invoiceId)
+   public async Task<SriResponse> EnviarComprobanteAsync(int invoiceId)
     {
         try
         {
             // 1) Obtener y validar la factura
-            var invoice = await _context.Invoices.FindAsync(invoiceId);
+            var invoice = await _context.Invoices
+                .Include(i => i.Enterprise) // Incluir la entidad Enterprise para acceder a environment
+                .FirstOrDefaultAsync(i => i.inv_id == invoiceId);
+                
             if (invoice == null || string.IsNullOrEmpty(invoice.xml))
                 throw new Exception($"No se encontró la factura o su ruta XML para el ID: {invoiceId}");
 
-            // 2) Leer el XML y limpiar espacios/formatos problemáticos
+            // 2) Verificar el ambiente (1=pruebas, 2=producción)
+            string sriEndpoint;
+            switch (invoice.Enterprise?.environment)
+            {
+                case 1:
+                    sriEndpoint = _sriEndpointEnvioPruebas;
+                    _logger.LogInformation($"Utilizando ambiente de PRUEBAS para factura ID: {invoiceId}");
+                    break;
+                case 2:
+                    sriEndpoint = _sriEndpointEnvioProduccion;
+                    _logger.LogInformation($"Utilizando ambiente de PRODUCCIÓN para factura ID: {invoiceId}");
+                    break;
+                default:
+                    throw new Exception($"Ambiente no válido ({invoice.Enterprise?.environment}) para la empresa de la factura ID: {invoiceId}");
+            }
+
+            // 3) Leer el XML y limpiar espacios/formatos problemáticos
             var xmlContent = await File.ReadAllTextAsync(invoice.xml);
-
-            // Limpieza crítica del XML:
-            xmlContent = xmlContent
-                .Replace("\r", "") // Eliminar retornos de carro
-                .Replace("\n", "") // Eliminar saltos de línea
-                .Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "") // Eliminar declaración XML
-                .Trim();
-
-            // 3) Codificar a Base64 (UTF-8 sin BOM)
+            
+            // 4) Codificar a Base64 (UTF-8 sin BOM)
             var base64Xml = Convert.ToBase64String(
                 Encoding.UTF8.GetBytes(xmlContent),
                 Base64FormattingOptions.None
             );
+            
+            // 5) Guardar el XML en Base64 en la base de datos
+            invoice.XmlBase64 = base64Xml;
+            await _context.SaveChangesAsync();
 
-            // 4) Configurar SOAP request
+            // 6) Configurar SOAP request
             var soapRequest = $"""
                                <soapenv:Envelope 
                                    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
@@ -70,9 +97,9 @@ public class SriComprobantesService : ISriComprobantesService
                                </soapenv:Envelope>
                                """;
 
-            // 5) Enviar al SRI
+            // 7) Enviar al SRI
             using var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(_sriEndpointEnvioPruebas);
+            httpClient.BaseAddress = new Uri(sriEndpoint);
             httpClient.DefaultRequestHeaders.Add("SOAPAction", "");
 
             var response = await httpClient.PostAsync("", new StringContent(
@@ -83,7 +110,7 @@ public class SriComprobantesService : ISriComprobantesService
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            // 6) Parsear respuesta
+            // 8) Parsear respuesta
             var xdoc = XDocument.Parse(responseContent);
             var ns = XNamespace.Get("http://ec.gob.sri.ws.recepcion");
 
@@ -298,7 +325,7 @@ public class SriComprobantesService : ISriComprobantesService
     }
 
 
-    public async Task<bool> ActualizarEstadoFacturaAsync(int invoiceId, SriAutorizacionResponse respuesta)
+    private async Task<bool> ActualizarEstadoFacturaAsync(int invoiceId, SriAutorizacionResponse respuesta)
     {
         try
         {

@@ -3,7 +3,8 @@
     id_d_t        int identity
         constraint tbl_document_type_pk
             primary key,
-    name_document varchar(250)
+    name_document varchar(250),
+    code          varchar(5)
 )
 go
 
@@ -50,7 +51,7 @@ create table tbl_enterprise
     start_date_signature datetime,
     end_date_signature   datetime,
     retention_agent      varchar(250),
-    environment          char
+    environment          int  default 1
 )
 go
 
@@ -134,82 +135,6 @@ create table tbl_fare
 )
 go
 
-create table tbl_invoice
-(
-    inv_id               int identity
-        constraint tbl_invoice_pk
-            primary key,
-    emission_date        datetime,
-    total_without_taxes  decimal(18, 2),
-    total_discount       decimal(18, 2),
-    tip                  decimal(18, 2),
-    total_amount         decimal(18, 2),
-    currency             varchar(10),
-    sequence             int,
-    electronic_status    varchar(50),
-    invoice_status       varchar(50),
-    id_emission_point    int
-        constraint tbl_invoice_tbl_emission_point_id_e_p_fk
-            references tbl_emission_point,
-    company_id           int
-        constraint tbl_invoice_tbl_enterprise_id_en_fk
-            references tbl_enterprise,
-    client_id            int,
-    access_key           varchar(250),
-    branch_id            int
-        constraint tbl_invoice_tbl_branch_id_br_fk
-            references tbl_branch,
-    receipt_id           int
-        constraint tbl_invoice_tbl_document_type_id_d_t_fk
-            references tbl_document_type,
-    authorization_date   date,
-    authorization_number varchar(50),
-    total_vat            decimal(18, 2),
-    total_vat_0          decimal(18, 2),
-    vat                  decimal(18, 2),
-    message              varchar(max),
-    additional_info      varchar(max),
-    identifier           varchar(250),
-    type                 varchar(50),
-    modified_doc_number  varchar(50),
-    modified_doc_date    date
-)
-go
-
-create table tbl_invoice_detail
-(
-    id_i_d              int identity
-        constraint tbl_invoice_detail_pk
-            primary key,
-    code_stub           varchar(250),
-    description         text,
-    amount              int,
-    price_unit          decimal(10, 2),
-    discount            int,
-    price_with_discount decimal(18, 2),
-    neto                decimal(18, 2),
-    iva_porc            decimal(5, 2),
-    iva_valor           decimal(18, 2),
-    ice_porc            decimal(5, 2),
-    ice_valor           decimal(18, 2),
-    irbp_valor          decimal(18, 2),
-    subtotal            decimal(18, 2),
-    total               decimal(18, 2),
-    id_invoice          int
-        constraint tbl_invoice_detail_tbl_invoice_inv_id_fk
-            references tbl_invoice,
-    note1               nvarchar(max),
-    note2               nvarchar(max),
-    note3               nvarchar(max),
-    id_tariff           int
-        constraint tbl_invoice_detail_tbl_fare_id_fare_fk
-            references tbl_fare,
-    id_article          int
-        constraint tbl_invoice_detail_tbl_article_id_ar_fk
-            references tbl_article
-)
-go
-
 create table tbl_payment
 (
     id_payment int identity
@@ -218,23 +143,6 @@ create table tbl_payment
     sri_detail text,
     detail     text,
     status     bit
-)
-go
-
-create table tbl_invoice_payment
-(
-    id_i_p     int identity
-        constraint tbl_invoice_payment_pk
-            primary key,
-    id_invoice int
-        constraint tbl_invoice_payment_tbl_invoice_inv_id_fk
-            references tbl_invoice,
-    total      decimal(10, 2),
-    deadline   int,
-    unit_time  varchar(100),
-    id_payment int
-        constraint tbl_invoice_payment_tbl_payment_id_payment_fk
-            references tbl_payment
 )
 go
 
@@ -266,8 +174,12 @@ create table tbl_sequence
     id_sequence       int identity
         constraint tbl_sequence_pk
             primary key,
-    id_emission_point int,
-    id_document_type  int,
+    id_emission_point int
+        constraint tbl_sequence_tbl_emission_point_id_e_p_fk
+            references tbl_emission_point,
+    id_document_type  int
+        constraint tbl_sequence_tbl_document_type_id_d_t_fk
+            references tbl_document_type,
     code              varchar(250)
 )
 go
@@ -300,7 +212,7 @@ create table tbl_type_dni
     id_t_d int identity
         constraint tbl_type_dni_pk
             primary key,
-    name   varchar
+    name   varchar(100)
 )
 go
 
@@ -318,6 +230,104 @@ create table tbl_client
     id_type_dni  int
         constraint tbl_client_tbl_type_dni_id_t_d_fk
             references tbl_type_dni
+)
+go
+
+create table tbl_invoice
+(
+    inv_id               int identity
+        constraint tbl_invoice_pk
+            primary key,
+    emission_date        datetime    default getdate(),
+    total_without_taxes  decimal(18, 2),
+    total_discount       decimal(18, 2),
+    tip                  decimal(18, 2),
+    total_amount         decimal(18, 2),
+    currency             varchar(10),
+    sequence_id          int
+        constraint tbl_invoice_tbl_sequence_id_sequence_fk
+            references tbl_sequence,
+    electronic_status    varchar(50) default 'NO ENVIADO',
+    invoice_status       varchar(50) default 'NO AUTORIZADO',
+    id_emission_point    int
+        constraint tbl_invoice_tbl_emission_point_id_e_p_fk
+            references tbl_emission_point,
+    company_id           int
+        constraint tbl_invoice_tbl_enterprise_id_en_fk
+            references tbl_enterprise,
+    client_id            int
+        constraint tbl_invoice_tbl_client_id_client_fk
+            references tbl_client,
+    access_key           varchar(250),
+    branch_id            int
+        constraint tbl_invoice_tbl_branch_id_br_fk
+            references tbl_branch,
+    receipt_id           int
+        constraint tbl_invoice_tbl_document_type_id_d_t_fk
+            references tbl_document_type,
+    authorization_date   datetime,
+    authorization_number varchar(50) default 'N/A',
+    total_vat            decimal(18, 2),
+    total_vat_0          decimal(18, 2),
+    vat                  decimal(18, 2),
+    message              varchar(max),
+    additional_info      varchar(max),
+    modified_doc_number  varchar(50),
+    modified_doc_date    date,
+    sequence             varchar(100),
+    xml                  varchar(250),
+    XmlBase64            varchar(max)
+)
+go
+
+create table tbl_invoice_detail
+(
+    id_i_d              int identity
+        constraint tbl_invoice_detail_pk
+            primary key,
+    code_stub           varchar(250),
+    description         text,
+    amount              int,
+    price_unit          decimal(10, 2),
+    discount            decimal(10, 2),
+    price_with_discount decimal(18, 2),
+    neto                decimal(18, 2),
+    iva_porc            decimal(5, 2),
+    iva_valor           decimal(18, 2),
+    ice_porc            decimal(5, 2),
+    ice_valor           decimal(18, 2),
+    irbp_valor          decimal(18, 2),
+    subtotal            decimal(18, 2),
+    total               decimal(18, 2),
+    id_invoice          int
+        constraint tbl_invoice_detail_tbl_invoice_inv_id_fk
+            references tbl_invoice,
+    note1               nvarchar(max),
+    note2               nvarchar(max),
+    note3               nvarchar(max),
+    id_tariff           int
+        constraint tbl_invoice_detail_tbl_fare_id_fare_fk
+            references tbl_fare,
+    id_article          int
+        constraint tbl_invoice_detail_tbl_article_id_ar_fk
+            references tbl_article
+)
+go
+
+create table tbl_invoice_payment
+(
+    id_i_p     int identity
+        constraint tbl_invoice_payment_pk
+            primary key,
+    id_invoice int
+        constraint tbl_invoice_payment_tbl_invoice_inv_id_fk
+            references tbl_invoice,
+    total      decimal(10, 2),
+    deadline   int,
+    unit_time  varchar(100),
+    id_payment int
+        constraint tbl_invoice_payment_tbl_payment_id_payment_fk
+            references tbl_payment
 )
 go
 

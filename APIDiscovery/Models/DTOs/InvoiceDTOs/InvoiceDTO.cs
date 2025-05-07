@@ -2,6 +2,8 @@
 
 public class InvoiceDTO
 {
+    public int InvoiceId { get; set; }
+    public string? InvoiceStatus { get; set; }
     public EnterpriseDTO Enterprise { get; set; }
     public ClientDTO Client { get; set; }
     public EmissionPointDTO EmissionPoint { get; set; }
@@ -17,18 +19,14 @@ public class InvoiceDTO
     public decimal Tip { get; set; }
     public decimal TotalAmount { get; set; }
     public string Currency { get; set; }
-    public string AccessKey { get; set; }
-    public string SequenceNumber { get; set; }
+    public string? AccessKey { get; set; }
 
     public string ElectronicStatus { get; set; }
     public string AuthorizationNumber { get; set; }
     public DateTime? AuthorizationDate { get; set; }
-    public string AdditionalInfo { get; set; }
-    public string Message { get; set; }
-
-    // Campos adicionales que usaste en el servicio
-    public string Type { get; set; }
-    public string Identifier { get; set; }
+    public string? AdditionalInfo { get; set; }
+    public string? Message { get; set; }
+    
 
     // IDs para persistencia
     public int BranchId { get; set; }

@@ -24,6 +24,13 @@ public class ArticleController : ControllerBase
         _fareService = fareService;
     }
     
+    [HttpGet("getTaxRateByCode/{taxCode}")]
+    public async Task<IActionResult> GetTaxRateByCode(string taxCode)
+    {
+        var response = await _categoryService.GetTaxRateByCode(taxCode);
+        return Ok(response);
+    }
+    
     [HttpPost]
     public async Task<IActionResult> CreateArticle([FromBody] ArticleCreateDto articleDto)
     {

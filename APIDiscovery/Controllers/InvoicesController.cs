@@ -35,15 +35,13 @@ public class InvoicesController : ControllerBase
     {
         try
         {
-            // Llamar al servicio del SRI
             var sriResponse = await _sriService.EnviarComprobanteAsync(invoiceId);
 
-            // Devolver respuesta estructurada
             return Ok(new
             {
                 Status = sriResponse.Estado,
                 Messages = sriResponse.Mensajes,
-                RawResponse = sriResponse.XmlResponse // Opcional para depuración
+                RawResponse = sriResponse.XmlResponse 
             });
         }
         catch (Exception ex)
@@ -53,33 +51,24 @@ public class InvoicesController : ControllerBase
         }
     }
 
-// Método alternativo que acepta explícitamente el ID de factura en la ruta
     [HttpPost("autorizar/{claveAcceso}/factura/{invoiceId}")]
     public async Task<IActionResult> AutorizarComprobanteConId(string claveAcceso, int invoiceId)
     {
         try
         {
-            // 1) Validación de la clave de acceso (debe tener 49 caracteres)
             if (string.IsNullOrEmpty(claveAcceso) || claveAcceso.Length != 49)
                 return BadRequest(new { Error = "Clave de acceso inválida. Debe tener 49 caracteres." });
 
-            // 2) Validar que la factura exista
             var invoice = await _context.Invoices.FindAsync(invoiceId);
             if (invoice == null) return NotFound(new { Error = $"No se encontró la factura con ID: {invoiceId}" });
 
-            // 3) Llamar al servicio de autorización con el ID de factura
             var resultado =
                 await _sriService.AutorizarComprobanteAsync(claveAcceso, invoiceId);
 
-            // 4) Verificar si hubo error interno
-            if (!string.IsNullOrEmpty(resultado.Error))
-            {
-                _logger.LogWarning("Error en autorización SRI: {Error}", resultado.Error);
-                return StatusCode(502, new { Error = "Error comunicándose con el SRI", Detalles = resultado.Error });
-            }
+            if (string.IsNullOrEmpty(resultado.Error)) return Ok(resultado);
+            _logger.LogWarning("Error en autorización SRI: {Error}", resultado.Error);
+            return StatusCode(502, new { Error = "Error comunicándose con el SRI", Detalles = resultado.Error });
 
-            // 5) Devolver 200 OK con el payload
-            return Ok(resultado);
         }
         catch (Exception ex)
         {
@@ -107,10 +96,21 @@ public class InvoicesController : ControllerBase
             return StatusCode(500, "Error interno del servidor");
         }
     }
-
-    /// <summary>
-    ///     Genera el XML de una factura y lo devuelve como archivo para validación.
-    /// </summary>
+    
+    [HttpGet("GetUnauthorizedInvoicesByEnterpriseId/{enterpriseId}")]
+    public async Task<IActionResult> GetUnauthorizedInvoicesByEnterpriseId(int enterpriseId)
+    {
+        try
+        {
+            var invoices = await _invoiceService.GetUnauthorizedInvoicesByEnterpriseId(enterpriseId);
+            return Ok(invoices);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al obtener facturas no autorizadas");
+            return StatusCode(500, "Error interno del servidor");
+        }
+    }
     [HttpGet("generate-xml/{invoiceId}")]
     public async Task<IActionResult> GenerateXmlAsync(int invoiceId)
     {

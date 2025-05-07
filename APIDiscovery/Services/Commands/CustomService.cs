@@ -15,6 +15,48 @@ public class CustomService
     {
         _context = context;
     }
+    
+    public async Task<ResponseDto> GetTaxRateByCode(string taxCode)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        var response = new ResponseDto();
+    
+        try
+        {
+            var taxRate = await _context.Fares
+                .Where(f => f.code == taxCode)
+                .Select(f => new
+                {
+                    Id = f.id_fare,
+                    Percentage = f.percentage,
+                    Description = f.description
+                })
+                .FirstOrDefaultAsync();
+            
+            if (taxRate == null)
+            {
+                response.Success = false;
+                response.DisplayMessage = "No se encontró la tarifa con el código especificado.";
+                return response;
+            }
+        
+            response.Result = taxRate;
+            response.DisplayMessage = "Tarifa obtenida exitosamente.";
+        }
+        catch (Exception ex)
+        {
+            response.Success = false;
+            response.DisplayMessage = "Error al obtener la tarifa.";
+            response.ErrorMessages = [ex.Message];
+        }
+    
+        stopwatch.Stop();
+        response.ResponseTimeMs = stopwatch.Elapsed.TotalMilliseconds;
+    
+        return response;
+    }
+    
+    
 
     public async Task<IEnumerable<string>> GetResultRoleByNameAsync()
     {
