@@ -15,6 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/InvoiceSummaryDTO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IInvoiceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IInvoiceService.cs" afterDir="false" />
@@ -24,6 +25,7 @@
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" afterDir="false" />
@@ -307,7 +309,7 @@
       <workItem from="1746637051070" duration="85000" />
       <workItem from="1746637306447" duration="1329000" />
       <workItem from="1746649105904" duration="1938000" />
-      <workItem from="1746709847845" duration="3932000" />
+      <workItem from="1746709847845" duration="9330000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -461,7 +463,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746637117804</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="New Commit:&#10;&#10;- Implements into InvoiceService.cs">
+      <option name="closed" value="true" />
+      <created>1746716014173</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1746716014173</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -501,7 +511,8 @@
     <MESSAGE value="Fix: Enable SRI invoice generation and submission&#10;&#10;- Resolved issue with IVA tax codes, ensuring compliance with SRI regulations.&#10;- Updated XML structure to correctly represent discount values as decimals.&#10;- Added validation to ensure all required fields are populated before submission.&#10;- Tested with sample data to confirm successful invoice generation and submission." />
     <MESSAGE value="actua" />
     <MESSAGE value="Updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updates" />
+    <MESSAGE value="New Commit:&#10;&#10;- Implements into InvoiceService.cs" />
+    <option name="LAST_COMMIT_MESSAGE" value="New Commit:&#10;&#10;- Implements into InvoiceService.cs" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

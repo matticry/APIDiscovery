@@ -127,6 +127,83 @@ public class InvoicesController : ControllerBase
             
         }
     }
+    
+    [HttpGet("GetTotalInvoiceAuthorizedCountByCompanyIdAsync/{enterpriseId}")]
+    public async Task<IActionResult> GetTotalInvoiceAuthorizedCountByCompanyIdAsync(int enterpriseId)
+    {
+        try
+        {
+            var totalInvoices = await _invoiceService.GetTotalInvoiceAuthorizedCountByCompanyIdAsync(enterpriseId);
+            return Ok(totalInvoices);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+            
+        }
+    }
+    
+    [HttpGet("GetTotalInvoiceCountByCompanyIdAsync/{enterpriseId}")]
+    public async Task<IActionResult> GetTotalInvoiceCountByCompanyIdAsync(int enterpriseId)
+    {
+        try
+        {
+            var totalInvoices = await _invoiceService.GetTotalInvoiceCountByCompanyIdAsync(enterpriseId);
+            return Ok(totalInvoices);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+            
+        }
+    }
+    
+    [HttpGet("GetTopInvoicesByCompanyIdAsync/{enterpriseId}/{topCount:int}")]
+    public async Task<IActionResult> GetTopInvoicesByCompanyIdAsync(int enterpriseId, int topCount)
+    {
+        try
+        {
+            var topInvoices = await _invoiceService.GetTopInvoicesByCompanyIdAsync(enterpriseId, topCount);
+            return Ok(topInvoices);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+            
+        }
+    }
+    
+    [HttpGet("GetTotalInvoiceAmountByCompanyIdAsync/{enterpriseId}")]
+    public async Task<IActionResult> GetTotalInvoiceAmountByCompanyIdAsync(int enterpriseId)
+    {
+        try
+        {
+            var totalAmount = await _invoiceService.GetTotalInvoiceAmountByCompanyIdAsync(enterpriseId);
+            return Ok(totalAmount);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+            
+        }
+    }
+    
+    [HttpGet("GetAuthorizedInvoicesByEnterpriseId/{enterpriseId}")]
+    public async Task<IActionResult> GetAuthorizedInvoicesByEnterpriseId(int enterpriseId)
+    {
+        try
+        {
+            var invoices = await _invoiceService.GetAuthorizedInvoicesByEnterpriseId(enterpriseId);
+            return Ok(invoices);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+            
+        }
+    }
+    
+    
     [HttpGet("generate-xml/{invoiceId}")]
     public async Task<IActionResult> GenerateXmlAsync(int invoiceId)
     {

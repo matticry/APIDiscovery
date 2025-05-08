@@ -8,5 +8,12 @@ public interface IInvoiceService
     Task<InvoiceDTO> GetInvoiceDtoById(int invoiceId);
     Task<List<InvoiceDTO>> GetUnauthorizedInvoicesByEnterpriseId(int enterpriseId);
     Task<List<InvoiceDTO>> GetAuthorizedInvoicesByEnterpriseId(int enterpriseId);
+    Task<int> GetTotalInvoiceCountByCompanyIdAsync(int companyId);
+    Task<int> GetTotalInvoiceAuthorizedCountByCompanyIdAsync(int companyId);
+    Task<decimal> GetTotalInvoiceAmountByCompanyIdAsync(int companyId);
+    Task<List<InvoiceSummaryDTO>> GetTopInvoicesByCompanyIdAsync(int companyId, int count = 3);
+
+
+
 
 }

@@ -120,7 +120,6 @@ public class InvoiceService : IInvoiceService
                         id_type_dni = invoiceDto.Client.TypeDniId
                     };
                     _context.Clients.Add(clientEntity);
-                    await _context.SaveChangesAsync();
                 }
                 else
                 {
@@ -133,8 +132,9 @@ public class InvoiceService : IInvoiceService
                     clientEntity.id_type_dni = invoiceDto.Client.TypeDniId;
 
                     _context.Clients.Update(clientEntity);
-                    await _context.SaveChangesAsync();
                 }
+
+                await _context.SaveChangesAsync();
             }
 
             var branchCode = branch.code?.PadLeft(3, '0');
@@ -417,6 +417,133 @@ public class InvoiceService : IInvoiceService
             })
             .ToList();
     }
+    
+    public async Task<List<InvoiceSummaryDTO>> GetTopInvoicesByCompanyIdAsync(int companyId, int count = 3)
+    {
+        try
+        {
+            var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
+            if (!enterpriseExists)
+            {
+                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
+            }
+
+            // Obtener las primeras N facturas ordenadas por fecha de emisión (o ID si prefieres)
+            var topInvoices = await _context.Invoices
+                .Include(i => i.Client)
+                .Include(i => i.Sequence)
+                .Where(i => i.company_id == companyId)
+                .OrderBy(i => i.emission_date) 
+                .Take(count)
+                .Select(i => new InvoiceSummaryDTO
+                {
+                    InvoiceId = i.inv_id,
+                    EmissionDate = i.emission_date,
+                    Status = i.invoice_status,
+                    ElectronicStatus = i.electronic_status,
+                    TotalAmount = i.total_amount,
+                    ClientName = i.Client.razon_social,
+                    ClientDni = i.Client.dni,
+                    SequenceNumber = i.sequence
+                })
+                .ToListAsync();
+
+            if (topInvoices.Count == 0)
+            {
+                throw new EntityNotFoundException($"No se encontraron facturas para la empresa con ID {companyId}");
+            }
+
+            return topInvoices;
+        }
+        catch (EntityNotFoundException ex)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException($"Error al obtener las facturas: {ex.Message}", ex);
+        }
+    }
+    
+    public async Task<decimal> GetTotalInvoiceAmountByCompanyIdAsync(int companyId)
+    {
+        try
+        {
+            var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
+            if (!enterpriseExists)
+            {
+                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
+            }
+            
+            var totalAmount = await _context.Invoices
+                .Where(i => i.company_id == companyId)
+                .SumAsync(i => i.total_amount);
+
+            return totalAmount;
+        }
+        catch (EntityNotFoundException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException($"Error al obtener el monto total facturado: {ex.Message}", ex);
+        }
+    }
+    public async Task<int> GetTotalInvoiceCountByCompanyIdAsync(int companyId)
+    {
+        try
+        {
+            // Verificar si la empresa existe
+            var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
+            if (!enterpriseExists)
+            {
+                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
+            }
+
+            var totalInvoices = await _context.Invoices
+                .Where(i => i.company_id == companyId)
+                .CountAsync();
+
+            return totalInvoices;
+        }
+        catch (EntityNotFoundException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException($"Error al obtener el conteo de facturas: {ex.Message}", ex);
+        }
+    }
+    
+    public async Task<int> GetTotalInvoiceAuthorizedCountByCompanyIdAsync(int companyId)
+    {
+        try
+        {
+            // Verificar si la empresa existe
+            var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
+            if (!enterpriseExists)
+            {
+                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
+            }
+
+            var totalInvoices = await _context.Invoices
+                .Where(i => i.company_id == companyId && i.invoice_status == "AUTORIZADO")
+                .CountAsync();
+
+            return totalInvoices;
+        }
+        catch (EntityNotFoundException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException($"Error al obtener el conteo de facturas: {ex.Message}", ex);
+        }
+    }
+    
 
     public async Task<List<InvoiceDTO>> GetUnauthorizedInvoicesByEnterpriseId(int enterpriseId)
     {
