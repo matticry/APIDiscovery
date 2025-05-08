@@ -1,4 +1,5 @@
 ﻿using APIDiscovery.Core;
+using APIDiscovery.Exceptions;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Models.DTOs.InvoiceDTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -97,6 +98,21 @@ public class InvoicesController : ControllerBase
         }
     }
     
+    
+    [HttpGet("GetInvoiceById/{invoiceId}")]
+    public async Task<IActionResult> GetInvoiceById(int invoiceId)
+    {
+        try
+        {
+            var invoice = await _invoiceService.GetInvoiceDtoById(invoiceId);
+            return Ok(invoice);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    
     [HttpGet("GetUnauthorizedInvoicesByEnterpriseId/{enterpriseId}")]
     public async Task<IActionResult> GetUnauthorizedInvoicesByEnterpriseId(int enterpriseId)
     {
@@ -105,10 +121,10 @@ public class InvoicesController : ControllerBase
             var invoices = await _invoiceService.GetUnauthorizedInvoicesByEnterpriseId(enterpriseId);
             return Ok(invoices);
         }
-        catch (Exception ex)
+        catch (EntityNotFoundException ex)
         {
-            _logger.LogError(ex, "Error al obtener facturas no autorizadas");
-            return StatusCode(500, "Error interno del servidor");
+            return NotFound(ex.Message);
+            
         }
     }
     [HttpGet("generate-xml/{invoiceId}")]

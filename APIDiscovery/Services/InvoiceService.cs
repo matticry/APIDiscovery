@@ -47,33 +47,32 @@ public class InvoiceService : IInvoiceService
                                .FirstOrDefaultAsync(s => s.id_sequence == invoiceDto.Sequence.IdSequence)
                            ?? throw new EntityNotFoundException(
                                $"Secuencia con ID {invoiceDto.Sequence.IdSequence} no encontrada");
-            
-            
-             string nextSequenceNumber;
-             
-             var lastInvoice = await _context.Invoices
-                 .Where(i => i.sequence_id == sequence.id_sequence)
-                 .OrderByDescending(i => i.inv_id)
-                 .FirstOrDefaultAsync();
 
 
-             if (lastInvoice != null && !string.IsNullOrEmpty(lastInvoice.sequence))
-             {
-                 var lastSequenceValue = int.Parse(lastInvoice.sequence);
-                 nextSequenceNumber = (lastSequenceValue + 1).ToString().PadLeft(lastInvoice.sequence.Length, '0');
-             }
-             else
-             {
-                 var initialSequenceValue = int.Parse(sequence.code);
-                 nextSequenceNumber = (initialSequenceValue + 1).ToString().PadLeft(sequence.code.Length, '0');
-             }
+            string nextSequenceNumber;
+
+            var lastInvoice = await _context.Invoices
+                .Where(i => i.sequence_id == sequence.id_sequence)
+                .OrderByDescending(i => i.inv_id)
+                .FirstOrDefaultAsync();
+
+
+            if (lastInvoice != null && !string.IsNullOrEmpty(lastInvoice.sequence))
+            {
+                var lastSequenceValue = int.Parse(lastInvoice.sequence);
+                nextSequenceNumber = (lastSequenceValue + 1).ToString().PadLeft(lastInvoice.sequence.Length, '0');
+            }
+            else
+            {
+                var initialSequenceValue = int.Parse(sequence.code);
+                nextSequenceNumber = (initialSequenceValue + 1).ToString().PadLeft(sequence.code.Length, '0');
+            }
 
             var documentType = await _context.DocumentTypes
                                    .FirstOrDefaultAsync(d => d.id_d_t == invoiceDto.DocumentType.IdDocumentType)
                                ?? throw new EntityNotFoundException(
                                    $"Tipo de documento con ID {invoiceDto.DocumentType.IdDocumentType} no encontrado");
-            
-            
+
 
             var isConsumerFinal = invoiceDto.TotalAmount <= 50;
 
@@ -105,7 +104,8 @@ public class InvoiceService : IInvoiceService
                 if (invoiceDto.Client == null)
                     throw new BusinessException("Para montos mayores a $50 debe enviar datos del adquirente");
 
-                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == invoiceDto.Client.Dni) ?? throw new InvalidOperationException();
+                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == invoiceDto.Client.Dni) ??
+                               throw new InvalidOperationException();
 
                 if (clientEntity == null)
                 {
@@ -325,163 +325,216 @@ public class InvoiceService : IInvoiceService
             throw new ApplicationException($"Error al crear la factura: {ex.Message}", ex);
         }
     }
-
-    private static string GenerarClaveAcceso(DateTime fechaEmision, string tipoComprobante, string ruc, string ambiente,
-        string serie, string numeroFactura, string codigoNumerico, string tipoEmision)
+    
+    public async Task<List<InvoiceDTO>> GetAuthorizedInvoicesByEnterpriseId(int enterpriseId)
     {
-        var fecha = fechaEmision.ToString("ddMMyyyy");
-        var claveSinDigito = fecha + tipoComprobante + ruc + ambiente + serie + numeroFactura + codigoNumerico +
-                             tipoEmision;
+        var invoices = await _context.Invoices
+            .Include(i => i.Client)
+            .Include(i => i.Branch)
+            .Include(i => i.Sequence)
+            .Include(i => i.DocumentType)
+            .Include(i => i.Enterprise)
+            .Include(i => i.EmissionPoint)
+            .Include(i => i.InvoiceDetails)
+            .Include(i => i.InvoicePayments)
+            .Where(i => i.company_id == enterpriseId && i.invoice_status == "AUTORIZADO")
+            .ToListAsync();
 
-        var digitoVerificador = CalcularDigitoVerificadorModulo11(claveSinDigito);
+        if (invoices.Count == 0)
+            throw new EntityNotFoundException(
+                $"No se encontraron facturas no autorizadas para la empresa con ID {enterpriseId}");
 
-        return claveSinDigito + digitoVerificador;
-    }
-
-    private string GenerarCodigoNumerico()
-    {
-        var random = new Random();
-        return random.Next(0, 99999999).ToString("D8");
-    }
-
-    private static int CalcularDigitoVerificadorModulo11(string clave)
-    {
-        int[] pesos = { 2, 3, 4, 5, 6, 7 };
-        var suma = 0;
-        var pesoIndex = 0;
-
-        for (var i = clave.Length - 1; i >= 0; i--)
-        {
-            var valor = int.Parse(clave[i].ToString());
-            suma += valor * pesos[pesoIndex];
-            pesoIndex = (pesoIndex + 1) % pesos.Length;
-        }
-
-        var residuo = suma % 11;
-        var digito = 11 - residuo;
-
-        if (digito == 11) digito = 0;
-        else if (digito == 10) digito = 1;
-
-        return digito;
+        return invoices.Select(invoice => new InvoiceDTO
+            {
+                InvoiceId = invoice.inv_id,
+                EmissionDate = invoice.emission_date,
+                TotalAmount = invoice.total_amount,
+                TotalWithoutTaxes = invoice.total_without_taxes,
+                TotalDiscount = invoice.total_discount,
+                Tip = invoice.tip,
+                Currency = invoice.currency,
+                AccessKey = invoice.access_key,
+                ElectronicStatus = invoice.electronic_status,
+                InvoiceStatus = invoice.invoice_status,
+                AuthorizationNumber = invoice.authorization_number,
+                AuthorizationDate = invoice.authorization_date,
+                AdditionalInfo = invoice.additional_info,
+                Message = invoice.message,
+                Client = new ClientDTO
+                {
+                    RazonSocial = invoice.Client.razon_social,
+                    Dni = invoice.Client.dni,
+                    Address = invoice.Client.address,
+                    Phone = invoice.Client.phone,
+                    Email = invoice.Client.email,
+                    TypeDniId = invoice.Client.id_type_dni
+                },
+                Branch = new BranchDTO
+                {
+                    IdBranch = invoice.Branch.id_br,
+                    Code = invoice.Branch.code,
+                    Description = invoice.Branch.description,
+                    Address = invoice.Branch.address,
+                    Phone = invoice.Branch.phone
+                },
+                Sequence = new SequenceDTO { IdSequence = invoice.Sequence.id_sequence, Code = invoice.Sequence.code },
+                DocumentType = new DocumentTypeDTO { IdDocumentType = invoice.DocumentType.id_d_t, NameDocument = invoice.DocumentType.name_document },
+                Enterprise = new EnterpriseDTO
+                {
+                    IdEnterprise = invoice.Enterprise.id_en,
+                    CompanyName = invoice.Enterprise.company_name,
+                    ComercialName = invoice.Enterprise.comercial_name,
+                    Ruc = invoice.Enterprise.ruc,
+                    AddressMatriz = invoice.Enterprise.address_matriz,
+                    Phone = invoice.Enterprise.phone,
+                    Email = invoice.Enterprise.email,
+                    Accountant = invoice.Enterprise.accountant
+                },
+                EmissionPoint = new EmissionPointDTO { IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code, Details = invoice.EmissionPoint.details },
+                Details = invoice.InvoiceDetails.Select(d => new InvoiceDetailDTO
+                    {
+                        CodeStub = d.code_stub,
+                        Description = d.description,
+                        Amount = d.amount,
+                        PriceUnit = d.price_unit,
+                        Discount = d.discount,
+                        PriceWithDiscount = d.price_with_discount,
+                        Neto = d.neto,
+                        IvaPorc = d.iva_porc,
+                        IvaValor = d.iva_valor,
+                        IcePorc = d.ice_porc,
+                        IceValor = d.ice_valor,
+                        Subtotal = d.subtotal,
+                        Total = d.total,
+                        Note1 = d.note1,
+                        Note2 = d.note2,
+                        Note3 = d.note3,
+                        ArticleId = d.id_article,
+                        TariffId = d.id_tariff
+                    })
+                    .ToList(),
+                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO { Total = p.total, Deadline = p.deadline, UnitTime = p.unit_time, PaymentId = p.id_payment }).ToList()
+            })
+            .ToList();
     }
 
     public async Task<List<InvoiceDTO>> GetUnauthorizedInvoicesByEnterpriseId(int enterpriseId)
-{
-    var invoices = await _context.Invoices
-        .Include(i => i.Client)
-        .Include(i => i.Branch)
-        .Include(i => i.Sequence)
-        .Include(i => i.DocumentType)
-        .Include(i => i.Enterprise)
-        .Include(i => i.EmissionPoint)
-        .Include(i => i.InvoiceDetails)
-        .Include(i => i.InvoicePayments)
-        .Where(i => i.company_id == enterpriseId && i.invoice_status == "NO AUTORIZADO")
-        .ToListAsync();
-
-    if (invoices.Count == 0)
-        throw new EntityNotFoundException($"No se encontraron facturas no autorizadas para la empresa con ID {enterpriseId}");
-
-    var invoiceDtos = new List<InvoiceDTO>();
-    
-    foreach (var invoice in invoices)
     {
-        var dto = new InvoiceDTO
-        {
-            InvoiceId = invoice.inv_id,
-            EmissionDate = invoice.emission_date,
-            TotalAmount = invoice.total_amount,
-            TotalWithoutTaxes = invoice.total_without_taxes,
-            TotalDiscount = invoice.total_discount,
-            Tip = invoice.tip,
-            Currency = invoice.currency,
-            AccessKey = invoice.access_key,
-            ElectronicStatus = invoice.electronic_status,
-            InvoiceStatus = invoice.invoice_status,
-            AuthorizationNumber = invoice.authorization_number,
-            AuthorizationDate = invoice.authorization_date,
-            AdditionalInfo = invoice.additional_info,
-            Message = invoice.message,
-            Client = new ClientDTO
-            {
-                RazonSocial = invoice.Client.razon_social,
-                Dni = invoice.Client.dni,
-                Address = invoice.Client.address,
-                Phone = invoice.Client.phone,
-                Email = invoice.Client.email,
-                TypeDniId = invoice.Client.id_type_dni
-            },
-            Branch = new BranchDTO
-            {
-                IdBranch = invoice.Branch.id_br,
-                Code = invoice.Branch.code,
-                Description = invoice.Branch.description,
-                Address = invoice.Branch.address,
-                Phone = invoice.Branch.phone
-            },
-            Sequence = new SequenceDTO
-            {
-                IdSequence = invoice.Sequence.id_sequence,
-                Code = invoice.Sequence.code
-            },
-            DocumentType = new DocumentTypeDTO
-            {
-                IdDocumentType = invoice.DocumentType.id_d_t,
-                NameDocument = invoice.DocumentType.name_document
-            },
-            Enterprise = new EnterpriseDTO
-            {
-                IdEnterprise = invoice.Enterprise.id_en,
-                CompanyName = invoice.Enterprise.company_name,
-                ComercialName = invoice.Enterprise.comercial_name,
-                Ruc = invoice.Enterprise.ruc,
-                AddressMatriz = invoice.Enterprise.address_matriz,
-                Phone = invoice.Enterprise.phone,
-                Email = invoice.Enterprise.email,
-                Accountant = invoice.Enterprise.accountant
-            },
-            EmissionPoint = new EmissionPointDTO
-            {
-                IdEmissionPoint = invoice.EmissionPoint.id_e_p,
-                Code = invoice.EmissionPoint.code,
-                Details = invoice.EmissionPoint.details
-            },
-            Details = invoice.InvoiceDetails.Select(d => new InvoiceDetailDTO
-            {
-                CodeStub = d.code_stub,
-                Description = d.description,
-                Amount = d.amount,
-                PriceUnit = d.price_unit,
-                Discount = d.discount,
-                PriceWithDiscount = d.price_with_discount,
-                Neto = d.neto,
-                IvaPorc = d.iva_porc,
-                IvaValor = d.iva_valor,
-                IcePorc = d.ice_porc,
-                IceValor = d.ice_valor,
-                Subtotal = d.subtotal,
-                Total = d.total,
-                Note1 = d.note1,
-                Note2 = d.note2,
-                Note3 = d.note3,
-                ArticleId = d.id_article,
-                TariffId = d.id_tariff
-            }).ToList(),
-            Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO
-            {
-                Total = p.total,
-                Deadline = p.deadline,
-                UnitTime = p.unit_time,
-                PaymentId = p.id_payment
-            }).ToList()
-        };
-        
-        invoiceDtos.Add(dto);
-    }
+        var invoices = await _context.Invoices
+            .Include(i => i.Client)
+            .Include(i => i.Branch)
+            .Include(i => i.Sequence)
+            .Include(i => i.DocumentType)
+            .Include(i => i.Enterprise)
+            .Include(i => i.EmissionPoint)
+            .Include(i => i.InvoiceDetails)
+            .Include(i => i.InvoicePayments)
+            .Where(i => i.company_id == enterpriseId && i.invoice_status == "NO AUTORIZADO")
+            .ToListAsync();
 
-    return invoiceDtos;
-}
+        if (invoices.Count == 0)
+            throw new EntityNotFoundException(
+                $"No se encontraron facturas no autorizadas para la empresa con ID {enterpriseId}");
+
+        var invoiceDtos = new List<InvoiceDTO>();
+
+        foreach (var invoice in invoices)
+        {
+            var dto = new InvoiceDTO
+            {
+                InvoiceId = invoice.inv_id,
+                EmissionDate = invoice.emission_date,
+                TotalAmount = invoice.total_amount,
+                TotalWithoutTaxes = invoice.total_without_taxes,
+                TotalDiscount = invoice.total_discount,
+                Tip = invoice.tip,
+                Currency = invoice.currency,
+                AccessKey = invoice.access_key,
+                ElectronicStatus = invoice.electronic_status,
+                InvoiceStatus = invoice.invoice_status,
+                AuthorizationNumber = invoice.authorization_number,
+                AuthorizationDate = invoice.authorization_date,
+                AdditionalInfo = invoice.additional_info,
+                Message = invoice.message,
+                Client = new ClientDTO
+                {
+                    RazonSocial = invoice.Client.razon_social,
+                    Dni = invoice.Client.dni,
+                    Address = invoice.Client.address,
+                    Phone = invoice.Client.phone,
+                    Email = invoice.Client.email,
+                    TypeDniId = invoice.Client.id_type_dni
+                },
+                Branch = new BranchDTO
+                {
+                    IdBranch = invoice.Branch.id_br,
+                    Code = invoice.Branch.code,
+                    Description = invoice.Branch.description,
+                    Address = invoice.Branch.address,
+                    Phone = invoice.Branch.phone
+                },
+                Sequence = new SequenceDTO
+                {
+                    IdSequence = invoice.Sequence.id_sequence,
+                    Code = invoice.Sequence.code
+                },
+                DocumentType = new DocumentTypeDTO
+                {
+                    IdDocumentType = invoice.DocumentType.id_d_t,
+                    NameDocument = invoice.DocumentType.name_document
+                },
+                Enterprise = new EnterpriseDTO
+                {
+                    IdEnterprise = invoice.Enterprise.id_en,
+                    CompanyName = invoice.Enterprise.company_name,
+                    ComercialName = invoice.Enterprise.comercial_name,
+                    Ruc = invoice.Enterprise.ruc,
+                    AddressMatriz = invoice.Enterprise.address_matriz,
+                    Phone = invoice.Enterprise.phone,
+                    Email = invoice.Enterprise.email,
+                    Accountant = invoice.Enterprise.accountant
+                },
+                EmissionPoint = new EmissionPointDTO
+                {
+                    IdEmissionPoint = invoice.EmissionPoint.id_e_p,
+                    Code = invoice.EmissionPoint.code,
+                    Details = invoice.EmissionPoint.details
+                },
+                Details = invoice.InvoiceDetails.Select(d => new InvoiceDetailDTO
+                {
+                    CodeStub = d.code_stub,
+                    Description = d.description,
+                    Amount = d.amount,
+                    PriceUnit = d.price_unit,
+                    Discount = d.discount,
+                    PriceWithDiscount = d.price_with_discount,
+                    Neto = d.neto,
+                    IvaPorc = d.iva_porc,
+                    IvaValor = d.iva_valor,
+                    IcePorc = d.ice_porc,
+                    IceValor = d.ice_valor,
+                    Subtotal = d.subtotal,
+                    Total = d.total,
+                    Note1 = d.note1,
+                    Note2 = d.note2,
+                    Note3 = d.note3,
+                    ArticleId = d.id_article,
+                    TariffId = d.id_tariff
+                }).ToList(),
+                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO
+                {
+                    Total = p.total,
+                    Deadline = p.deadline,
+                    UnitTime = p.unit_time,
+                    PaymentId = p.id_payment
+                }).ToList()
+            };
+
+            invoiceDtos.Add(dto);
+        }
+
+        return invoiceDtos;
+    }
 
     public async Task<InvoiceDTO> GetInvoiceDtoById(int invoiceId)
     {
@@ -501,6 +554,7 @@ public class InvoiceService : IInvoiceService
 
         var dto = new InvoiceDTO
         {
+            InvoiceId = invoice.inv_id,
             EmissionDate = invoice.emission_date,
             TotalAmount = invoice.total_amount,
             TotalWithoutTaxes = invoice.total_without_taxes,
@@ -588,5 +642,45 @@ public class InvoiceService : IInvoiceService
         };
 
         return dto;
+    }
+
+    private static string GenerarClaveAcceso(DateTime fechaEmision, string tipoComprobante, string ruc, string ambiente,
+        string serie, string numeroFactura, string codigoNumerico, string tipoEmision)
+    {
+        var fecha = fechaEmision.ToString("ddMMyyyy");
+        var claveSinDigito = fecha + tipoComprobante + ruc + ambiente + serie + numeroFactura + codigoNumerico +
+                             tipoEmision;
+
+        var digitoVerificador = CalcularDigitoVerificadorModulo11(claveSinDigito);
+
+        return claveSinDigito + digitoVerificador;
+    }
+
+    private string GenerarCodigoNumerico()
+    {
+        var random = new Random();
+        return random.Next(0, 99999999).ToString("D8");
+    }
+
+    private static int CalcularDigitoVerificadorModulo11(string clave)
+    {
+        int[] pesos = { 2, 3, 4, 5, 6, 7 };
+        var suma = 0;
+        var pesoIndex = 0;
+
+        for (var i = clave.Length - 1; i >= 0; i--)
+        {
+            var valor = int.Parse(clave[i].ToString());
+            suma += valor * pesos[pesoIndex];
+            pesoIndex = (pesoIndex + 1) % pesos.Length;
+        }
+
+        var residuo = suma % 11;
+        var digito = 11 - residuo;
+
+        if (digito == 11) digito = 0;
+        else if (digito == 10) digito = 1;
+
+        return digito;
     }
 }
