@@ -18,6 +18,183 @@ public class CedulaService : ICedulaService
         _baseUrl = "http://datos.elixirsa.net/cedula/";
     }
     
+    
+    public async Task<RucResponse> ConsultarRucAsync(string numeroRuc, string ipSolicitante)
+{
+    var stopwatch = new Stopwatch();
+    stopwatch.Start();
+    
+    try
+    {
+        // Validar que el RUC tenga 13 dígitos
+        if (string.IsNullOrEmpty(numeroRuc) || numeroRuc.Length != 13)
+        {
+            return new RucResponse
+            {
+                StatusCode = 400,
+                TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+                Error = "El RUC debe tener 13 dígitos",
+                Message = "Validación de RUC fallida: El RUC debe tener 13 dígitos",
+                IpSolicitante = ipSolicitante
+            };
+        }
+        
+        // Validar que todos sean dígitos
+        if (numeroRuc.Any(c => !char.IsDigit(c)))
+        {
+            return new RucResponse
+            {
+                StatusCode = 400,
+                TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+                Error = "El RUC debe contener solo dígitos",
+                Message = "Validación de RUC fallida: El RUC debe contener solo dígitos",
+                IpSolicitante = ipSolicitante
+            };
+        }
+        
+        // Validar que los últimos 3 dígitos sean 001
+        if (numeroRuc.Substring(10) != "001")
+        {
+            return new RucResponse
+            {
+                StatusCode = 400,
+                TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+                Error = "Los últimos 3 dígitos del RUC deben ser 001",
+                Message = "Validación de RUC fallida: Los últimos 3 dígitos del RUC deben ser 001",
+                IpSolicitante = ipSolicitante
+            };
+        }
+        
+        // Validación de los primeros 10 dígitos (deben corresponder a una cédula válida)
+        if (!VerificaCedula(numeroRuc.Substring(0, 10).ToCharArray()))
+        {
+            return new RucResponse
+            {
+                StatusCode = 400,
+                TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+                Error = "Los primeros 10 dígitos del RUC no corresponden a una cédula ecuatoriana válida",
+                Message = "Validación de RUC fallida: Los primeros 10 dígitos no corresponden a una cédula ecuatoriana válida",
+                IpSolicitante = ipSolicitante
+            };
+        }
+        
+        var response = await _httpClient.GetAsync($"http://datos.elixirsa.net/ruc/{numeroRuc}");
+        var tiempoRespuesta = stopwatch.ElapsedMilliseconds;
+        
+        // Si la respuesta no es exitosa
+        if (!response.IsSuccessStatusCode)
+        {
+            return new RucResponse
+            {
+                StatusCode = (int)response.StatusCode,
+                TiempoRespuesta = $"{tiempoRespuesta} ms",
+                Error = $"Error en la consulta: {response.ReasonPhrase}",
+                Message = $"No se pudo consultar el RUC {numeroRuc}",
+                IpSolicitante = ipSolicitante
+            };
+        }
+        
+        var responseBody = await response.Content.ReadAsStringAsync();
+        
+        // Comprobar si la respuesta está vacía o es "NaN" (lo que causa el error de parsing)
+        if (string.IsNullOrWhiteSpace(responseBody) || responseBody.Trim() == "NaN" || responseBody.Contains("NaN"))
+        {
+            return new RucResponse
+            {
+                StatusCode = 404,
+                TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+                Error = "RUC no encontrado",
+                Message = "Ups... Tuvimos dificultades al procesar tu RUC, no tenemos registros por el momento con tu RUC. Gracias.",
+                IpSolicitante = ipSolicitante
+            };
+        }
+        
+        List<RucData>? rucDataList;
+        try 
+        {
+            rucDataList = JsonConvert.DeserializeObject<List<RucData>>(responseBody);
+            
+            if (rucDataList == null || !rucDataList.Any())
+            {
+                return new RucResponse
+                {
+                    StatusCode = 404,
+                    TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+                    Error = "Datos no disponibles",
+                    Message = "Ups... Tuvimos dificultades al procesar tu RUC, no tenemos registros por el momento con tu RUC. Gracias.",
+                    IpSolicitante = ipSolicitante
+                };
+            }
+        }
+        catch (JsonException)
+        {
+            return new RucResponse
+            {
+                StatusCode = 404,
+                TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+                Error = "Error al procesar la respuesta",
+                Message = "Ups... Tuvimos dificultades al procesar tu RUC, no tenemos registros por el momento con tu RUC. Gracias.",
+                IpSolicitante = ipSolicitante
+            };
+        }
+        
+        var rucData = rucDataList.First();
+        
+        return new RucResponse
+        {
+            StatusCode = (int)response.StatusCode,
+            TiempoRespuesta = $"{tiempoRespuesta} ms",
+            Datos = new RucInfo
+            {
+                NumeroRuc = rucData.numeroRuc,
+                RazonSocial = rucData.razonSocial,
+                EstadoContribuyente = rucData.estadoContribuyenteRuc,
+                ActividadEconomica = rucData.actividadEconomicaPrincipal,
+                TipoContribuyente = rucData.tipoContribuyente,
+                Regimen = rucData.regimen,
+                Categoria = rucData.categoria,
+                ObligadoLlevarContabilidad = rucData.obligadoLlevarContabilidad,
+                AgenteRetencion = rucData.agenteRetencion,
+                ContribuyenteEspecial = rucData.contribuyenteEspecial,
+                FechaInicioActividades = rucData.informacionFechasContribuyente?.fechaInicioActividades,
+                FechaCese = rucData.informacionFechasContribuyente?.fechaCese,
+                FechaReinicioActividades = rucData.informacionFechasContribuyente?.fechaReinicioActividades,
+                FechaActualizacion = rucData.informacionFechasContribuyente?.fechaActualizacion,
+                ContribuyenteFantasma = rucData.contribuyenteFantasma,
+                TransaccionesInexistente = rucData.transaccionesInexistente
+            },
+            Message = "Consulta realizada exitosamente",
+            IpSolicitante = ipSolicitante
+        };
+    }
+    catch (JsonException)
+    {
+        return new RucResponse
+        {
+            StatusCode = 404,
+            TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+            Error = "Formato de respuesta inválido",
+            Message = "Ups... Tuvimos dificultades al procesar tu RUC, no tenemos registros por el momento con tu RUC. Gracias.",
+            IpSolicitante = ipSolicitante
+        };
+    }
+    catch (Exception ex)
+    {
+        return new RucResponse
+        {
+            StatusCode = 500,
+            TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+            Error = ex.Message,
+            Message = "Error inesperado al procesar la solicitud",
+            IpSolicitante = ipSolicitante
+        };
+    }
+    finally
+    {
+        stopwatch.Stop();
+    }
+}
+    
     public async Task<CedulaResponse> ConsultarCedulaAsync(string numeroCedula, string ipSolicitante)
     {
         var stopwatch = new Stopwatch();
@@ -39,11 +216,9 @@ public class CedulaService : ICedulaService
             }
             
             // Validar que todos sean dígitos
-            foreach (char c in numeroCedula)
+            if (numeroCedula.Any(c => !char.IsDigit(c)))
             {
-                if (!char.IsDigit(c))
-                {
-                    return new CedulaResponse
+                return new CedulaResponse
                 {
                     StatusCode = 400,
                     TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
@@ -51,7 +226,6 @@ public class CedulaService : ICedulaService
                     Message = "Validación de cédula fallida: La cédula debe contener solo dígitos",
                     IpSolicitante = ipSolicitante
                 };
-                }
             }
             
             // Validación de cédula ecuatoriana
@@ -105,14 +279,14 @@ public class CedulaService : ICedulaService
                 
                 if (cedulaData == null)
                 {
-                return new CedulaResponse
-                {
-                    StatusCode = 404,
-                    TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
-                    Error = "Datos no disponibles",
-                    Message = "Ups... Tuvimos dificultades al procesar tu cédula, no tenemos registros por el momento con tu cédula. Gracias.",
-                    IpSolicitante = ipSolicitante
-                };
+                    return new CedulaResponse
+                    {
+                        StatusCode = 404,
+                        TiempoRespuesta = $"{stopwatch.ElapsedMilliseconds} ms",
+                        Error = "Datos no disponibles",
+                        Message = "Ups... Tuvimos dificultades al procesar tu cédula, no tenemos registros por el momento con tu cédula. Gracias.",
+                        IpSolicitante = ipSolicitante
+                    };
                 }
             }
             catch (JsonException)
@@ -210,14 +384,14 @@ public class CedulaService : ICedulaService
     private static bool VerificaCedula(char[] validarCedula)
     {
         int aux = 0, par = 0, impar = 0, verifi;
-        for (int i = 0; i < 9; i += 2)
+        for (var i = 0; i < 9; i += 2)
         {
             aux = 2 * int.Parse(validarCedula[i].ToString());
             if (aux > 9)
                 aux -= 9;
             par += aux;
         }
-        for (int i = 1; i < 9; i += 2)
+        for (var i = 1; i < 9; i += 2)
         {
             impar += int.Parse(validarCedula[i].ToString());
         }
@@ -228,10 +402,7 @@ public class CedulaService : ICedulaService
         }
         else
             verifi = 0;
-        if (verifi == int.Parse(validarCedula[9].ToString()))
-            return true;
-        else
-            return false;
+        return verifi == int.Parse(validarCedula[9].ToString());
     }
 
     private string ObtenerProvinciaConCapital(string codigoProvincia)

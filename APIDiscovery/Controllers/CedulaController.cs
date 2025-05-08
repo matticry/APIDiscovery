@@ -43,5 +43,28 @@ namespace APIDiscovery.Controllers
                 _ => StatusCode(resultado.StatusCode, resultado)
             };
         }
+        
+
+        [HttpGet ("ruc/{ruc}")]
+        [ProducesResponseType(typeof(CedulaResponse), 200)]
+        [ProducesResponseType(typeof(CedulaResponse), 400)]
+        [ProducesResponseType(typeof(CedulaResponse), 404)]
+        public async Task<IActionResult> ConsultarRuc(string ruc)
+        {
+            // Obtener la IP del cliente
+            var ipSolicitante = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault() ?? 
+                                   Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? 
+                                   "IP no disponible";            
+            var resultado = await _cedulaService.ConsultarRucAsync(ruc, ipSolicitante);
+            
+            // Devolver el código de estado correspondiente según el resultado
+            return resultado.StatusCode switch
+            {
+                200 => Ok(resultado),
+                400 => BadRequest(resultado),
+                404 => NotFound(resultado),
+                _ => StatusCode(resultado.StatusCode, resultado)
+            };
+        }
     }
 }
