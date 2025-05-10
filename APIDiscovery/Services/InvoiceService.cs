@@ -433,7 +433,7 @@ public class InvoiceService : IInvoiceService
                 .Include(i => i.Client)
                 .Include(i => i.Sequence)
                 .Where(i => i.company_id == companyId)
-                .OrderBy(i => i.emission_date) 
+                .OrderByDescending(i => i.emission_date) 
                 .Take(count)
                 .Select(i => new InvoiceSummaryDTO
                 {
@@ -494,7 +494,6 @@ public class InvoiceService : IInvoiceService
     {
         try
         {
-            // Verificar si la empresa existe
             var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
             if (!enterpriseExists)
             {

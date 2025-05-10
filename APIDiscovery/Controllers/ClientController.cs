@@ -16,36 +16,83 @@ public class ClientController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IEnumerable<Client>> GetAllAsync()
+    public async Task<ActionResult<IEnumerable<Client>>> GetAllClients()
     {
-        return await _clientService.GetAllAsync();
+        var clients = await _clientService.GetAllAsync();
+        return Ok(clients);
     }
     
-    [HttpGet("{id:int}")] 
-    public async Task<IActionResult> GetByIdAsync(int id)
+    [HttpGet("enterprise/{enterpriseId}")]
+    public async Task<ActionResult<IEnumerable<Client>>> GetClientsByEnterprise(int enterpriseId)
+    {
+        var clients = await _clientService.GetAllAsync(enterpriseId);
+        return Ok(clients);
+    }
+    
+    [HttpGet("GetTotalClientsActivesAsync/{enterpriseId}")]
+    public async Task<ActionResult<int>> GetTotalClientsActivesAsync(int enterpriseId)
+    {
+        var total = await _clientService.GetTotalClientsActivesAsync(enterpriseId);
+        return Ok(total);
+    }
+    
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Client>> GetClientById(int id)
     {
         var client = await _clientService.GetByIdAsync(id);
         return Ok(client);
     }
     
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] Client client)
+    [HttpGet("dni/{dni}")]
+    public async Task<ActionResult<Client>> GetClientByDni(string dni)
     {
-        var createdClient = await _clientService.CreateAsync(client);
-        return Ok(createdClient);
+        var client = await _clientService.GetByDniAsync(dni);
+        return Ok(client);
     }
     
-    [HttpPut("{id:int}")] 
-    public async Task<IActionResult> UpdateAsync(int id, [FromBody] Client client)
+    [HttpGet("{id}/enterprises")]
+    public async Task<ActionResult<IEnumerable<Enterprise>>> GetClientEnterprises(int id)
     {
-        var updatedClient = await _clientService.UpdateAsync(id, client);
+        var enterprises = await _clientService.GetClientEnterprisesAsync(id);
+        return Ok(enterprises);
+    }
+    
+    [HttpPost("enterprise/{enterpriseId}")]
+    public async Task<ActionResult<Client>> CreateClient([FromBody] Client client, int enterpriseId)
+    {
+        var createdClient = await _clientService.CreateAsync(client, enterpriseId);
+        return CreatedAtAction(nameof(GetClientById), new { id = createdClient.id_client }, createdClient);
+    }
+    
+    [HttpPost("{clientId}/enterprise/{enterpriseId}")]
+    public async Task<ActionResult> AssignClientToEnterprise(int clientId, int enterpriseId)
+    {
+        await _clientService.AssignClientToEnterpriseAsync(clientId, enterpriseId);
+        return NoContent();
+    }
+    
+    [HttpPut("{id}/enterprise/{enterpriseId}")]
+    public async Task<ActionResult<Client>> UpdateClient(int id, [FromBody] Client client, int enterpriseId)
+    {
+        var updatedClient = await _clientService.UpdateAsync(id, client, enterpriseId);
         return Ok(updatedClient);
     }
     
-    [HttpDelete("{id:int}")] 
-    public async Task<IActionResult> DeleteAsync(int id)
+    
+    
+    [HttpDelete("{clientId}/enterprise/{enterpriseId}")]
+    public async Task<ActionResult> RemoveClientFromEnterprise(int clientId, int enterpriseId)
     {
-        var result = await _clientService.DeleteAsync(id);
-        return Ok(result);
+        await _clientService.RemoveClientFromEnterpriseAsync(clientId, enterpriseId);
+        return NoContent();
     }
+    
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteClient(int id)
+    {
+        await _clientService.DeleteAsync(id);
+        return NoContent();
+    }
+    
+    
 }

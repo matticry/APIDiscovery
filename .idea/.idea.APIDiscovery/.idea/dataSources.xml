@@ -17,17 +17,12 @@
       <jdbc-url>Server=DESKTOP-1UK1EKL\INFOELECT;Integrated Security=True;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="@156.244.32.23" uuid="513707d4-8102-4b55-adb3-082a9a5b3b1b">
+    <data-source source="LOCAL" name="@156.244.32.23" uuid="d6b1c029-65e5-4470-9d09-065a6263eed3">
       <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>
       <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
       <jdbc-url>Server=156.244.32.23;User Id=sa;Password=Toyotaro@12;TrustServerCertificate=True;</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

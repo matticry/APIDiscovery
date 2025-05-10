@@ -12,11 +12,11 @@
   "client": {
     "razonSocial": "DIEGO EDMUNDO ROMAN NOBOA", 
     "dni": "1717219586", 
-    "address": "La Rio Coca", 
-    "phone": "099999999",
-    "info": "CLIENTE IDENTIFICADO",
-    "email": "diego.roman@email.com",
-    "typeDniId": 5 
+    "address": "SOLANDA", 
+    "phone": "0983824865",
+    "info": "cliente",
+    "email": "mateoeras07@gmail.com",
+    "typeDniId": 1
   },
   "emissionPoint": {
     "idEmissionPoint": 1,
@@ -36,27 +36,21 @@
   },
   "sequence": {
     "idSequence": 1,
-    "code": "000000011"
+    "code": "000000040"
   },
   "details": [
     {
       "codeStub": "0301009",
-      "description": "INSTALACION RN2 SOFTWARE",
+      "description": "COMPRA DE FRIJOLES",
       "amount": 1,
-      "priceUnit": 40.00,
       "discount": 0,
-      "priceWithDiscount": 40.00,
-      "neto": 40.00,
-      "ivaPorc": 12,
-      "ivaValor": 4.80,
+      "ivaPorc": 15,
       "icePorc": 0,
       "iceValor": 0,
-      "subtotal": 40.00,
-      "total": 44.80,
       "note1": "Licencia indefinida",
       "note2": "",
       "note3": "",
-      "tariffId": 3,
+      "tariffId": 1,
       "articleId": 1
     }
   ],
@@ -73,15 +67,13 @@
   "totalDiscount": 0,
   "tip": 0,
   "totalAmount": 44.80,
-  "currency": "DOLAR",
+  "currency": "USD",
   "accessKey": "",
   "electronicStatus": "PENDIENTE",
   "authorizationNumber": "",
   "authorizationDate": null,
   "additionalInfo": "Factura generada para cliente identificado",
   "message": "TODOBIEN",
-  "type": "01",
-  "identifier": "1717219586",
   "branchId": 1,
   "companyId": 1,
   "emissionPointId": 1,

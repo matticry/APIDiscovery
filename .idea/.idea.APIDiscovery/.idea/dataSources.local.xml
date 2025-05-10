@@ -34,13 +34,14 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
-    <data-source name="@156.244.32.23" uuid="513707d4-8102-4b55-adb3-082a9a5b3b1b">
+    <data-source name="@156.244.32.23" uuid="d6b1c029-65e5-4470-9d09-065a6263eed3">
       <database-info product="Microsoft SQL Server" version="16.00.4185" jdbc-version="4.2" driver-name="JetBrains JDBC Driver for SQL Server" driver-version="1.0" dbms="MSSQL" exact-version="16.0.4185" exact-driver-version="1.0">
         <extra-name-characters>$#@</extra-name-characters>
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
-      <user-name>sa</user-name>
+      <secret-storage>master_key</secret-storage>
+      <auth-provider>no-auth</auth-provider>
       <schema-mapping>
         <introspection-scope>
           <node kind="database" qname="DB_health">

@@ -28,6 +28,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<InvoicePayment> InvoicePayments { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<TypeDni> TypeDnis { get; set; }
+    public DbSet<EnterpriseClient> EnterpriseClients { get; set; }
 
 
 

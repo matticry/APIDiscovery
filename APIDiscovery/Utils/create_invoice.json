@@ -10,13 +10,13 @@
     "accountant": "y"
   },
   "client": {
-    "razonSocial": "CONSUMIDOR FINAL",
-    "dni": "9999999999999",
-    "address": "CONSUMIDOR FINAL",
-    "phone": "099999999",
-    "info": "CONSUMIDOR FINAL",
-    "email": "consumidorfinal@email.com",
-    "typeDniId": 7
+    "razonSocial": "DIEGO EDMUNDO ROMAN NOBOA",
+    "dni": "1717219586",
+    "address": "SOLANDA",
+    "phone": "0983824865",
+    "info": "cliente",
+    "email": "mateoeras07@gmail.com",
+    "typeDniId": 1
   },
 
   "emissionPoint": {
@@ -57,16 +57,17 @@
   ],
   "payments": [
     {
-      "total": 22.99,
+      "total": 93.14,
       "deadline": 30,
       "unitTime": "dias",
       "paymentId": 1
-    }  ],
+    }  
+  ],
   "emissionDate": "2025-05-07T08:21:15.263Z",
-  "totalWithoutTaxes": 19.99,
+  "totalWithoutTaxes": 80.99,
   "totalDiscount": 0,
   "tip": 0,
-  "totalAmount": 22.99,
+  "totalAmount": 93.14,
   "currency": "USD",
   "accessKey": "string",
   "electronicStatus": "PENDIENTE",
