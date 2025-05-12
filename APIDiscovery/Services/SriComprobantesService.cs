@@ -8,47 +8,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIDiscovery.Services;
 
-public class SriComprobantesService : ISriComprobantesService
+public class SriComprobantesService(
+    IXmlFacturaService xmlFacturaService,
+    IConfiguration configuration,
+    ILogger<SriComprobantesService> logger,
+    ApplicationDbContext context)
+    : ISriComprobantesService
 {
-    private readonly IConfiguration _configuration;
-    private readonly ApplicationDbContext _context;
-    private readonly ILogger<SriComprobantesService> _logger;
-    private readonly string _sriEndpointAutorizacion_Pruebas;
-    private readonly string _sriEndpointEnvioPruebas;
-    private readonly string _sriEndpointAutorizacion_Produccion;
-    private readonly string _sriEndpointEnvioProduccion;
-    private readonly IXmlFacturaService _xmlFacturaService;
+    private readonly string _sriEndpointAutorizacionPruebas = configuration.GetValue<string>("SriEndpoints:Autorizar_Pruebas") ??
+                                                               "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline";
+    private readonly string _sriEndpointEnvioPruebas = configuration.GetValue<string>("SriEndpoints:Enviar_Pruebas") ??
+                                                       "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline";
+    private readonly string _sriEndpointAutorizacionProduccion = configuration.GetValue<string>("SriEndpoints:Autorizar_Produccion") ??
+                                                                  "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline";
+    private readonly string _sriEndpointEnvioProduccion = configuration.GetValue<string>("SriEndpoints:Enviar_Produccion") ??
+                                                          "https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline";
+    private readonly IXmlFacturaService _xmlFacturaService = xmlFacturaService;
+    
 
-    public SriComprobantesService(
-        IXmlFacturaService xmlFacturaService,
-        IConfiguration configuration,
-        ILogger<SriComprobantesService> logger, ApplicationDbContext context)
-    {
-        _xmlFacturaService = xmlFacturaService;
-        _configuration = configuration;
-        _logger = logger;
-        _context = context;
-        
-        // Endpoints de pruebas
-        _sriEndpointEnvioPruebas = _configuration.GetValue<string>("SriEndpoints:Enviar_Pruebas") ??
-                                   "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline";
-        _sriEndpointAutorizacion_Pruebas = _configuration.GetValue<string>("SriEndpoints:Autorizar_Pruebas") ??
-                                           "https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline";
-        
-        // Endpoints de producción
-        _sriEndpointEnvioProduccion = _configuration.GetValue<string>("SriEndpoints:Enviar_Produccion") ??
-                                      "https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline";
-        _sriEndpointAutorizacion_Produccion = _configuration.GetValue<string>("SriEndpoints:Autorizar_Produccion") ??
-                                              "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline";
-    }
-
-   public async Task<SriResponse> EnviarComprobanteAsync(int invoiceId)
+    public async Task<SriResponse> EnviarComprobanteAsync(int invoiceId)
     {
         try
         {
             // 1) Obtener y validar la factura
-            var invoice = await _context.Invoices
-                .Include(i => i.Enterprise) // Incluir la entidad Enterprise para acceder a environment
+            var invoice = await context.Invoices
+                .Include(i => i.Enterprise) 
                 .FirstOrDefaultAsync(i => i.inv_id == invoiceId);
                 
             if (invoice == null || string.IsNullOrEmpty(invoice.xml))
@@ -56,15 +40,15 @@ public class SriComprobantesService : ISriComprobantesService
 
             // 2) Verificar el ambiente (1=pruebas, 2=producción)
             string sriEndpoint;
-            switch (invoice.Enterprise?.environment)
+            switch (invoice.Enterprise.environment)
             {
                 case 1:
                     sriEndpoint = _sriEndpointEnvioPruebas;
-                    _logger.LogInformation($"Utilizando ambiente de PRUEBAS para factura ID: {invoiceId}");
+                    logger.LogInformation($"Utilizando ambiente de PRUEBAS para factura ID: {invoiceId}");
                     break;
                 case 2:
                     sriEndpoint = _sriEndpointEnvioProduccion;
-                    _logger.LogInformation($"Utilizando ambiente de PRODUCCIÓN para factura ID: {invoiceId}");
+                    logger.LogInformation($"Utilizando ambiente de PRODUCCIÓN para factura ID: {invoiceId}");
                     break;
                 default:
                     throw new Exception($"Ambiente no válido ({invoice.Enterprise?.environment}) para la empresa de la factura ID: {invoiceId}");
@@ -78,12 +62,9 @@ public class SriComprobantesService : ISriComprobantesService
                 Encoding.UTF8.GetBytes(xmlContent),
                 Base64FormattingOptions.None
             );
-            
-            // 5) Guardar el XML en Base64 en la base de datos
             invoice.XmlBase64 = base64Xml;
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
-            // 6) Configurar SOAP request
             var soapRequest = $"""
                                <soapenv:Envelope 
                                    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
@@ -119,20 +100,20 @@ public class SriComprobantesService : ISriComprobantesService
                 Estado = xdoc.Descendants(ns + "estado").FirstOrDefault()?.Value ?? "RECIBIDA",
                 Mensajes = xdoc.Descendants("mensaje").Select(m => new SriMessage
                 {
-                    Identificador = m.Element("identificador")?.Value,
-                    Mensaje = m.Element("mensaje")?.Value,
-                    Tipo = m.Element("tipo")?.Value
+                    Identificador = m.Element("identificador")?.Value ?? String.Empty,
+                    Mensaje = m.Element("mensaje")?.Value ?? String.Empty,
+                    Tipo = m.Element("tipo")?.Value ?? String.Empty
                 }).ToList(),
                 RawResponse = responseContent
             };
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error al enviar comprobante al SRI");
+            logger.LogError(ex, "Error al enviar comprobante al SRI");
             return new SriResponse
             {
                 Estado = "ERROR_INESPERADO",
-                Mensajes = new List<SriMessage> { new() { Mensaje = ex.Message } },
+                Mensajes = [new SriMessage { Mensaje = ex.Message }],
                 RawResponse = ex.ToString()
             };
         }
@@ -142,7 +123,26 @@ public class SriComprobantesService : ISriComprobantesService
     {
         try
         {
-            _logger.LogInformation($"Iniciando autorización para clave: {claveAcceso} y factura ID: {invoiceId}");
+            logger.LogInformation($"Iniciando autorización para clave: {claveAcceso} y factura ID: {invoiceId}");
+            
+            var invoice = await context.Invoices.Include(i => i.Enterprise).FirstOrDefaultAsync(i => i.inv_id == invoiceId);
+            if (invoice == null)
+                throw new Exception($"No se encontró la factura con ID: {invoiceId}");
+            
+            string sriEndpoint;
+            switch (invoice.Enterprise?.environment)
+            {
+                case 1:
+                    sriEndpoint = _sriEndpointAutorizacionPruebas;
+                    logger.LogInformation($"Utilizando ambiente de PRUEBAS para factura ID: {invoiceId}");
+                    break;
+                case 2:
+                    sriEndpoint = _sriEndpointAutorizacionProduccion;
+                    logger.LogInformation($"Utilizando ambiente de PRODUCCIÓN para factura ID: {invoiceId}");
+                    break;
+                default:
+                    throw new Exception($"Ambiente no válido ({invoice.Enterprise?.environment}) para la empresa de la factura ID: {invoiceId}");
+            }
 
             // 1) Construir el SOAP request con el namespace correcto
             var soapRequest = $@"
@@ -155,14 +155,12 @@ public class SriComprobantesService : ISriComprobantesService
             </soap:Body>
         </soap:Envelope>";
 
-            _logger.LogDebug($"Request SOAP: {soapRequest}");
+            logger.LogDebug($"Request SOAP: {soapRequest}");
 
             // 2) Configurar y enviar la petición HTTP
-            using var httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(_sriEndpointAutorizacion_Pruebas),
-                Timeout = TimeSpan.FromMinutes(2) // Aumentar timeout a 2 minutos
-            };
+            using var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(sriEndpoint);
+            httpClient.Timeout = TimeSpan.FromMinutes(2);
 
             // Configurar encabezados exactamente como en Postman
             httpClient.DefaultRequestHeaders.Clear();
@@ -176,20 +174,20 @@ public class SriComprobantesService : ISriComprobantesService
             );
 
             // Asegurarse de que el Content-Type sea exactamente "text/xml" sin charset
-            content.Headers.ContentType.CharSet = null;
+            if (content.Headers.ContentType != null) content.Headers.ContentType.CharSet = null;
 
             // Enviar la solicitud y capturar la respuesta
-            _logger.LogInformation($"Enviando solicitud a: {_sriEndpointAutorizacion_Pruebas}");
+            logger.LogInformation($"Enviando solicitud a: {_sriEndpointAutorizacionPruebas}");
             var httpResponse = await httpClient.PostAsync("", content);
 
             // Capturar la respuesta y registrar el código de estado
             var rawXml = await httpResponse.Content.ReadAsStringAsync();
-            _logger.LogInformation($"Respuesta HTTP: {(int)httpResponse.StatusCode} {httpResponse.ReasonPhrase}");
+            logger.LogInformation($"Respuesta HTTP: {(int)httpResponse.StatusCode} {httpResponse.ReasonPhrase}");
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                _logger.LogError($"Error HTTP {(int)httpResponse.StatusCode}: {httpResponse.ReasonPhrase}");
-                _logger.LogError($"Contenido de respuesta: {rawXml}");
+                logger.LogError($"Error HTTP {(int)httpResponse.StatusCode}: {httpResponse.ReasonPhrase}");
+                logger.LogError($"Contenido de respuesta: {rawXml}");
 
                 return new SriAutorizacionResponse
                 {
@@ -204,7 +202,7 @@ public class SriComprobantesService : ISriComprobantesService
             try
             {
                 var xdoc = XDocument.Parse(rawXml);
-                _logger.LogDebug("XML parseado correctamente");
+                logger.LogDebug("XML parseado correctamente");
 
                 // Buscar en todos los namespaces para mayor robustez
                 var respNode = xdoc.Descendants()
@@ -212,8 +210,8 @@ public class SriComprobantesService : ISriComprobantesService
 
                 if (respNode == null)
                 {
-                    _logger.LogWarning("No se encontró el nodo RespuestaAutorizacionComprobante");
-                    _logger.LogDebug($"XML recibido: {rawXml}");
+                    logger.LogWarning("No se encontró el nodo RespuestaAutorizacionComprobante");
+                    logger.LogDebug($"XML recibido: {rawXml}");
 
                     return new SriAutorizacionResponse
                     {
@@ -245,17 +243,17 @@ public class SriComprobantesService : ISriComprobantesService
                         if (!DateTime.TryParse(fechaStr, out fechaAutorizacion))
                         {
                             fechaAutorizacion = DateTime.Now; // Valor predeterminado
-                            _logger.LogWarning($"No se pudo parsear la fecha: {fechaStr}");
+                            logger.LogWarning($"No se pudo parsear la fecha: {fechaStr}");
                         }
 
                         return new SriAutorizacion
                         {
-                            Estado = a.Descendants().FirstOrDefault(x => x.Name.LocalName == "estado")?.Value,
+                            Estado = a.Descendants().FirstOrDefault(x => x.Name.LocalName == "estado")?.Value ?? throw new InvalidOperationException(),
                             NumeroAutorizacion = a.Descendants()
-                                .FirstOrDefault(x => x.Name.LocalName == "numeroAutorizacion")?.Value,
+                                .FirstOrDefault(x => x.Name.LocalName == "numeroAutorizacion")?.Value ?? throw new InvalidOperationException(),
                             FechaAutorizacion = fechaAutorizacion,
-                            Ambiente = a.Descendants().FirstOrDefault(x => x.Name.LocalName == "ambiente")?.Value,
-                            Comprobante = a.Descendants().FirstOrDefault(x => x.Name.LocalName == "comprobante")?.Value
+                            Ambiente = a.Descendants().FirstOrDefault(x => x.Name.LocalName == "ambiente")?.Value ?? throw new InvalidOperationException(),
+                            Comprobante = a.Descendants().FirstOrDefault(x => x.Name.LocalName == "comprobante")?.Value ?? throw new InvalidOperationException()
                         };
                     })
                     .ToList();
@@ -269,7 +267,7 @@ public class SriComprobantesService : ISriComprobantesService
                     RawResponse = rawXml
                 };
 
-                _logger.LogInformation(
+                logger.LogInformation(
                     $"Autorización completada. Estado: {(autorizaciones.Any() ? autorizaciones.First().Estado : "Sin autorizaciones")}");
 
                 // 7) Actualizar el estado de la factura si se proporcionó un ID
@@ -279,7 +277,7 @@ public class SriComprobantesService : ISriComprobantesService
             }
             catch (XmlException xmlEx)
             {
-                _logger.LogError(xmlEx, "Error al parsear XML de respuesta");
+                logger.LogError(xmlEx, "Error al parsear XML de respuesta");
                 return new SriAutorizacionResponse
                 {
                     ClaveAccesoConsultada = claveAcceso,
@@ -291,7 +289,7 @@ public class SriComprobantesService : ISriComprobantesService
         }
         catch (TaskCanceledException ex)
         {
-            _logger.LogError(ex, "Timeout al autorizar comprobante en el SRI");
+            logger.LogError(ex, "Timeout al autorizar comprobante en el SRI");
             return new SriAutorizacionResponse
             {
                 ClaveAccesoConsultada = claveAcceso,
@@ -302,7 +300,7 @@ public class SriComprobantesService : ISriComprobantesService
         }
         catch (HttpRequestException ex)
         {
-            _logger.LogError(ex, "Error de red al autorizar comprobante en el SRI");
+            logger.LogError(ex, "Error de red al autorizar comprobante en el SRI");
             return new SriAutorizacionResponse
             {
                 ClaveAccesoConsultada = claveAcceso,
@@ -313,7 +311,7 @@ public class SriComprobantesService : ISriComprobantesService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error general al autorizar comprobante en el SRI");
+            logger.LogError(ex, "Error general al autorizar comprobante en el SRI");
             return new SriAutorizacionResponse
             {
                 ClaveAccesoConsultada = claveAcceso,
@@ -325,28 +323,28 @@ public class SriComprobantesService : ISriComprobantesService
     }
 
 
-    private async Task<bool> ActualizarEstadoFacturaAsync(int invoiceId, SriAutorizacionResponse respuesta)
+    private async Task ActualizarEstadoFacturaAsync(int invoiceId, SriAutorizacionResponse respuesta)
     {
         try
         {
-            _logger.LogInformation($"Actualizando estado de factura ID: {invoiceId} con respuesta SRI");
+            logger.LogInformation($"Actualizando estado de factura ID: {invoiceId} con respuesta SRI");
 
             // Buscar la factura
-            var invoice = await _context.Invoices.FindAsync(invoiceId);
+            var invoice = await context.Invoices.FindAsync(invoiceId);
             if (invoice == null)
             {
-                _logger.LogError($"No se encontró la factura con ID: {invoiceId}");
-                return false;
+                logger.LogError($"No se encontró la factura con ID: {invoiceId}");
+                return;
             }
 
             // Verificar si hay autorizaciones en la respuesta
-            if (respuesta.Autorizaciones == null || !respuesta.Autorizaciones.Any())
+            if (!respuesta.Autorizaciones.Any())
             {
-                _logger.LogWarning($"No se encontraron autorizaciones para la factura ID: {invoiceId}");
+                logger.LogWarning($"No se encontraron autorizaciones para la factura ID: {invoiceId}");
                 invoice.electronic_status = "RECHAZADO";
                 invoice.invoice_status = "NO AUTORIZADO";
-                await _context.SaveChangesAsync();
-                return true;
+                await context.SaveChangesAsync();
+                return;
             }
 
             // Obtener la primera autorización (normalmente solo hay una)
@@ -355,7 +353,7 @@ public class SriComprobantesService : ISriComprobantesService
             // Actualizar los campos basados en el estado de la autorización
             if (autorizacion.Estado == "AUTORIZADO")
             {
-                _logger.LogInformation($"Factura ID: {invoiceId} autorizada por SRI");
+                logger.LogInformation($"Factura ID: {invoiceId} autorizada por SRI");
 
                 // Actualizar los campos del modelo Invoice
                 invoice.authorization_date = autorizacion.FechaAutorizacion;
@@ -365,7 +363,7 @@ public class SriComprobantesService : ISriComprobantesService
             }
             else
             {
-                _logger.LogWarning($"Factura ID: {invoiceId} no autorizada. Estado: {autorizacion.Estado}");
+                logger.LogWarning($"Factura ID: {invoiceId} no autorizada. Estado: {autorizacion.Estado}");
 
                 // Actualizar solo los campos de estado
                 invoice.electronic_status = autorizacion.Estado ?? "RECHAZADO";
@@ -373,13 +371,11 @@ public class SriComprobantesService : ISriComprobantesService
             }
 
             // Guardar los cambios en la base de datos
-            await _context.SaveChangesAsync();
-            return true;
+            await context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error al actualizar estado de factura ID: {invoiceId}");
-            return false;
+            logger.LogError(ex, $"Error al actualizar estado de factura ID: {invoiceId}");
         }
     }
 }

@@ -233,6 +233,21 @@ create table tbl_client
 )
 go
 
+create table tbl_enterprise_client
+(
+    id_en_cl      int identity
+        constraint tbl_enterprise_client_pk
+            primary key,
+    enterprise_id int              not null
+        constraint tbl_enterprise_client_tbl_enterprise_id_en_fk
+            references tbl_enterprise,
+    client_id     int              not null
+        constraint tbl_enterprise_client_tbl_client_id_client_fk
+            references tbl_client,
+    status        char default 'A' not null
+)
+go
+
 create table tbl_invoice
 (
     inv_id               int identity

@@ -107,7 +107,7 @@ public class XmlFacturaService : IXmlFacturaService
         };
         
         XmlDocument xmlFirmado;
-        using (var fs = new FileStream(rutaTemp, FileMode.Open, FileAccess.Read))
+        await using (var fs = new FileStream(rutaTemp, FileMode.Open, FileAccess.Read))
         {
             var result = xadesService.Sign(fs, parameters);
             xmlFirmado = result.Document;
