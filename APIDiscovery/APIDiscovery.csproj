@@ -8,11 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BarcodeLib" Version="3.1.5" />
+        <PackageReference Include="BarcodeLib.Barcode" Version="7.4.2.1" />
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="DinkToPdf" Version="1.0.8" />
         <PackageReference Include="dotenv.net" Version="3.2.1" />
+        <PackageReference Include="HtmlToPdfConverter.Core" Version="2.0.0" />
         <PackageReference Include="Infoware.Microsoft.Xades" Version="1.0.5" />
         <PackageReference Include="Infoware.SRI.Firmar" Version="1.1.47" />
-        <PackageReference Include="MailKit" Version="4.11.0" />
+        <PackageReference Include="MailKit" Version="4.12.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.13"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -20,13 +24,17 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+        <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="QRCoder" Version="1.6.0" />
         <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+        <PackageReference Include="SkiaSharp" Version="3.119.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
         <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.0-preview.3.25171.5" />
         <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
         <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.0-preview.3.25171.5" />
+        <PackageReference Include="ZXing.Net" Version="0.16.10" />
     </ItemGroup>
 
     <ItemGroup>

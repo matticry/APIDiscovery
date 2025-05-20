@@ -10,4 +10,5 @@ public class EnterpriseDTO
     public string? Phone { get; set; }
     public string? Email { get; set; }
     public char Accountant { get; set; }
+    public int? Enviroment { get; set; }
 }

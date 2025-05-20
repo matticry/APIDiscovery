@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Text;
 using APIDiscovery.Controllers.Middleware;
 using APIDiscovery.Core;
@@ -6,6 +7,8 @@ using APIDiscovery.Services;
 using APIDiscovery.Services.Commands;
 using APIDiscovery.Services.Security;
 using APIDiscovery.Utils;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
@@ -42,13 +45,18 @@ builder.Services
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Registrar servicios
+
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+builder.Services.AddScoped<InvoicePdfGenerator>();
+
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddSingleton<RabbitMQService>();
 builder.Services.AddHostedService<UserActionConsumerService>();
 builder.Services.AddScoped<CustomService>();
+builder.Services.AddScoped<InvoicePdfGenerator>();
+builder.Services.AddScoped<IEmailSendService, EmailSendService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();

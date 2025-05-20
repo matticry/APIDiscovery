@@ -113,6 +113,20 @@ public class InvoicesController : ControllerBase
         }
     }
     
+    [HttpGet("GetXmlBase64ByInvoiceId/{invoiceId}")]
+    public async Task<IActionResult> GetXmlBase64ByInvoiceId(int invoiceId)
+    {
+        try
+        {
+            var invoice = await _invoiceService.GetXmlBase64ByInvoiceId(invoiceId);
+            return Ok(invoice);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    
     [HttpGet("GetUnauthorizedInvoicesByEnterpriseId/{enterpriseId}")]
     public async Task<IActionResult> GetUnauthorizedInvoicesByEnterpriseId(int enterpriseId)
     {

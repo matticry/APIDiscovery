@@ -34,20 +34,19 @@ public class Enterprise
     public char accountant { get; set; } = 'Y';
     
     [MaxLength(250)]
-    public string? email_user { get; set; }
+    public string email_user { get; set; }
     
     [MaxLength(250)]
-    public string? email_password { get; set; }
+    public string email_password { get; set; }
     
     [MaxLength(5)]
-    public string? email_port { get; set; }
+    public string email_port { get; set; }
     
     [MaxLength(150)]
-    public string? email_smtp { get; set; }
+    public string email_smtp { get; set; }
     
-    public int email_security { get; set; }
+    public bool email_security { get; set; } = true;
     
-    public int email_type { get; set; }
     
     [MaxLength(250)]
     public string? electronic_signature { get; set; }

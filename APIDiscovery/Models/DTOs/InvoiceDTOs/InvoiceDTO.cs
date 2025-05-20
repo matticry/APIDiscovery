@@ -26,6 +26,7 @@ public class InvoiceDTO
     public DateTime? AuthorizationDate { get; set; }
     public string? AdditionalInfo { get; set; }
     public string? Message { get; set; }
+    public string? sequenceCode { get; set; } = string.Empty;
     
 
     // IDs para persistencia

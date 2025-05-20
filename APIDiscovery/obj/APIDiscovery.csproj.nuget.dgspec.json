@@ -53,6 +53,22 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "BarcodeLib": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            },
+            "BarcodeLib.Barcode": {
+              "target": "Package",
+              "version": "[7.4.2.1, )"
+            },
+            "DinkToPdf": {
+              "target": "Package",
+              "version": "[1.0.8, )"
+            },
+            "HtmlToPdfConverter.Core": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
             "Infoware.Microsoft.Xades": {
               "target": "Package",
               "version": "[1.0.5, )"
@@ -63,7 +79,7 @@
             },
             "MailKit": {
               "target": "Package",
-              "version": "[4.11.0, )"
+              "version": "[4.12.1, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -83,13 +99,25 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "NETCore.MailKit": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
             "RabbitMQ.Client": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "SkiaSharp": {
+              "target": "Package",
+              "version": "[3.119.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -110,6 +138,10 @@
             "System.Security.Cryptography.Xml": {
               "target": "Package",
               "version": "[10.0.0-preview.3.25171.5, )"
+            },
+            "ZXing.Net": {
+              "target": "Package",
+              "version": "[0.16.10, )"
             },
             "dotenv.net": {
               "target": "Package",

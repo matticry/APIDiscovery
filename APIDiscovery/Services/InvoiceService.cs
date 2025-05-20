@@ -80,7 +80,6 @@ public class InvoiceService : IInvoiceService
 
             if (isConsumerFinal)
             {
-                // Buscar cliente "CONSUMIDOR FINAL" existente
                 clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == "9999999999999");
 
                 if (clientEntity == null)
@@ -259,6 +258,16 @@ public class InvoiceService : IInvoiceService
             foreach (var detalle in detallesCalculados)
             {
                 var article = await _context.Articles.FirstOrDefaultAsync(a => a.id_ar == detalle.ArticleId);
+                
+                if (article != null)
+                    if (article.stock < detalle.Amount)
+                    {
+                        throw new BusinessException($"No hay suficiente stock para el artículo {article.name}");
+                    }
+
+                if (article == null) continue;
+                article.stock -= (int)detalle.Amount;
+                _context.Articles.Update(article);
 
                 var detail = new InvoiceDetail
                 {
@@ -326,6 +335,8 @@ public class InvoiceService : IInvoiceService
         }
     }
     
+    
+    
     public async Task<List<InvoiceDTO>> GetAuthorizedInvoicesByEnterpriseId(int enterpriseId)
     {
         var invoices = await _context.Invoices
@@ -349,6 +360,7 @@ public class InvoiceService : IInvoiceService
                 InvoiceId = invoice.inv_id,
                 EmissionDate = invoice.emission_date,
                 TotalAmount = invoice.total_amount,
+                sequenceCode = invoice.sequence,
                 TotalWithoutTaxes = invoice.total_without_taxes,
                 TotalDiscount = invoice.total_discount,
                 Tip = invoice.tip,
@@ -464,7 +476,46 @@ public class InvoiceService : IInvoiceService
             throw new ApplicationException($"Error al obtener las facturas: {ex.Message}", ex);
         }
     }
-    
+
+    public async Task<string> GetXmlBase64ByInvoiceId(int invoiceId)
+    {
+        var invoice = await _context.Invoices.FindAsync(invoiceId);
+        if (invoice == null)
+        {
+            throw new EntityNotFoundException($"Factura con ID {invoiceId} no encontrada");
+        }
+
+        return invoice.XmlBase64 ?? string.Empty;
+    }
+
+    public async Task<int> GetTotalInvoiceUnAuthorizedCountByCompanyIdAsync(int companyId)
+    {
+        try
+        {
+            // Verificar si la empresa existe
+            var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
+            if (!enterpriseExists)
+            {
+                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
+            }
+
+            var totalInvoices = await _context.Invoices
+                .Where(i => i.company_id == companyId && i.invoice_status == "NO AUTORIZADO")
+                .CountAsync();
+
+            return totalInvoices;
+        }
+        catch (EntityNotFoundException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationException($"Error al obtener el conteo de facturas: {ex.Message}", ex);
+        }
+        
+    }
+
     public async Task<decimal> GetTotalInvoiceAmountByCompanyIdAsync(int companyId)
     {
         try
@@ -562,14 +613,11 @@ public class InvoiceService : IInvoiceService
             throw new EntityNotFoundException(
                 $"No se encontraron facturas no autorizadas para la empresa con ID {enterpriseId}");
 
-        var invoiceDtos = new List<InvoiceDTO>();
-
-        foreach (var invoice in invoices)
-        {
-            var dto = new InvoiceDTO
+        return invoices.Select(invoice => new InvoiceDTO
             {
                 InvoiceId = invoice.inv_id,
                 EmissionDate = invoice.emission_date,
+                sequenceCode = invoice.sequence,
                 TotalAmount = invoice.total_amount,
                 TotalWithoutTaxes = invoice.total_without_taxes,
                 TotalDiscount = invoice.total_discount,
@@ -599,16 +647,8 @@ public class InvoiceService : IInvoiceService
                     Address = invoice.Branch.address,
                     Phone = invoice.Branch.phone
                 },
-                Sequence = new SequenceDTO
-                {
-                    IdSequence = invoice.Sequence.id_sequence,
-                    Code = invoice.Sequence.code
-                },
-                DocumentType = new DocumentTypeDTO
-                {
-                    IdDocumentType = invoice.DocumentType.id_d_t,
-                    NameDocument = invoice.DocumentType.name_document
-                },
+                Sequence = new SequenceDTO { IdSequence = invoice.Sequence.id_sequence, Code = invoice.Sequence.code },
+                DocumentType = new DocumentTypeDTO { IdDocumentType = invoice.DocumentType.id_d_t, NameDocument = invoice.DocumentType.name_document },
                 Enterprise = new EnterpriseDTO
                 {
                     IdEnterprise = invoice.Enterprise.id_en,
@@ -620,46 +660,32 @@ public class InvoiceService : IInvoiceService
                     Email = invoice.Enterprise.email,
                     Accountant = invoice.Enterprise.accountant
                 },
-                EmissionPoint = new EmissionPointDTO
-                {
-                    IdEmissionPoint = invoice.EmissionPoint.id_e_p,
-                    Code = invoice.EmissionPoint.code,
-                    Details = invoice.EmissionPoint.details
-                },
+                EmissionPoint = new EmissionPointDTO { IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code, Details = invoice.EmissionPoint.details },
                 Details = invoice.InvoiceDetails.Select(d => new InvoiceDetailDTO
-                {
-                    CodeStub = d.code_stub,
-                    Description = d.description,
-                    Amount = d.amount,
-                    PriceUnit = d.price_unit,
-                    Discount = d.discount,
-                    PriceWithDiscount = d.price_with_discount,
-                    Neto = d.neto,
-                    IvaPorc = d.iva_porc,
-                    IvaValor = d.iva_valor,
-                    IcePorc = d.ice_porc,
-                    IceValor = d.ice_valor,
-                    Subtotal = d.subtotal,
-                    Total = d.total,
-                    Note1 = d.note1,
-                    Note2 = d.note2,
-                    Note3 = d.note3,
-                    ArticleId = d.id_article,
-                    TariffId = d.id_tariff
-                }).ToList(),
-                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO
-                {
-                    Total = p.total,
-                    Deadline = p.deadline,
-                    UnitTime = p.unit_time,
-                    PaymentId = p.id_payment
-                }).ToList()
-            };
-
-            invoiceDtos.Add(dto);
-        }
-
-        return invoiceDtos;
+                    {
+                        CodeStub = d.code_stub,
+                        Description = d.description,
+                        Amount = d.amount,
+                        PriceUnit = d.price_unit,
+                        Discount = d.discount,
+                        PriceWithDiscount = d.price_with_discount,
+                        Neto = d.neto,
+                        IvaPorc = d.iva_porc,
+                        IvaValor = d.iva_valor,
+                        IcePorc = d.ice_porc,
+                        IceValor = d.ice_valor,
+                        Subtotal = d.subtotal,
+                        Total = d.total,
+                        Note1 = d.note1,
+                        Note2 = d.note2,
+                        Note3 = d.note3,
+                        ArticleId = d.id_article,
+                        TariffId = d.id_tariff
+                    })
+                    .ToList(),
+                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO { Total = p.total, Deadline = p.deadline, UnitTime = p.unit_time, PaymentId = p.id_payment }).ToList()
+            })
+            .ToList();
     }
 
     public async Task<InvoiceDTO> GetInvoiceDtoById(int invoiceId)

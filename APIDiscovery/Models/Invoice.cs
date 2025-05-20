@@ -52,6 +52,8 @@ public class Invoice
     [Column(TypeName = "decimal(18, 2)")] public decimal total_vat_0 { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")] public decimal vat { get; set; }
+    
+
 
     public string? message { get; set; }
 

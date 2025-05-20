@@ -16,4 +16,6 @@ public class ArticleDto
     public int IdCategory { get; set; }
     public string CategoryName { get; set; }
     public List<FareDto> Fares { get; set; }
+    public string StockStatus { get; set; }
+    public string StockMessage { get; set; }
 }
