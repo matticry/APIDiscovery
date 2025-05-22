@@ -16,21 +16,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/CategoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/CategoryService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/Commands/CustomService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/apphost.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/ref/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/refint/APIDiscovery.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/rider.project.model.nuget.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -336,7 +321,7 @@
       <workItem from="1747834481173" duration="1195000" />
       <workItem from="1747835698057" duration="5627000" />
       <workItem from="1747845512096" duration="658000" />
-      <workItem from="1747919987289" duration="4668000" />
+      <workItem from="1747919987289" duration="5605000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -530,7 +515,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747756016073</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="new updates 22/05/2025">
+      <option name="closed" value="true" />
+      <created>1747925229977</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1747925229977</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -574,7 +567,8 @@
     <MESSAGE value="news updates into SRI service" />
     <MESSAGE value="updates" />
     <MESSAGE value="Commit: I add new updates, send email invoice, generate RIMPE" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit: I add new updates, send email invoice, generate RIMPE" />
+    <MESSAGE value="new updates 22/05/2025" />
+    <option name="LAST_COMMIT_MESSAGE" value="new updates 22/05/2025" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
