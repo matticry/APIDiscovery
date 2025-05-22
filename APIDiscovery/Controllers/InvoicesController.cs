@@ -157,6 +157,21 @@ public class InvoicesController : ControllerBase
         }
     }
     
+    [HttpGet("GetTotalInvoiceUnAuthorizedCountByCompanyIdAsync/{enterpriseId}")]
+    public async Task<IActionResult> GetTotalInvoiceUnAuthorizedCountByCompanyIdAsync(int enterpriseId)
+    {
+        try
+        {
+            var totalInvoices = await _invoiceService.GetTotalInvoiceUnAuthorizedCountByCompanyIdAsync(enterpriseId);
+            return Ok(totalInvoices);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+            
+        }
+    }
+    
     [HttpGet("GetTotalInvoiceCountByCompanyIdAsync/{enterpriseId}")]
     public async Task<IActionResult> GetTotalInvoiceCountByCompanyIdAsync(int enterpriseId)
     {

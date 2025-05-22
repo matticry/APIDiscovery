@@ -169,12 +169,13 @@ public class CustomService
         try
         {
             var categories = await _context.Categories
-                .Where(c => c.id_enterprise == enterpriseId && c.status == 'A')
+                .Where(c => c.id_enterprise == enterpriseId)
                 .Select(c => new
                 {
                     Id = c.id_ca,
                     Name = c.name,
-                    Description = c.description
+                    Description = c.description,
+                    Status = c.status
                 })
                 .ToListAsync();
                 
@@ -185,7 +186,7 @@ public class CustomService
         {
             response.Success = false;
             response.DisplayMessage = "Error al obtener las categorías.";
-            response.ErrorMessages = new List<string> { ex.Message };
+            response.ErrorMessages = [ex.Message];
         }
         
         stopwatch.Stop();

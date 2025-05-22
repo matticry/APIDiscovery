@@ -48,14 +48,12 @@ public class InvoiceService : IInvoiceService
                            ?? throw new EntityNotFoundException(
                                $"Secuencia con ID {invoiceDto.Sequence.IdSequence} no encontrada");
 
-
             string nextSequenceNumber;
 
             var lastInvoice = await _context.Invoices
                 .Where(i => i.sequence_id == sequence.id_sequence)
                 .OrderByDescending(i => i.inv_id)
                 .FirstOrDefaultAsync();
-
 
             if (lastInvoice != null && !string.IsNullOrEmpty(lastInvoice.sequence))
             {
@@ -73,41 +71,21 @@ public class InvoiceService : IInvoiceService
                                ?? throw new EntityNotFoundException(
                                    $"Tipo de documento con ID {invoiceDto.DocumentType.IdDocumentType} no encontrado");
 
-
-            var isConsumerFinal = invoiceDto.TotalAmount <= 50;
-
+            // LÓGICA DE CLIENTE MODIFICADA
             Client clientEntity;
 
-            if (isConsumerFinal)
-            {
-                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == "9999999999999");
-
-                if (clientEntity == null)
-                {
-                    clientEntity = new Client
-                    {
-                        razon_social = "CONSUMIDOR FINAL",
-                        dni = "9999999999999",
-                        address = "CONSUMIDOR FINAL",
-                        phone = "099999999",
-                        email = "consumidorfinal@email.com",
-                        info = "Factura generada para consumidor final",
-                        id_type_dni = 7
-                    };
-                    _context.Clients.Add(clientEntity);
-                    await _context.SaveChangesAsync();
-                }
-            }
-            else
+            // Si el monto es mayor o igual a $50, los datos del cliente son OBLIGATORIOS
+            if (invoiceDto.TotalAmount >= 50)
             {
                 if (invoiceDto.Client == null)
-                    throw new BusinessException("Para montos mayores a $50 debe enviar datos del adquirente");
+                    throw new BusinessException("Para montos de $50 o más debe enviar datos del adquirente");
 
-                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == invoiceDto.Client.Dni) ??
-                               throw new InvalidOperationException();
+                // Buscar cliente existente por DNI
+                clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == invoiceDto.Client.Dni);
 
                 if (clientEntity == null)
                 {
+                    // Crear nuevo cliente
                     clientEntity = new Client
                     {
                         razon_social = invoiceDto.Client.RazonSocial,
@@ -122,7 +100,7 @@ public class InvoiceService : IInvoiceService
                 }
                 else
                 {
-                    // Actualizar información del cliente si es necesario
+                    // Actualizar información del cliente existente
                     clientEntity.razon_social = invoiceDto.Client.RazonSocial;
                     clientEntity.address = invoiceDto.Client.Address;
                     clientEntity.phone = invoiceDto.Client.Phone;
@@ -134,6 +112,66 @@ public class InvoiceService : IInvoiceService
                 }
 
                 await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // Para montos menores a $50, los datos del cliente son OPCIONALES
+                if (invoiceDto.Client != null && !string.IsNullOrEmpty(invoiceDto.Client.Dni))
+                {
+                    // Si se enviaron datos del cliente, usarlos
+                    clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == invoiceDto.Client.Dni);
+
+                    if (clientEntity == null)
+                    {
+                        // Crear nuevo cliente
+                        clientEntity = new Client
+                        {
+                            razon_social = invoiceDto.Client.RazonSocial,
+                            dni = invoiceDto.Client.Dni,
+                            address = invoiceDto.Client.Address,
+                            phone = invoiceDto.Client.Phone,
+                            email = invoiceDto.Client.Email,
+                            info = invoiceDto.Client.Info,
+                            id_type_dni = invoiceDto.Client.TypeDniId
+                        };
+                        _context.Clients.Add(clientEntity);
+                    }
+                    else
+                    {
+                        // Actualizar información del cliente existente
+                        clientEntity.razon_social = invoiceDto.Client.RazonSocial;
+                        clientEntity.address = invoiceDto.Client.Address;
+                        clientEntity.phone = invoiceDto.Client.Phone;
+                        clientEntity.email = invoiceDto.Client.Email;
+                        clientEntity.info = invoiceDto.Client.Info;
+                        clientEntity.id_type_dni = invoiceDto.Client.TypeDniId;
+
+                        _context.Clients.Update(clientEntity);
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    // Si no se enviaron datos del cliente, usar CONSUMIDOR FINAL
+                    clientEntity = await _context.Clients.FirstOrDefaultAsync(c => c.dni == "9999999999999");
+
+                    if (clientEntity == null)
+                    {
+                        clientEntity = new Client
+                        {
+                            razon_social = "CONSUMIDOR FINAL",
+                            dni = "9999999999999",
+                            address = "CONSUMIDOR FINAL",
+                            phone = "099999999",
+                            email = "consumidorfinal@email.com",
+                            info = "Factura generada para consumidor final",
+                            id_type_dni = 7
+                        };
+                        _context.Clients.Add(clientEntity);
+                        await _context.SaveChangesAsync();
+                    }
+                }
             }
 
             var branchCode = branch.code?.PadLeft(3, '0');
@@ -248,7 +286,6 @@ public class InvoiceService : IInvoiceService
                 authorization_date = invoiceDto.AuthorizationDate,
                 additional_info = invoiceDto.AdditionalInfo,
                 message = invoiceDto.Message,
-
                 sequence = nextSequenceNumber
             };
 
@@ -258,12 +295,10 @@ public class InvoiceService : IInvoiceService
             foreach (var detalle in detallesCalculados)
             {
                 var article = await _context.Articles.FirstOrDefaultAsync(a => a.id_ar == detalle.ArticleId);
-                
+
                 if (article != null)
                     if (article.stock < detalle.Amount)
-                    {
                         throw new BusinessException($"No hay suficiente stock para el artículo {article.name}");
-                    }
 
                 if (article == null) continue;
                 article.stock -= (int)detalle.Amount;
@@ -334,9 +369,8 @@ public class InvoiceService : IInvoiceService
             throw new ApplicationException($"Error al crear la factura: {ex.Message}", ex);
         }
     }
-    
-    
-    
+
+
     public async Task<List<InvoiceDTO>> GetAuthorizedInvoicesByEnterpriseId(int enterpriseId)
     {
         var invoices = await _context.Invoices
@@ -390,7 +424,8 @@ public class InvoiceService : IInvoiceService
                     Phone = invoice.Branch.phone
                 },
                 Sequence = new SequenceDTO { IdSequence = invoice.Sequence.id_sequence, Code = invoice.Sequence.code },
-                DocumentType = new DocumentTypeDTO { IdDocumentType = invoice.DocumentType.id_d_t, NameDocument = invoice.DocumentType.name_document },
+                DocumentType = new DocumentTypeDTO
+                    { IdDocumentType = invoice.DocumentType.id_d_t, NameDocument = invoice.DocumentType.name_document },
                 Enterprise = new EnterpriseDTO
                 {
                     IdEnterprise = invoice.Enterprise.id_en,
@@ -402,7 +437,11 @@ public class InvoiceService : IInvoiceService
                     Email = invoice.Enterprise.email,
                     Accountant = invoice.Enterprise.accountant
                 },
-                EmissionPoint = new EmissionPointDTO { IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code, Details = invoice.EmissionPoint.details },
+                EmissionPoint = new EmissionPointDTO
+                {
+                    IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code,
+                    Details = invoice.EmissionPoint.details
+                },
                 Details = invoice.InvoiceDetails.Select(d => new InvoiceDetailDTO
                     {
                         CodeStub = d.code_stub,
@@ -425,27 +464,26 @@ public class InvoiceService : IInvoiceService
                         TariffId = d.id_tariff
                     })
                     .ToList(),
-                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO { Total = p.total, Deadline = p.deadline, UnitTime = p.unit_time, PaymentId = p.id_payment }).ToList()
+                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO
+                        { Total = p.total, Deadline = p.deadline, UnitTime = p.unit_time, PaymentId = p.id_payment })
+                    .ToList()
             })
             .ToList();
     }
-    
+
     public async Task<List<InvoiceSummaryDTO>> GetTopInvoicesByCompanyIdAsync(int companyId, int count = 3)
     {
         try
         {
             var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
-            if (!enterpriseExists)
-            {
-                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
-            }
+            if (!enterpriseExists) throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
 
             // Obtener las primeras N facturas ordenadas por fecha de emisión (o ID si prefieres)
             var topInvoices = await _context.Invoices
                 .Include(i => i.Client)
                 .Include(i => i.Sequence)
                 .Where(i => i.company_id == companyId)
-                .OrderByDescending(i => i.emission_date) 
+                .OrderByDescending(i => i.emission_date)
                 .Take(count)
                 .Select(i => new InvoiceSummaryDTO
                 {
@@ -461,9 +499,7 @@ public class InvoiceService : IInvoiceService
                 .ToListAsync();
 
             if (topInvoices.Count == 0)
-            {
                 throw new EntityNotFoundException($"No se encontraron facturas para la empresa con ID {companyId}");
-            }
 
             return topInvoices;
         }
@@ -480,10 +516,7 @@ public class InvoiceService : IInvoiceService
     public async Task<string> GetXmlBase64ByInvoiceId(int invoiceId)
     {
         var invoice = await _context.Invoices.FindAsync(invoiceId);
-        if (invoice == null)
-        {
-            throw new EntityNotFoundException($"Factura con ID {invoiceId} no encontrada");
-        }
+        if (invoice == null) throw new EntityNotFoundException($"Factura con ID {invoiceId} no encontrada");
 
         return invoice.XmlBase64 ?? string.Empty;
     }
@@ -494,10 +527,7 @@ public class InvoiceService : IInvoiceService
         {
             // Verificar si la empresa existe
             var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
-            if (!enterpriseExists)
-            {
-                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
-            }
+            if (!enterpriseExists) throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
 
             var totalInvoices = await _context.Invoices
                 .Where(i => i.company_id == companyId && i.invoice_status == "NO AUTORIZADO")
@@ -513,7 +543,6 @@ public class InvoiceService : IInvoiceService
         {
             throw new ApplicationException($"Error al obtener el conteo de facturas: {ex.Message}", ex);
         }
-        
     }
 
     public async Task<decimal> GetTotalInvoiceAmountByCompanyIdAsync(int companyId)
@@ -521,11 +550,8 @@ public class InvoiceService : IInvoiceService
         try
         {
             var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
-            if (!enterpriseExists)
-            {
-                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
-            }
-            
+            if (!enterpriseExists) throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
+
             var totalAmount = await _context.Invoices
                 .Where(i => i.company_id == companyId)
                 .SumAsync(i => i.total_amount);
@@ -541,15 +567,13 @@ public class InvoiceService : IInvoiceService
             throw new ApplicationException($"Error al obtener el monto total facturado: {ex.Message}", ex);
         }
     }
+
     public async Task<int> GetTotalInvoiceCountByCompanyIdAsync(int companyId)
     {
         try
         {
             var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
-            if (!enterpriseExists)
-            {
-                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
-            }
+            if (!enterpriseExists) throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
 
             var totalInvoices = await _context.Invoices
                 .Where(i => i.company_id == companyId)
@@ -566,17 +590,14 @@ public class InvoiceService : IInvoiceService
             throw new ApplicationException($"Error al obtener el conteo de facturas: {ex.Message}", ex);
         }
     }
-    
+
     public async Task<int> GetTotalInvoiceAuthorizedCountByCompanyIdAsync(int companyId)
     {
         try
         {
             // Verificar si la empresa existe
             var enterpriseExists = await _context.Enterprises.AnyAsync(e => e.id_en == companyId);
-            if (!enterpriseExists)
-            {
-                throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
-            }
+            if (!enterpriseExists) throw new EntityNotFoundException($"Empresa con ID {companyId} no encontrada");
 
             var totalInvoices = await _context.Invoices
                 .Where(i => i.company_id == companyId && i.invoice_status == "AUTORIZADO")
@@ -593,7 +614,7 @@ public class InvoiceService : IInvoiceService
             throw new ApplicationException($"Error al obtener el conteo de facturas: {ex.Message}", ex);
         }
     }
-    
+
 
     public async Task<List<InvoiceDTO>> GetUnauthorizedInvoicesByEnterpriseId(int enterpriseId)
     {
@@ -648,7 +669,8 @@ public class InvoiceService : IInvoiceService
                     Phone = invoice.Branch.phone
                 },
                 Sequence = new SequenceDTO { IdSequence = invoice.Sequence.id_sequence, Code = invoice.Sequence.code },
-                DocumentType = new DocumentTypeDTO { IdDocumentType = invoice.DocumentType.id_d_t, NameDocument = invoice.DocumentType.name_document },
+                DocumentType = new DocumentTypeDTO
+                    { IdDocumentType = invoice.DocumentType.id_d_t, NameDocument = invoice.DocumentType.name_document },
                 Enterprise = new EnterpriseDTO
                 {
                     IdEnterprise = invoice.Enterprise.id_en,
@@ -660,7 +682,11 @@ public class InvoiceService : IInvoiceService
                     Email = invoice.Enterprise.email,
                     Accountant = invoice.Enterprise.accountant
                 },
-                EmissionPoint = new EmissionPointDTO { IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code, Details = invoice.EmissionPoint.details },
+                EmissionPoint = new EmissionPointDTO
+                {
+                    IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code,
+                    Details = invoice.EmissionPoint.details
+                },
                 Details = invoice.InvoiceDetails.Select(d => new InvoiceDetailDTO
                     {
                         CodeStub = d.code_stub,
@@ -683,7 +709,9 @@ public class InvoiceService : IInvoiceService
                         TariffId = d.id_tariff
                     })
                     .ToList(),
-                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO { Total = p.total, Deadline = p.deadline, UnitTime = p.unit_time, PaymentId = p.id_payment }).ToList()
+                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO
+                        { Total = p.total, Deadline = p.deadline, UnitTime = p.unit_time, PaymentId = p.id_payment })
+                    .ToList()
             })
             .ToList();
     }

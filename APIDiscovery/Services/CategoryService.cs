@@ -51,8 +51,15 @@ public class CategoryService : ICategoryService
         {
             throw new NotFoundException("Categoria no encontrada.");
         }
+        
+        var status = await _context.Articles.FirstOrDefaultAsync(a => a.id_category == id);
+        if (status != null)
+        {
+            throw new BadRequestException("No se puede actualizar la categoria porque tiene articulos asociados.");
+        }
         category.name = entity.name;
         category.description = entity.description;
+        category.status = entity.status;
         await _context.SaveChangesAsync();
         return category;
     }
@@ -63,6 +70,12 @@ public class CategoryService : ICategoryService
         if (category == null)
         {
             throw new NotFoundException("Categoria no encontrada.");
+        }
+        
+        var articles = await _context.Articles.Where(a => a.id_category == id).ToListAsync();
+        if (articles.Count > 0)
+        {
+            throw new BadRequestException("No se puede eliminar la categoria porque tiene articulos asociados.");
         }
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
