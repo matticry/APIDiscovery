@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<factura id="comprobante" version="1.1.0">
+  <infoTributaria>
+    <ambiente>1</ambiente>
+    <tipoEmision>1</tipoEmision>
+    <razonSocial>ROMAN NOBOA DIEGO EDMUNDO</razonSocial>
+    <nombreComercial>ROMAN NOBOA DIEGO EDMUNDO</nombreComercial>
+    <ruc>1717219586001</ruc>
+    <claveAcceso>2205202501171721958600110010010000001192087346615</claveAcceso>
+    <codDoc>01</codDoc>
+    <estab>001</estab>
+    <ptoEmi>001</ptoEmi>
+    <secuencial>000000119</secuencial>
+    <dirMatriz>Calle Principal 123, Ciudad</dirMatriz>
+  </infoTributaria>
+  <infoFactura>
+    <fechaEmision>22/05/2025</fechaEmision>
+    <dirEstablecimiento>LA MARIN</dirEstablecimiento>
+    <obligadoContabilidad>SI</obligadoContabilidad>
+    <tipoIdentificacionComprador>07</tipoIdentificacionComprador>
+    <razonSocialComprador>CONSUMIDOR FINAL</razonSocialComprador>
+    <identificacionComprador>9999999999999</identificacionComprador>
+    <direccionComprador>S/N</direccionComprador>
+    <totalSinImpuestos>50.00</totalSinImpuestos>
+    <totalDescuento>0.00</totalDescuento>
+    <totalConImpuestos>
+      <totalImpuesto>
+        <codigo>2</codigo>
+        <codigoPorcentaje>4</codigoPorcentaje>
+        <baseImponible>50.00</baseImponible>
+        <valor>7.50</valor>
+      </totalImpuesto>
+    </totalConImpuestos>
+    <propina>0.00</propina>
+    <importeTotal>57.50</importeTotal>
+    <moneda>USD</moneda>
+    <pagos>
+      <pago>
+        <formaPago>01</formaPago>
+        <total>50.00</total>
+      </pago>
+    </pagos>
+  </infoFactura>
+  <detalles>
+    <detalle>
+      <codigoPrincipal>P001</codigoPrincipal>
+      <descripcion>PRODUCTO DE PISTOLA</descripcion>
+      <cantidad>3.00</cantidad>
+      <precioUnitario>  12.50000000</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>37.50</precioTotalSinImpuesto>
+      <detallesAdicionales>
+        <detAdicional nombre="NOTAS" valor="PRODUCTO DE PISTOLA" />
+      </detallesAdicionales>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>4</codigoPorcentaje>
+          <tarifa>15</tarifa>
+          <baseImponible>37.50</baseImponible>
+          <valor>5.62</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+    <detalle>
+      <codigoPrincipal>p0001</codigoPrincipal>
+      <descripcion>holas123</descripcion>
+      <cantidad>5.00</cantidad>
+      <precioUnitario>  2.50000000</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>12.50</precioTotalSinImpuesto>
+      <detallesAdicionales>
+        <detAdicional nombre="NOTAS" valor="holas123" />
+      </detallesAdicionales>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>4</codigoPorcentaje>
+          <tarifa>15</tarifa>
+          <baseImponible>12.50</baseImponible>
+          <valor>1.88</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+  </detalles>
+  <infoAdicional>
+    <campoAdicional nombre="Direccion">S/N</campoAdicional>
+    <campoAdicional nombre="Telefono">099999999</campoAdicional>
+    <campoAdicional nombre="Email">consumidorfinal@email.com</campoAdicional>
+    <campoAdicional nombre="NumDocumento">EXCELENTE SERVICIO</campoAdicional>
+  </infoAdicional>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="Signature-81a75122-cd55-4a66-9704-b9177832ca26"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><ds:Reference Id="Reference-58785063-fede-48a4-858b-5c8acfdbd88e" URI="#comprobante"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><ds:DigestValue>/+Igd/5grbwkE98lzDScI6dNg5A=</ds:DigestValue></ds:Reference><ds:Reference Id="ReferenceKeyInfo" URI="#KeyInfoId-Signature-81a75122-cd55-4a66-9704-b9177832ca26"><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><ds:DigestValue>M6xxMmfy6keEakogDvwvP6Xkb3Q=</ds:DigestValue></ds:Reference><ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#SignedProperties-Signature-81a75122-cd55-4a66-9704-b9177832ca26"><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><ds:DigestValue>HvxfgOxt28ki7rZ6vmwJhVT+FIk=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue Id="SignatureValue-81a75122-cd55-4a66-9704-b9177832ca26">j5FdzzIWccvOfknYOEf6ccqcIpZrApcPjR1kvB1J/n4URCWNWGrPTbGkzoY1K7cyVcGpmnEKopZvOKOmUxsLOhIeo23CxY2B+f69+qub3kLe2fBjyGuGkQTCJuavaesK3fLzbyYlbCXoGZnRzWahcdJhZXL0bdnw5p+YMxhZctkUVU/MYBrFXIkMFX/mhXiq8J4CS6taKxpLboJ6IHg+w/Rk7Tv9oMHrykpI7ZdjtGLwnb9Tfq5CAy1b9tAEfl+sqf4CG1uXITW2ItXmi8Fp4OrPh0m2uQdjmlc3t1ZYy0YSBMFrza17A1iuYZARp3nPtNZQv1ZEDYw6jcd6kyaugg==</ds:SignatureValue><ds:KeyInfo Id="KeyInfoId-Signature-81a75122-cd55-4a66-9704-b9177832ca26"><ds:X509Data><ds:X509Certificate>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</ds:X509Certificate></ds:X509Data><ds:KeyValue><ds:RSAKeyValue><ds:Modulus>kHFUADBraboKvZejoahW5yIBe3Tr18uDeiI/N8NuGXo70PR1OxD+n6X/T8jFgSxjJin0NMcbMyq3aeF6LvE65XvXOrxjis5ff2YwbuyOMupIqm3EoteaHHfni5wj4AAt+ZOeIld0jvWZ9ocinT0bRw91XGVEGtLQnl+IcUCnny6rKnEfel9UPjepTaRlPy0pieqJ/jWi7LSJFW2UXXvLMRGzw+KbzqpXI7vj9jhBvGcpSNqXM/HYfJfOaZP/uGgQuo/zPxjEJGnwIEtPAhi5CImV9oCNkYgu7XMeYkQ0OTfqrQg4cgFZbADw1VAt/KxtpbTea1uogVQ4HdL/ICjyZQ==</ds:Modulus><ds:Exponent>AQAB</ds:Exponent></ds:RSAKeyValue></ds:KeyValue></ds:KeyInfo><ds:Object Id="XadesObjectId-b2cffd3d-a0db-4217-8924-74f34f5c7590"><xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Id="QualifyingProperties-90d7c309-8639-4047-86ce-944a8f37db7c" Target="#Signature-81a75122-cd55-4a66-9704-b9177832ca26"><xades:SignedProperties Id="SignedProperties-Signature-81a75122-cd55-4a66-9704-b9177832ca26"><xades:SignedSignatureProperties><xades:SigningTime>2025-05-22T09:42:44-05:00</xades:SigningTime><xades:SigningCertificate><xades:Cert><xades:CertDigest><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><ds:DigestValue>gpn/FFzDyLd5mRVt/BvJZUZeX3M=</ds:DigestValue></xades:CertDigest><xades:IssuerSerial><ds:X509IssuerName>2.5.4.97=#0c0f56415445532d413636373231343939, CN=UANATACA CA2 2016, OU=TSP-UANATACA, O=UANATACA S.A., L=Barcelona (see current address at www.uanataca.com/address), C=ES</ds:X509IssuerName><ds:X509SerialNumber>1565978931533866882</ds:X509SerialNumber></xades:IssuerSerial></xades:Cert></xades:SigningCertificate></xades:SignedSignatureProperties><xades:SignedDataObjectProperties><xades:DataObjectFormat ObjectReference="#Reference-58785063-fede-48a4-858b-5c8acfdbd88e"><xades:Description>contenido comprobante</xades:Description><xades:MimeType>text/xml</xades:MimeType><xades:Encoding>UTF-8</xades:Encoding></xades:DataObjectFormat></xades:SignedDataObjectProperties></xades:SignedProperties></xades:QualifyingProperties></ds:Object></ds:Signature></factura>
