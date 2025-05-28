@@ -43,8 +43,7 @@ create table tbl_enterprise
     email_password       varchar(250),
     email_port           varchar(5),
     email_smtp           varchar(150),
-    email_security       int,
-    email_type           int,
+    email_security       bit,
     electronic_signature varchar(250),
     key_signature        varchar(250),
     logo                 varchar(250),
@@ -52,27 +51,6 @@ create table tbl_enterprise
     end_date_signature   datetime,
     retention_agent      varchar(250),
     environment          int  default 1
-)
-go
-
-create table tbl_article
-(
-    id_ar         int identity
-        constraint tbl_article_pk
-            primary key,
-    name          varchar(max),
-    code          varchar(250),
-    price_unit    decimal(10, 2),
-    stock         int,
-    status        char     default 'A',
-    created_at    datetime default getdate(),
-    update_at     datetime default getdate(),
-    image         varchar(max),
-    description   varchar(max),
-    id_enterprise int
-        constraint tbl_article_tbl_enterprise_id_en_fk
-            references tbl_enterprise,
-    id_category   int
 )
 go
 
@@ -106,6 +84,29 @@ create table tbl_category
     description   varchar(max),
     created_at    datetime default getdate(),
     update_at     datetime default getdate()
+)
+go
+
+create table tbl_article
+(
+    id_ar         int identity
+        constraint tbl_article_pk
+            primary key,
+    name          varchar(max),
+    code          varchar(250),
+    price_unit    decimal(10, 2),
+    stock         int,
+    status        char         default 'A',
+    created_at    datetime     default getdate(),
+    update_at     datetime     default getdate(),
+    image         varchar(max) default 'no tiene',
+    description   varchar(max),
+    id_enterprise int
+        constraint tbl_article_tbl_enterprise_id_en_fk
+            references tbl_enterprise,
+    id_category   int
+        constraint tbl_article_tbl_category_id_ca_fk
+            references tbl_category
 )
 go
 
@@ -291,7 +292,8 @@ create table tbl_invoice
     modified_doc_date    date,
     sequence             varchar(100),
     xml                  varchar(250),
-    XmlBase64            varchar(max)
+    XmlBase64            varchar(max),
+    pdfBase64            varchar(max)
 )
 go
 

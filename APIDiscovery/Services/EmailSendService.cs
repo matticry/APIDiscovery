@@ -131,10 +131,10 @@ public partial class EmailSendService : IEmailSendService
         byte[] pdfAttachment)
     {
         // Usar estos valores exactos que vimos en la base de datos
-        var smtpServer = enterprise.email_smtp.Trim(); // "smtp.gmail.com"
-        var smtpPort = int.Parse(enterprise.email_port.Trim()); // 587
-        var smtpUsername = enterprise.email_user.Trim(); // "toyotaro271@gmail.com"
-        var password = enterprise.email_password.Trim(); // "mzou atwc ntmk gqjf"
+        var smtpServer = enterprise.email_smtp.Trim(); 
+        var smtpPort = int.Parse(enterprise.email_port.Trim()); 
+        var smtpUsername = enterprise.email_user.Trim(); 
+        var password = enterprise.email_password.Trim(); 
         
         _logger.LogInformation($"Configuración SMTP: Servidor={smtpServer}, Puerto={smtpPort}, Usuario={smtpUsername}");
         

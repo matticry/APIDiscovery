@@ -31,6 +31,7 @@ public class ArticleCreateDto
 
     [Required(ErrorMessage = "Debe seleccionar al menos una tarifa")]
     public List<int> FareIds { get; set; }
+    
+    public char Status { get; set; } = 'A';
 
-    // 👇 NUEVA PROPIEDAD para recibir la imagen como archivo
 }

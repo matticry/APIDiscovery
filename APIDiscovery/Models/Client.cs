@@ -15,6 +15,8 @@ public class Client
 
     [MaxLength(13)]
     public string dni { get; set; }
+    
+    public char status { get; set; } = 'A';
 
     [MaxLength(250)]
     public string address { get; set; }

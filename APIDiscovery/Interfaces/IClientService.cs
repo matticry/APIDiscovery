@@ -1,4 +1,5 @@
 ﻿using APIDiscovery.Models;
+using APIDiscovery.Models.DTOs;
 
 namespace APIDiscovery.Interfaces;
 
@@ -14,5 +15,6 @@ public interface IClientService
     Task<bool> RemoveClientFromEnterpriseAsync(int clientId, int enterpriseId);
     Task<bool> DeleteAsync(int id);
     Task<int> GetTotalClientsActivesAsync(int enterpriseId);
-    
+    Task<ResponseDto> DesactiveClientAsync(int clientId, int enterpriseId);
+    Task<ResponseDto> ActiveClientAsync(int clientId, int enterpriseId);
 }

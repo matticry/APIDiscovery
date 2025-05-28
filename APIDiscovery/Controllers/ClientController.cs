@@ -1,5 +1,6 @@
 ﻿using APIDiscovery.Interfaces;
 using APIDiscovery.Models;
+using APIDiscovery.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIDiscovery.Controllers;
@@ -69,6 +70,19 @@ public class ClientController : ControllerBase
     {
         await _clientService.AssignClientToEnterpriseAsync(clientId, enterpriseId);
         return NoContent();
+    }
+    [HttpPut("DesactiveClientAsync/{clientId}/{enterpriseId}")]
+    public async Task<ActionResult<ResponseDto>> DesactiveClientAsync(int clientId, int enterpriseId)
+    {
+        var response = await _clientService.DesactiveClientAsync(clientId, enterpriseId);
+        return Ok(response);
+    }
+    
+    [HttpPut("ActiveClientAsync/{clientId}/{enterpriseId}")]
+    public async Task<ActionResult<ResponseDto>> ActiveClientAsync(int clientId, int enterpriseId)
+    {
+        var response = await _clientService.ActiveClientAsync(clientId, enterpriseId);
+        return Ok(response);
     }
     
     [HttpPut("{id}/enterprise/{enterpriseId}")]

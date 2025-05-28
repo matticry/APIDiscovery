@@ -1,20 +1,14 @@
-﻿using System.Drawing;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
-using APIDiscovery.Exceptions;
 using APIDiscovery.Models.DTOs.InvoiceDTOs;
-using BarcodeStandard;
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using QRCoder;
-using SkiaSharp;
-using Type = BarcodeStandard.Type;
 
 namespace APIDiscovery.Services;
 
 public class InvoicePdfGenerator(IConverter converter)
 {
-    
     public byte[] GenerateInvoicePdf(InvoiceDTO invoice)
     {
         var htmlContent = GenerateHtmlContent(invoice);
@@ -34,13 +28,14 @@ public class InvoicePdfGenerator(IConverter converter)
             HtmlContent = htmlContent,
             WebSettings = { DefaultEncoding = "utf-8" },
             HeaderSettings = { FontName = "Arial", FontSize = 9, Line = false },
-            FooterSettings = { 
-                FontName = "Arial", 
-                FontSize = 9, 
+            FooterSettings =
+            {
+                FontName = "Arial",
+                FontSize = 9,
                 Line = false,
                 Center = "",
                 Left = "Comprobante electrónico generado por RN2 Software",
-                Right = "www.maxnet-business.com",
+                Right = "www.maxnet-business.com"
             }
         };
 
@@ -294,7 +289,7 @@ public class InvoicePdfGenerator(IConverter converter)
                                            </div>
                                        </div>
                                        <div class="barcode">
-                                           <img src="data:image/png;base64,{GenerateBarcode(invoice.AccessKey)}" alt="Código de barras">
+                                           <img src="data:image/svg+xml;base64,{GenerateBarcode(invoice.AccessKey)}" />
                                            <div class="barcode-number">{invoice.AccessKey}</div>
                                        </div>
                                    </div>
@@ -488,54 +483,65 @@ public class InvoicePdfGenerator(IConverter converter)
         return sb.ToString();
     }
 
-    // Helper methods
     private static string GenerateBarcode(string accessKey)
     {
-        if (string.IsNullOrEmpty(accessKey))
-        {
-            return string.Empty;
-        }
-
         try
         {
-            var barcode = new Barcode
-            {
-                BarWidth = 2,
-                Height = 80
-            };
-        
-            var barcodeImage = barcode.Encode(
-                Type.Code128, 
-                accessKey, 
-                SKColors.Black, 
-                SKColors.White,  
-                800,  
-                80    
-            );
+            Console.WriteLine($"Generando código de barras simple personalizado para: {accessKey}");
 
-            if (barcodeImage == null)
+            var width = 800;
+            var height = 80;
+            var svg = new StringBuilder();
+
+            svg.Append($"<svg width='{width}' height='{height}' xmlns='http://www.w3.org/2000/svg'>");
+            svg.Append("<rect width='100%' height='100%' fill='white'/>");
+
+            var digitPatterns = new Dictionary<char, string>
             {
-                return string.Empty;
+                { '0', "101010011" },
+                { '1', "110100101" },
+                { '2', "101100101" },
+                { '3', "110110001" },
+                { '4', "101010110" },
+                { '5', "110101001" },
+                { '6', "101101001" },
+                { '7', "101001101" },
+                { '8', "110010101" },
+                { '9', "101100110" }
+            };
+
+            var x = 20; // Margen inicial
+            var barWidth = 3;
+
+            svg.Append($"<rect x='{x}' y='5' width='{barWidth}' height='{height - 10}' fill='black'/>");
+            x += barWidth * 2;
+
+            foreach (var pattern in accessKey.Select(c => digitPatterns.ContainsKey(c) ? digitPatterns[c] : "101010101"))
+            {
+                foreach (var bit in pattern)
+                {
+                    if (bit == '1')
+                        svg.Append($"<rect x='{x}' y='5' width='{barWidth}' height='{height - 10}' fill='black'/>");
+                    x += barWidth;
+                }
+                x += barWidth;
             }
 
-            using var memoryStream = new MemoryStream();
-            barcodeImage.Encode(SKEncodedImageFormat.Png, 100).SaveTo(memoryStream);
-            var imageBytes = memoryStream.ToArray();
-            return Convert.ToBase64String(imageBytes);
+            svg.Append($"<rect x='{x}' y='5' width='{barWidth}' height='{height - 10}' fill='black'/>");
+
+            svg.Append("</svg>");
+
+            var svgBytes = Encoding.UTF8.GetBytes(svg.ToString());
+            Console.WriteLine($"Código de barras simple personalizado generado. Tamaño: {svgBytes.Length} bytes");
+            return Convert.ToBase64String(svgBytes);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al generar el código de barras: {ex.Message}");
-            try {
-                return GenerateQrCodeAsBackup(accessKey);
-            }
-            catch {
-                return string.Empty;
-            }
+            Console.WriteLine($"Error al generar código de barras simple: {ex.Message}");
+            return GenerateQrCodeAsBackup(accessKey);
         }
     }
 
-// Método alternativo usando QRCoder como respaldo
     private static string GenerateQrCodeAsBackup(string content)
     {
         var qrGenerator = new QRCodeGenerator();

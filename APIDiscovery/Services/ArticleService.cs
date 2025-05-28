@@ -130,7 +130,7 @@ public class ArticleService : IArticleService
         {
             response.Success = false;
             response.DisplayMessage = "Error al obtener el artículo.";
-            response.ErrorMessages = new List<string> { ex.Message };
+            response.ErrorMessages = [ex.Message];
         }
 
         stopwatch.Stop();
@@ -147,7 +147,7 @@ public class ArticleService : IArticleService
         try
         {
             var articles = await _context.Articles
-                .Where(a => a.id_enterprise == enterpriseId && a.status == 'A')
+                .Where(a => a.id_enterprise == enterpriseId)
                 .Include(a => a.Category)
                 .Include(a => a.TariffArticles)
                 .ThenInclude(ta => ta.Fare)
@@ -254,6 +254,17 @@ public class ArticleService : IArticleService
                 return response;
             }
 
+            if (articleDto.Status == 'I' || articleDto.Status.ToString().ToUpper() == "I")
+            {
+                var validation = await ValidateProductDeactivation(id, article.id_category);
+                if (!validation.canDeactivate)
+                {
+                    response.Success = false;
+                    response.DisplayMessage = validation.message;
+                    return response;
+                }
+            }
+
             var imagePath = article.image;
             if (articleDto.Image != null)
                 imagePath = await _imageService.UpdateImageAsync(article.image, articleDto.Image);
@@ -261,6 +272,7 @@ public class ArticleService : IArticleService
             // Actualizar los datos del artículo
             article.name = articleDto.Name;
             article.code = articleDto.Code;
+            article.status = articleDto.Status;
             article.price_unit = articleDto.PriceUnit;
             article.stock = articleDto.Stock;
             article.update_at = DateTime.Now;
@@ -293,7 +305,7 @@ public class ArticleService : IArticleService
         {
             response.Success = false;
             response.DisplayMessage = "Error al actualizar el artículo.";
-            response.ErrorMessages = new List<string> { ex.Message };
+            response.ErrorMessages = [ex.Message];
         }
 
         stopwatch.Stop();
@@ -317,6 +329,8 @@ public class ArticleService : IArticleService
                 response.DisplayMessage = "Artículo no encontrado.";
                 return response;
             }
+            
+            
 
             if (!string.IsNullOrEmpty(article.image)) _imageService.DeleteImage(article.image);
 
@@ -331,13 +345,45 @@ public class ArticleService : IArticleService
         {
             response.Success = false;
             response.DisplayMessage = "Error al eliminar el artículo.";
-            response.ErrorMessages = new List<string> { ex.Message };
+            response.ErrorMessages = [ex.Message];
         }
 
         stopwatch.Stop();
         response.ResponseTimeMs = stopwatch.Elapsed.TotalMilliseconds;
 
         return response;
+    }
+
+    private async Task<(bool canDeactivate, string message)> ValidateProductDeactivation(int articleId, int categoryId)
+    {
+        var categoryInfo = await _context.Categories
+            .Where(c => c.id_ca == categoryId)
+            .Select(c => new
+            {
+                CategoryName = c.name,
+                ActiveProducts = c.Articles
+                    .Where(a => a.status == 'A' && a.id_ar != articleId)
+                    .Select(a => new { a.name, a.code })
+                    .ToList()
+            })
+            .FirstOrDefaultAsync();
+
+        if (categoryInfo == null || !categoryInfo.ActiveProducts.Any()) return (true, string.Empty);
+
+        var productDetails = categoryInfo.ActiveProducts
+            .Take(3)
+            .Select(p => $"{p.name} ({p.code})")
+            .ToList();
+
+        var productDetailsString = string.Join(", ", productDetails);
+
+        if (categoryInfo.ActiveProducts.Count > 3)
+            productDetailsString += $" y {categoryInfo.ActiveProducts.Count - 3} productos más";
+
+        var message =
+            $"No se puede desactivar el artículo porque la categoría '{categoryInfo.CategoryName}' tiene {categoryInfo.ActiveProducts.Count} productos activos: {productDetailsString}.";
+
+        return (false, message);
     }
 
     private async Task<ArticleDto> GetArticleDetailById(int id)

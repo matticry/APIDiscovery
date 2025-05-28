@@ -28,9 +28,9 @@ public class CategoryService : ICategoryService
 
     public async Task<Category> CreateAsync(Category entity)
     {
-        if (string.IsNullOrEmpty(entity.name) || string.IsNullOrEmpty(entity.description))
+        if (string.IsNullOrEmpty(entity.name))
         {
-            throw new BadRequestException("El campo nombre y la descripcion es obligatorio.");
+            throw new BadRequestException("El campo nombre  es obligatorio.");
         }
         
         var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.name == entity.name);
