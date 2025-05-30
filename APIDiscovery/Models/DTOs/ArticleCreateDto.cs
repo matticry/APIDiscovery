@@ -18,6 +18,9 @@ public class ArticleCreateDto
     [Required(ErrorMessage = "El stock es requerido")]
     [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser mayor o igual a 0")]
     public int Stock { get; set; }
+    
+    [Required(ErrorMessage = "El tipo de artículos es requerido")]
+    public char Type { get; set; } = 'N';
 
     public IFormFile? Image { get; set; }
 

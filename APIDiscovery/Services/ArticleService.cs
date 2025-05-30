@@ -63,6 +63,14 @@ public class ArticleService : IArticleService
                 return response;
             }
 
+            if (articleDto.Type != 'N' && articleDto.Type != 'S')
+            {
+                response.Success = false;
+                response.DisplayMessage = "El tipo de artículo no es válido. Debe ser 'N' (Normal) o 'S' (Servicio).";
+                return response;
+            }
+            
+
             string imagePath;
             if (articleDto.Image != null)
                 imagePath = await _imageService.SaveImageAsync(articleDto.Image);
@@ -76,6 +84,7 @@ public class ArticleService : IArticleService
                 price_unit = articleDto.PriceUnit,
                 stock = articleDto.Stock,
                 status = 'A',
+                type = articleDto.Type,
                 created_at = DateTime.Now,
                 update_at = DateTime.Now,
                 image = imagePath,
@@ -179,6 +188,7 @@ public class ArticleService : IArticleService
                     Code = a.code,
                     PriceUnit = a.price_unit,
                     Stock = a.stock,
+                    Type = a.type,
                     Status = a.status.ToString(),
                     CreatedAt = a.created_at,
                     UpdateAt = a.update_at,
@@ -253,8 +263,15 @@ public class ArticleService : IArticleService
                 response.DisplayMessage = "La categoría especificada no existe o no pertenece a esta empresa.";
                 return response;
             }
+            if (articleDto.Type != 'N' && articleDto.Type != 'S')
+            {
+                response.Success = false;
+                response.DisplayMessage = "El tipo de artículo no es válido. Debe ser 'N' (Normal) o 'S' (Servicio).";
+                return response;
+            }
+            
 
-            if (articleDto.Status == 'I' || articleDto.Status.ToString().ToUpper() == "I")
+            if (articleDto.Status == 'I' || articleDto.Status.ToString().Equals("I", StringComparison.CurrentCultureIgnoreCase))
             {
                 var validation = await ValidateProductDeactivation(id, article.id_category);
                 if (!validation.canDeactivate)
@@ -269,10 +286,10 @@ public class ArticleService : IArticleService
             if (articleDto.Image != null)
                 imagePath = await _imageService.UpdateImageAsync(article.image, articleDto.Image);
 
-            // Actualizar los datos del artículo
             article.name = articleDto.Name;
             article.code = articleDto.Code;
             article.status = articleDto.Status;
+            article.type = articleDto.Type;
             article.price_unit = articleDto.PriceUnit;
             article.stock = articleDto.Stock;
             article.update_at = DateTime.Now;
@@ -280,7 +297,6 @@ public class ArticleService : IArticleService
             article.description = articleDto.Description;
             article.id_category = articleDto.IdCategory;
 
-            // Eliminar todas las asociaciones existentes de tarifa
             var existingTariffs = await _context.TariffArticles
                 .Where(ta => ta.id_article == id)
                 .ToListAsync();
@@ -361,7 +377,7 @@ public class ArticleService : IArticleService
             .Select(c => new
             {
                 CategoryName = c.name,
-                ActiveProducts = c.Articles
+                ActiveProducts = c.Articles!
                     .Where(a => a.status == 'A' && a.id_ar != articleId)
                     .Select(a => new { a.name, a.code })
                     .ToList()
@@ -395,7 +411,7 @@ public class ArticleService : IArticleService
             .ThenInclude(f => f.Tax)
             .FirstOrDefaultAsync(a => a.id_ar == id);
 
-        if (article == null) return null;
+        if (article == null) return null!;
 
         return new ArticleDto
         {

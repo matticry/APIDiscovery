@@ -7,6 +7,7 @@ public class ArticleDto
     public string Code { get; set; }
     public decimal PriceUnit { get; set; }
     public int Stock { get; set; }
+    public char? Type { get; set; } 
     public string Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdateAt { get; set; }

@@ -17,17 +17,11 @@
     <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/d6b1c029-65e5-4470-9d09-065a6263eed3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/d6b1c029-65e5-4470-9d09-065a6263eed3.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/ClientController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/ClientController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IClientService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Client.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Client.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Article.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Article.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleCreateDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleCreateDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/ArticleService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/ArticleService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/CategoryService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/CategoryService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/ClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/ClientService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/EmailSendService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/EmailSendService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/InvoicePdfGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/InvoicePdfGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/bd.sql" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bd.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Utils/hola.dart" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Utils/hola.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
@@ -349,6 +343,11 @@
       <workItem from="1748011512827" duration="2130000" />
       <workItem from="1748265308228" duration="7464000" />
       <workItem from="1748351203593" duration="11623000" />
+      <workItem from="1748437920986" duration="1534000" />
+      <workItem from="1748524680492" duration="601000" />
+      <workItem from="1748548554449" duration="1428000" />
+      <workItem from="1748611166781" duration="8342000" />
+      <workItem from="1748641053947" duration="2002000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -566,7 +565,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747944274787</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="News Updates:&#10;- CategoryService.cs&#10;- Client.cs&#10;- InvoicePdfGenerator.cs">
+      <option name="closed" value="true" />
+      <created>1748438033641</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1748438033641</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -574,6 +581,14 @@
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.Identity.Client" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.EntityFrameworkCore.Abstractions" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.EntityFrameworkCore.Relational" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.EntityFrameworkCore" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -587,7 +602,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Commit: I add security modules like JWT ,fixes: bug User" />
     <MESSAGE value="Commit:  I do implement action for CORS" />
     <MESSAGE value="Commit: Login and Register Endpoints" />
     <MESSAGE value="Commit New Modules" />
@@ -612,7 +626,8 @@
     <MESSAGE value="new updates 22/05/2025" />
     <MESSAGE value="updates" />
     <MESSAGE value="mbhbjb" />
-    <option name="LAST_COMMIT_MESSAGE" value="mbhbjb" />
+    <MESSAGE value="News Updates:&#10;- CategoryService.cs&#10;- Client.cs&#10;- InvoicePdfGenerator.cs" />
+    <option name="LAST_COMMIT_MESSAGE" value="News Updates:&#10;- CategoryService.cs&#10;- Client.cs&#10;- InvoicePdfGenerator.cs" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

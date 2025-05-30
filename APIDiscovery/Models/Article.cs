@@ -35,6 +35,8 @@ public class Article
     
     public int id_category { get; set; }
     
+    public char? type { get; set; } = 'N';
+    
     [ForeignKey("id_enterprise")]
     [JsonIgnore]
     public Enterprise Enterprise { get; set; }
