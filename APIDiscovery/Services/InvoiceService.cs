@@ -296,13 +296,29 @@ public class InvoiceService : IInvoiceService
             {
                 var article = await _context.Articles.FirstOrDefaultAsync(a => a.id_ar == detalle.ArticleId);
 
-                if (article != null)
-                    if (article.stock < detalle.Amount)
-                        throw new BusinessException($"No hay suficiente stock para el artículo {article.name}");
+                if (article == null)
+                    continue;
 
-                if (article == null) continue;
-                article.stock -= (int)detalle.Amount;
-                _context.Articles.Update(article);
+                switch (article.type)
+                {
+
+                    case 'N' when article.stock < detalle.Amount:
+                        throw new BusinessException(
+                            $"No hay suficiente stock para el artículo {article.name}. Stock disponible: {article.stock}, Cantidad solicitada: {detalle.Amount}");
+                    case 'N':
+                        article.stock -= (int)detalle.Amount;
+                        _context.Articles.Update(article);
+
+                        Console.WriteLine(
+                            $"Stock actualizado para artículo {article.name}: {article.stock + (int)detalle.Amount} -> {article.stock}");
+                        break;
+                    case 'S':
+                        Console.WriteLine($"Artículo de servicio {article.name} - No se actualiza stock");
+                        break;
+                    default:
+                        throw new BusinessException(
+                            $"Tipo de artículo no válido para {article.name}. Tipo actual: {article.type}");
+                }
 
                 var detail = new InvoiceDetail
                 {
