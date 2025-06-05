@@ -21,6 +21,9 @@ public class ArticleCreateDto
     
     [Required(ErrorMessage = "El tipo de artículos es requerido")]
     public char Type { get; set; } = 'N';
+    
+    [Required(ErrorMessage = "El incluir IVA es requerido")]
+    public char IncludeVat { get; set; } = 'N';
 
     public IFormFile? Image { get; set; }
 

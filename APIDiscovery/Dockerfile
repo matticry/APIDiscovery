@@ -4,25 +4,13 @@ EXPOSE 8082
 ENV ASPNETCORE_URLS=http://+:8082
 ENV ASPNETCORE_ENVIRONMENT=Development
 
-# Instalar dependencias para wkhtmltopdf
-RUN apt-get update && apt-get install -y \
-    wget \
-    xfonts-75dpi \
-    xfonts-base \
-    fontconfig \
-    libxrender1 \
-    libxext6 \
-    libx11-6 \
-    libjpeg62-turbo \
-    libpng16-16 \
-    libssl3 \
-    && rm -rf /var/lib/apt/lists/* \
-    
 
-# Descargar e instalar wkhtmltopdf
-RUN wget -q https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.bullseye_amd64.deb \
-    && dpkg -i wkhtmltox_0.12.6.1-2.bullseye_amd64.deb || apt-get install -f -y \
-    && rm wkhtmltox_0.12.6.1-2.bullseye_amd64.deb
+RUN apt-get update && apt-get install -y \
+    wkhtmltopdf \
+    xvfb \
+    libfontconfig1 \
+    libxrender1 \
+    && rm -rf /var/lib/apt/lists/*
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -40,7 +28,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Copiar el archivo .env
+
 COPY --from=build /src/.env /app/.env
 
 # Crear las carpetas necesarias si no existen

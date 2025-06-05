@@ -233,35 +233,76 @@ public class InvoiceService : IInvoiceService
                                .FirstOrDefaultAsync(f => f.id_fare == articleTariff.id_fare)
                            ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
 
-                var precioUnitario = article.price_unit;
+                // NUEVA LÓGICA DE CÁLCULO CON IncludeVat
+                var precioOriginal = article.price_unit;
                 var cantidad = detailDto.Amount;
                 var descuentoPorcentaje = detailDto.Discount;
-                var descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
-                var subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
                 var ivaPorc = fare.percentage;
-                var ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
+
+                decimal precioUnitario;
+                decimal subtotal;
+                decimal ivaValor;
+                decimal descuentoMonetario;
+
+                if (article.include_vat == 'I') // IVA INCLUIDO
+                {
+                    // El precio ya incluye IVA, necesitamos extraer el valor base
+                    var factorIva = 1 + ivaPorc / 100;
+                    precioUnitario = Math.Round(precioOriginal / factorIva, 4); // Precio sin IVA
+
+                    // Calcular descuento sobre el precio sin IVA
+                    descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
+
+                    // Subtotal sin IVA después del descuento
+                    subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
+
+                    // IVA calculado sobre el subtotal
+                    ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
+
+                    Console.WriteLine(
+                        $"Artículo {article.name} - IVA INCLUIDO: Precio original: {precioOriginal:C2}, Precio base: {precioUnitario:C2}, IVA: {ivaValor:C2}");
+                }
+                else if (article.include_vat == 'E') // IVA EXCLUIDO
+                {
+                    // El precio NO incluye IVA, cálculo tradicional
+                    precioUnitario = precioOriginal;
+
+                    // Calcular descuento sobre el precio sin IVA
+                    descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
+
+                    // Subtotal sin IVA después del descuento
+                    subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
+
+                    // IVA calculado sobre el subtotal
+                    ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
+
+                    Console.WriteLine(
+                        $"Artículo {article.name} - IVA EXCLUIDO: Precio base: {precioUnitario:C2}, IVA: {ivaValor:C2}");
+                }
+                else
+                {
+                    throw new BusinessException(
+                        $"Valor de IncludeVat no válido para el artículo {article.name}. Debe ser 'I' (Incluido) o 'E' (Excluido). Valor actual: {article.include_vat}");
+                }
 
                 totalSinImpuestos += subtotal;
                 totalDescuento += descuentoMonetario;
                 totalImpuestos += ivaValor;
 
                 if (detailDto.TariffId != null)
-                    detallesCalculados.Add(
-                        ((int ArticleId, int TariffId, decimal Amount, decimal PrecioUnitario, decimal Descuento,
-                            decimal
-                            Neto, decimal IvaPorc, decimal IvaValor, string Note1, string Note2, string Note3))(
-                            detailDto.ArticleId,
-                            detailDto.TariffId,
-                            cantidad,
-                            precioUnitario,
-                            descuentoMonetario,
-                            subtotal,
-                            ivaPorc,
-                            ivaValor,
-                            detailDto.Note1,
-                            detailDto.Note2,
-                            detailDto.Note3
-                        ));
+                    detallesCalculados.Add(((int ArticleId, int TariffId, decimal Amount, decimal PrecioUnitario, decimal Descuento, decimal Neto, decimal IvaPorc, decimal IvaValor, string Note1, string Note2, string Note3))(
+                        detailDto.ArticleId,
+                        detailDto.TariffId,
+                        cantidad,
+                        precioUnitario, // Este será el precio base (sin IVA)
+                        descuentoMonetario,
+                        subtotal,
+                        ivaPorc,
+                        ivaValor,
+                        detailDto.Note1,
+                        detailDto.Note2,
+                        detailDto.Note3
+                    ));
             }
 
             var propina = invoiceDto.Tip;
@@ -301,7 +342,6 @@ public class InvoiceService : IInvoiceService
 
                 switch (article.type)
                 {
-
                     case 'N' when article.stock < detalle.Amount:
                         throw new BusinessException(
                             $"No hay suficiente stock para el artículo {article.name}. Stock disponible: {article.stock}, Cantidad solicitada: {detalle.Amount}");

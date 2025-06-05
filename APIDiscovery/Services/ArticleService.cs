@@ -69,8 +69,14 @@ public class ArticleService : IArticleService
                 response.DisplayMessage = "El tipo de artículo no es válido. Debe ser 'N' (Normal) o 'S' (Servicio).";
                 return response;
             }
-            
 
+            if (articleDto.IncludeVat != 'I' && articleDto.IncludeVat != 'E')
+            {
+                response.Success = false;
+                response.DisplayMessage = "El incluir IVA no es valido. Debe ser 'I' (Incluir) o 'E' (Excluir).";
+                return response;
+            }
+            
             string imagePath;
             if (articleDto.Image != null)
                 imagePath = await _imageService.SaveImageAsync(articleDto.Image);
@@ -85,6 +91,7 @@ public class ArticleService : IArticleService
                 stock = articleDto.Stock,
                 status = 'A',
                 type = articleDto.Type,
+                include_vat = articleDto.IncludeVat,
                 created_at = DateTime.Now,
                 update_at = DateTime.Now,
                 image = imagePath,
@@ -189,6 +196,7 @@ public class ArticleService : IArticleService
                     PriceUnit = a.price_unit,
                     Stock = a.stock,
                     Type = a.type,
+                    IncludeVat = a.include_vat,
                     Status = a.status.ToString(),
                     CreatedAt = a.created_at,
                     UpdateAt = a.update_at,

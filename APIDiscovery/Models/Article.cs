@@ -37,6 +37,9 @@ public class Article
     
     public char? type { get; set; } = 'N';
     
+    public char? include_vat { get; set; } = 'N';
+
+    
     [ForeignKey("id_enterprise")]
     [JsonIgnore]
     public Enterprise Enterprise { get; set; }
