@@ -1,10 +1,12 @@
 ﻿using APIDiscovery.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIDiscovery.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class EmailSendController : ControllerBase
 {
     private readonly IEmailSendService _emailSendService;

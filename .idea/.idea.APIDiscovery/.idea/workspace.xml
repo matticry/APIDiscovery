@@ -15,19 +15,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/EnterpriseController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/SequenceController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IEnterpriseService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/ISequenceService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/EnterpriseDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/EnterpriseService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/SequenceService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/d6b1c029-65e5-4470-9d09-065a6263eed3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/dataSources/d6b1c029-65e5-4470-9d09-065a6263eed3.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/ArticleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/ArticleController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/AuthController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/CategoryController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/CategoryController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/CertificadosController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/CertificadosController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/ClientController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/ClientController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/EmailSendController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/EmailSendController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/EmissionPointsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/EmissionPointsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoiceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoiceController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/UsuarioController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/UsuarioController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Article.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Article.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleCreateDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleCreateDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/ArticleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/ArticleService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/ArticleService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IEmissionPointService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IEmissionPointService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/EmissionPointDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/EmissionPointDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/SequenceDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/SequenceDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/EmissionPoint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/EmissionPoint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/Enterprise.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/Enterprise.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/EmissionPointService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/EmissionPointService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/IImageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IImageService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/ImageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/ImageService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.sourcelink.json" afterDir="false" />
@@ -350,7 +372,12 @@
       <workItem from="1748611166781" duration="8342000" />
       <workItem from="1748641053947" duration="2832000" />
       <workItem from="1748869639224" duration="13497000" />
-      <workItem from="1749131959268" duration="6605000" />
+      <workItem from="1749131959268" duration="8649000" />
+      <workItem from="1749149994119" duration="401000" />
+      <workItem from="1749247369733" duration="284000" />
+      <workItem from="1749476582582" duration="4749000" />
+      <workItem from="1749496058347" duration="1469000" />
+      <workItem from="1749564100333" duration="8200000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -592,7 +619,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748870011935</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="News Commits">
+      <option name="closed" value="true" />
+      <created>1749142677250</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1749142677250</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -621,7 +656,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Commit: Login and Register Endpoints" />
     <MESSAGE value="Commit New Modules" />
     <MESSAGE value="fix bug" />
     <MESSAGE value="Commit: I fix new bugs aplication and created new modules Category.cs and Article.cs" />
@@ -646,7 +680,27 @@
     <MESSAGE value="mbhbjb" />
     <MESSAGE value="News Updates:&#10;- CategoryService.cs&#10;- Client.cs&#10;- InvoicePdfGenerator.cs" />
     <MESSAGE value="news updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="news updates" />
+    <MESSAGE value="News Commits" />
+    <option name="LAST_COMMIT_MESSAGE" value="News Commits" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/APIDiscovery/Services/ArticleService.cs</url>
+          <line>28</line>
+          <properties documentPath="C:\Users\matticry\RiderProjects\APIDiscovery\APIDiscovery\Services\ArticleService.cs" containingFunctionPresentation="Method 'CreateArticle'">
+            <startOffsets>
+              <option value="852" />
+            </startOffsets>
+            <endOffsets>
+              <option value="875" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

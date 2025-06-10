@@ -2,6 +2,7 @@
 using APIDiscovery.Services;
 using APIDiscovery.Services.Commands;
 using APIDiscovery.Services.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using LoginRequest = APIDiscovery.Models.DTOs.LoginRequest;
@@ -10,6 +11,8 @@ namespace APIDiscovery.Controllers;
 
 [Route("api/auth")]
 [ApiController]
+[Authorize]
+
 public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;

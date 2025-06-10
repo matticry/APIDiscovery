@@ -1,12 +1,15 @@
 ﻿using APIDiscovery.Interfaces;
 using APIDiscovery.Models;
 using APIDiscovery.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIDiscovery.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
+
 public class ClientController : ControllerBase
 {
     private readonly IClientService _clientService;

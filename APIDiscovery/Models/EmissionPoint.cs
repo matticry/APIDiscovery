@@ -12,7 +12,7 @@ public class EmissionPoint
     [MaxLength(250)]
     public string code { get; set; }
         
-    [Column("details ")] // Nota: el espacio en el nombre de columna
+    [Column("details ")] 
     public string details { get; set; }
         
     public bool type { get; set; }

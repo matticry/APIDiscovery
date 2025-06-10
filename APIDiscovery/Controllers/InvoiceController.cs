@@ -2,6 +2,7 @@
 using APIDiscovery.Models;
 using APIDiscovery.Models.DTOs.InvoiceDTOs;
 using APIDiscovery.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,8 @@ namespace APIDiscovery.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
+
 public class InvoiceController : ControllerBase
 {
     private readonly ApplicationDbContext _context;

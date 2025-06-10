@@ -60,6 +60,9 @@ builder.Services.AddScoped<IEmailSendService, EmailSendService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IEnterpriseService, EnterpriseService>();
+builder.Services.AddScoped<ISequenceService, SequenceService>();
+
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddTransient<
     Infoware.SRI.Firmar.ICertificadoService, 

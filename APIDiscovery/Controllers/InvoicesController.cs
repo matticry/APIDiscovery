@@ -2,12 +2,15 @@
 using APIDiscovery.Exceptions;
 using APIDiscovery.Interfaces;
 using APIDiscovery.Models.DTOs.InvoiceDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIDiscovery.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
+
 public class InvoicesController : ControllerBase
 {
     private readonly IInvoiceService _invoiceService;

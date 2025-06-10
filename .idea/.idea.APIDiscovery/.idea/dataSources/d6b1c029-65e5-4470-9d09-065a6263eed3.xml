@@ -16875,8 +16875,8 @@
     </schema>
     <schema id="5573" parent="5514" name="dbo">
       <Current>1</Current>
-      <IntrospectionTimestamp>2025-05-08.18:49:50.143</IntrospectionTimestamp>
-      <LastIntrospectionLocalTimestamp>2025-05-08.23:49:46</LastIntrospectionLocalTimestamp>
+      <IntrospectionTimestamp>2025-06-05.14:02:37.040</IntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-06-05.19:02:33</LastIntrospectionLocalTimestamp>
       <ObjectId>1</ObjectId>
     </schema>
     <schema id="5574" parent="5514" name="guest">
@@ -16902,7 +16902,7 @@
     <table id="5578" parent="5573" name="tbl_category">
       <CreatedTimestamp>2025-04-10.11:51:51.697</CreatedTimestamp>
       <DataRetentionPeriod>-1</DataRetentionPeriod>
-      <ModifiedTimestamp>2025-04-10.11:51:51.697</ModifiedTimestamp>
+      <ModifiedTimestamp>2025-05-21.09:01:57.703</ModifiedTimestamp>
       <ObjectId>66099276</ObjectId>
       <LobDataSpaceId>1</LobDataSpaceId>
     </table>
@@ -16937,7 +16937,7 @@
     <table id="5583" parent="5573" name="tbl_enterprise">
       <CreatedTimestamp>2025-04-08.17:48:34.213</CreatedTimestamp>
       <DataRetentionPeriod>-1</DataRetentionPeriod>
-      <ModifiedTimestamp>2025-05-20.09:07:00.160</ModifiedTimestamp>
+      <ModifiedTimestamp>2025-06-10.09:54:27.363</ModifiedTimestamp>
       <ObjectId>1653580929</ObjectId>
       <LobDataSpaceId>0</LobDataSpaceId>
     </table>
@@ -17035,7 +17035,7 @@
     <table id="5597" parent="5573" name="tbl_type_dni">
       <CreatedTimestamp>2025-04-19.18:15:33.900</CreatedTimestamp>
       <DataRetentionPeriod>-1</DataRetentionPeriod>
-      <ModifiedTimestamp>2025-04-22.09:04:58.770</ModifiedTimestamp>
+      <ModifiedTimestamp>2025-05-09.18:05:31.213</ModifiedTimestamp>
       <ObjectId>594101157</ObjectId>
       <LobDataSpaceId>0</LobDataSpaceId>
     </table>
@@ -17049,7 +17049,7 @@
     <column id="5599" parent="5576" name="id_ar">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(2024)</SequenceIdentity>
+      <SequenceIdentity>1(2025)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
     <column id="5600" parent="5576" name="name">
@@ -17193,7 +17193,7 @@
     <column id="5623" parent="5577" name="id_br">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(4)</SequenceIdentity>
+      <SequenceIdentity>1(1004)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
     <column id="5624" parent="5577" name="code">
@@ -17268,7 +17268,7 @@
     <column id="5636" parent="5578" name="id_ca">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(19)</SequenceIdentity>
+      <SequenceIdentity>1(1023)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
     <column id="5637" parent="5578" name="name">
@@ -17507,7 +17507,7 @@
     <column id="5679" parent="5582" name="id_e_p">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(3)</SequenceIdentity>
+      <SequenceIdentity>1(1003)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
     <column id="5680" parent="5582" name="code">
@@ -17600,10 +17600,14 @@
     <column id="5698" parent="5583" name="email_port">
       <Position>12</Position>
       <StoredType>varchar(5 char)|0s</StoredType>
+      <DefaultConstraintId>1634104862</DefaultConstraintId>
+      <DefaultConstraintName>DF__tbl_enter__email__6166761E</DefaultConstraintName>
     </column>
     <column id="5699" parent="5583" name="email_smtp">
       <Position>13</Position>
       <StoredType>varchar(150 char)|0s</StoredType>
+      <DefaultConstraintId>1650104919</DefaultConstraintId>
+      <DefaultConstraintName>DF__tbl_enter__email__625A9A57</DefaultConstraintName>
     </column>
     <column id="5700" parent="5583" name="email_security">
       <Position>14</Position>
@@ -17620,6 +17624,8 @@
     <column id="5703" parent="5583" name="logo">
       <Position>18</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
+      <DefaultConstraintId>1666104976</DefaultConstraintId>
+      <DefaultConstraintName>DF__tbl_enterp__logo__634EBE90</DefaultConstraintName>
     </column>
     <column id="5704" parent="5583" name="start_date_signature">
       <Position>19</Position>
@@ -17639,65 +17645,99 @@
       <DefaultConstraintId>706101556</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_enter__envir__2A164134</DefaultConstraintName>
     </column>
-    <default id="5708" parent="5583" name="DF__tbl_enter__accou__6477ECF3">
+    <column id="5708" parent="5583" name="status">
+      <Position>23</Position>
+      <StoredType>char(1 char)|0s</StoredType>
+      <DefaultConstraintId>1682105033</DefaultConstraintId>
+      <DefaultConstraintName>DF__tbl_enter__statu__6442E2C9</DefaultConstraintName>
+    </column>
+    <default id="5709" parent="5583" name="DF__tbl_enter__accou__6477ECF3">
       <ColNames>accountant</ColNames>
       <DefaultExpression>&apos;Y&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-04-08.17:48:34.220</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1685581043</ObjectId>
     </default>
-    <default id="5709" parent="5583" name="DF__tbl_enter__envir__2A164134">
+    <default id="5710" parent="5583" name="DF__tbl_enter__envir__2A164134">
       <ColNames>environment</ColNames>
       <DefaultExpression>1</DefaultExpression>
       <ModifiedTimestamp>2025-04-21.11:37:56.560</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>706101556</ObjectId>
     </default>
-    <index id="5710" parent="5583" name="tbl_enterprise_pk">
+    <default id="5711" parent="5583" name="DF__tbl_enter__email__6166761E">
+      <ColNames>email_port</ColNames>
+      <DefaultExpression>587</DefaultExpression>
+      <ModifiedTimestamp>2025-06-10.09:15:58.393</ModifiedTimestamp>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>1634104862</ObjectId>
+    </default>
+    <default id="5712" parent="5583" name="DF__tbl_enter__email__625A9A57">
+      <ColNames>email_smtp</ColNames>
+      <DefaultExpression>&apos;smtp.gmail.com&apos;</DefaultExpression>
+      <ModifiedTimestamp>2025-06-10.09:15:58.447</ModifiedTimestamp>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>1650104919</ObjectId>
+    </default>
+    <default id="5713" parent="5583" name="DF__tbl_enterp__logo__634EBE90">
+      <ColNames>logo</ColNames>
+      <DefaultExpression>&apos;logo.png&apos;</DefaultExpression>
+      <ModifiedTimestamp>2025-06-10.09:16:21.370</ModifiedTimestamp>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>1666104976</ObjectId>
+    </default>
+    <default id="5714" parent="5583" name="DF__tbl_enter__statu__6442E2C9">
+      <ColNames>status</ColNames>
+      <DefaultExpression>&apos;A&apos;</DefaultExpression>
+      <ModifiedTimestamp>2025-06-10.09:54:27.370</ModifiedTimestamp>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>1682105033</ObjectId>
+    </default>
+    <index id="5715" parent="5583" name="tbl_enterprise_pk">
       <Clustering>1</Clustering>
       <ColNames>id_en</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5711" parent="5583" name="tbl_enterprise_pk">
+    <key id="5716" parent="5583" name="tbl_enterprise_pk">
       <CreatedTimestamp>2025-04-08.17:48:34.220</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-08.17:48:34.220</ModifiedTimestamp>
       <ObjectId>1669580986</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_enterprise_pk</UnderlyingIndexName>
     </key>
-    <column id="5712" parent="5584" name="id_en_cl">
+    <column id="5717" parent="5584" name="id_en_cl">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(9)</SequenceIdentity>
+      <SequenceIdentity>1(1015)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5713" parent="5584" name="enterprise_id">
+    <column id="5718" parent="5584" name="enterprise_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5714" parent="5584" name="client_id">
+    <column id="5719" parent="5584" name="client_id">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5715" parent="5584" name="status">
+    <column id="5720" parent="5584" name="status">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>char(1 char)|0s</StoredType>
       <DefaultConstraintId>1058102810</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_enter__statu__3F115E1A</DefaultConstraintName>
     </column>
-    <default id="5716" parent="5584" name="DF__tbl_enter__statu__3F115E1A">
+    <default id="5721" parent="5584" name="DF__tbl_enter__statu__3F115E1A">
       <ColNames>status</ColNames>
       <DefaultExpression>&apos;A&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-05-09.18:15:31.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1058102810</ObjectId>
     </default>
-    <foreign-key id="5717" parent="5584" name="tbl_enterprise_client_tbl_enterprise_id_en_fk">
+    <foreign-key id="5722" parent="5584" name="tbl_enterprise_client_tbl_enterprise_id_en_fk">
       <ColNames>enterprise_id</ColNames>
       <CreatedTimestamp>2025-05-08.18:49:46.183</CreatedTimestamp>
       <ModifiedTimestamp>2025-05-08.18:49:46.183</ModifiedTimestamp>
@@ -17706,7 +17746,7 @@
       <RefTableId>1653580929</RefTableId>
       <RefTableName>tbl_enterprise</RefTableName>
     </foreign-key>
-    <foreign-key id="5718" parent="5584" name="tbl_enterprise_client_tbl_client_id_client_fk">
+    <foreign-key id="5723" parent="5584" name="tbl_enterprise_client_tbl_client_id_client_fk">
       <ColNames>client_id</ColNames>
       <CreatedTimestamp>2025-05-08.18:49:46.187</CreatedTimestamp>
       <ModifiedTimestamp>2025-05-08.18:49:46.187</ModifiedTimestamp>
@@ -17715,56 +17755,56 @@
       <RefTableId>562101043</RefTableId>
       <RefTableName>tbl_client</RefTableName>
     </foreign-key>
-    <index id="5719" parent="5584" name="tbl_enterprise_client_pk">
+    <index id="5724" parent="5584" name="tbl_enterprise_client_pk">
       <Clustering>1</Clustering>
       <ColNames>id_en_cl</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5720" parent="5584" name="tbl_enterprise_client_pk">
+    <key id="5725" parent="5584" name="tbl_enterprise_client_pk">
       <CreatedTimestamp>2025-05-08.18:49:46.183</CreatedTimestamp>
       <ModifiedTimestamp>2025-05-08.18:49:46.183</ModifiedTimestamp>
       <ObjectId>994102582</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_enterprise_client_pk</UnderlyingIndexName>
     </key>
-    <column id="5721" parent="5585" name="id_e_u">
+    <column id="5726" parent="5585" name="id_e_u">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(5)</SequenceIdentity>
+      <SequenceIdentity>1(1007)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5722" parent="5585" name="id_user">
+    <column id="5727" parent="5585" name="id_user">
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5723" parent="5585" name="id_enterprise">
+    <column id="5728" parent="5585" name="id_enterprise">
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5724" parent="5585" name="status">
+    <column id="5729" parent="5585" name="status">
       <Position>4</Position>
       <StoredType>char(1 char)|0s</StoredType>
       <DefaultConstraintId>1893581784</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_enter__statu__70DDC3D8</DefaultConstraintName>
     </column>
-    <column id="5725" parent="5585" name="start_date_subscription ">
+    <column id="5730" parent="5585" name="start_date_subscription ">
       <Position>5</Position>
       <StoredType>datetime|0s</StoredType>
     </column>
-    <column id="5726" parent="5585" name="end_date_subscription ">
+    <column id="5731" parent="5585" name="end_date_subscription ">
       <Position>6</Position>
       <StoredType>datetime|0s</StoredType>
     </column>
-    <default id="5727" parent="5585" name="DF__tbl_enter__statu__70DDC3D8">
+    <default id="5732" parent="5585" name="DF__tbl_enter__statu__70DDC3D8">
       <ColNames>status</ColNames>
       <DefaultExpression>&apos;A&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-04-09.09:09:56.720</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1893581784</ObjectId>
     </default>
-    <foreign-key id="5728" parent="5585" name="tbl_enterprise_user_tbl_user_id_us_fk">
+    <foreign-key id="5733" parent="5585" name="tbl_enterprise_user_tbl_user_id_us_fk">
       <ColNames>id_user</ColNames>
       <CreatedTimestamp>2025-04-09.09:09:56.720</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-09.09:09:56.720</ModifiedTimestamp>
@@ -17773,7 +17813,7 @@
       <RefTableId>1061578820</RefTableId>
       <RefTableName>tbl_user</RefTableName>
     </foreign-key>
-    <foreign-key id="5729" parent="5585" name="tbl_enterprise_user_tbl_enterprise_id_en_fk">
+    <foreign-key id="5734" parent="5585" name="tbl_enterprise_user_tbl_enterprise_id_en_fk">
       <ColNames>id_enterprise</ColNames>
       <CreatedTimestamp>2025-04-09.09:09:56.720</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-09.09:09:56.720</ModifiedTimestamp>
@@ -17782,211 +17822,211 @@
       <RefTableId>1653580929</RefTableId>
       <RefTableName>tbl_enterprise</RefTableName>
     </foreign-key>
-    <index id="5730" parent="5585" name="tbl_enterprise_user_pk">
+    <index id="5735" parent="5585" name="tbl_enterprise_user_pk">
       <Clustering>1</Clustering>
       <ColNames>id_e_u</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5731" parent="5585" name="tbl_enterprise_user_pk">
+    <key id="5736" parent="5585" name="tbl_enterprise_user_pk">
       <CreatedTimestamp>2025-04-09.09:09:56.717</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-09.09:09:56.717</ModifiedTimestamp>
       <ObjectId>1845581613</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_enterprise_user_pk</UnderlyingIndexName>
     </key>
-    <column id="5732" parent="5586" name="id_fare">
+    <column id="5737" parent="5586" name="id_fare">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1(10)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5733" parent="5586" name="percentage">
+    <column id="5738" parent="5586" name="percentage">
       <Position>2</Position>
       <StoredType>decimal(5,2)|0s</StoredType>
     </column>
-    <column id="5734" parent="5586" name="description">
+    <column id="5739" parent="5586" name="description">
       <Position>3</Position>
       <StoredType>varchar(max)|0s</StoredType>
     </column>
-    <column id="5735" parent="5586" name="id_tax">
+    <column id="5740" parent="5586" name="id_tax">
       <Position>4</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5736" parent="5586" name="code">
+    <column id="5741" parent="5586" name="code">
       <Position>5</Position>
       <StoredType>varchar(2 char)|0s</StoredType>
     </column>
-    <index id="5737" parent="5586" name="tbl_fare_pk">
+    <index id="5742" parent="5586" name="tbl_fare_pk">
       <Clustering>1</Clustering>
       <ColNames>id_fare</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5738" parent="5586" name="tbl_fare_pk">
+    <key id="5743" parent="5586" name="tbl_fare_pk">
       <CreatedTimestamp>2025-04-10.10:48:09.920</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-10.10:48:09.920</ModifiedTimestamp>
       <ObjectId>2085582468</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_fare_pk</UnderlyingIndexName>
     </key>
-    <column id="5739" parent="5587" name="inv_id">
+    <column id="5744" parent="5587" name="inv_id">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(2136)</SequenceIdentity>
+      <SequenceIdentity>1(3186)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5740" parent="5587" name="emission_date">
+    <column id="5745" parent="5587" name="emission_date">
       <Position>2</Position>
       <StoredType>datetime|0s</StoredType>
       <DefaultConstraintId>770101784</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_invoi__emiss__2DE6D218</DefaultConstraintName>
     </column>
-    <column id="5741" parent="5587" name="total_without_taxes">
+    <column id="5746" parent="5587" name="total_without_taxes">
       <Position>3</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5742" parent="5587" name="total_discount">
+    <column id="5747" parent="5587" name="total_discount">
       <Position>4</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5743" parent="5587" name="tip">
+    <column id="5748" parent="5587" name="tip">
       <Position>5</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5744" parent="5587" name="total_amount">
+    <column id="5749" parent="5587" name="total_amount">
       <Position>6</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5745" parent="5587" name="currency">
+    <column id="5750" parent="5587" name="currency">
       <Position>7</Position>
       <StoredType>varchar(10 char)|0s</StoredType>
     </column>
-    <column id="5746" parent="5587" name="sequence_id">
+    <column id="5751" parent="5587" name="sequence_id">
       <Position>8</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5747" parent="5587" name="electronic_status">
+    <column id="5752" parent="5587" name="electronic_status">
       <Position>9</Position>
       <StoredType>varchar(50 char)|0s</StoredType>
       <DefaultConstraintId>754101727</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_invoi__elect__2CF2ADDF</DefaultConstraintName>
     </column>
-    <column id="5748" parent="5587" name="invoice_status">
+    <column id="5753" parent="5587" name="invoice_status">
       <Position>10</Position>
       <StoredType>varchar(50 char)|0s</StoredType>
       <DefaultConstraintId>738101670</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_invoi__invoi__2BFE89A6</DefaultConstraintName>
     </column>
-    <column id="5749" parent="5587" name="id_emission_point">
+    <column id="5754" parent="5587" name="id_emission_point">
       <Position>11</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5750" parent="5587" name="company_id">
+    <column id="5755" parent="5587" name="company_id">
       <Position>12</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5751" parent="5587" name="client_id">
+    <column id="5756" parent="5587" name="client_id">
       <Position>13</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5752" parent="5587" name="access_key">
+    <column id="5757" parent="5587" name="access_key">
       <Position>14</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5753" parent="5587" name="branch_id">
+    <column id="5758" parent="5587" name="branch_id">
       <Position>15</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5754" parent="5587" name="receipt_id">
+    <column id="5759" parent="5587" name="receipt_id">
       <Position>16</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5755" parent="5587" name="authorization_date">
+    <column id="5760" parent="5587" name="authorization_date">
       <Position>17</Position>
       <StoredType>datetime|0s</StoredType>
     </column>
-    <column id="5756" parent="5587" name="authorization_number">
+    <column id="5761" parent="5587" name="authorization_number">
       <Position>18</Position>
       <StoredType>varchar(50 char)|0s</StoredType>
       <DefaultConstraintId>786101841</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_invoi__autho__2EDAF651</DefaultConstraintName>
     </column>
-    <column id="5757" parent="5587" name="total_vat">
+    <column id="5762" parent="5587" name="total_vat">
       <Position>19</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5758" parent="5587" name="total_vat_0">
+    <column id="5763" parent="5587" name="total_vat_0">
       <Position>20</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5759" parent="5587" name="vat">
+    <column id="5764" parent="5587" name="vat">
       <Position>21</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5760" parent="5587" name="message">
+    <column id="5765" parent="5587" name="message">
       <Position>22</Position>
       <StoredType>varchar(max)|0s</StoredType>
     </column>
-    <column id="5761" parent="5587" name="additional_info">
+    <column id="5766" parent="5587" name="additional_info">
       <Position>23</Position>
       <StoredType>varchar(max)|0s</StoredType>
     </column>
-    <column id="5762" parent="5587" name="modified_doc_number">
+    <column id="5767" parent="5587" name="modified_doc_number">
       <Position>26</Position>
       <StoredType>varchar(50 char)|0s</StoredType>
     </column>
-    <column id="5763" parent="5587" name="modified_doc_date">
+    <column id="5768" parent="5587" name="modified_doc_date">
       <Position>27</Position>
       <StoredType>date|0s</StoredType>
     </column>
-    <column id="5764" parent="5587" name="sequence">
+    <column id="5769" parent="5587" name="sequence">
       <Position>28</Position>
       <StoredType>varchar(100 char)|0s</StoredType>
     </column>
-    <column id="5765" parent="5587" name="xml">
+    <column id="5770" parent="5587" name="xml">
       <Position>29</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5766" parent="5587" name="XmlBase64">
+    <column id="5771" parent="5587" name="XmlBase64">
       <Position>30</Position>
       <StoredType>varchar(max)|0s</StoredType>
     </column>
-    <column id="5767" parent="5587" name="pdfBase64">
+    <column id="5772" parent="5587" name="pdfBase64">
       <Position>31</Position>
       <StoredType>varchar(max)|0s</StoredType>
     </column>
-    <default id="5768" parent="5587" name="DF__tbl_invoi__emiss__2DE6D218">
+    <default id="5773" parent="5587" name="DF__tbl_invoi__emiss__2DE6D218">
       <ColNames>emission_date</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-04-28.08:19:13.877</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>770101784</ObjectId>
     </default>
-    <default id="5769" parent="5587" name="DF__tbl_invoi__elect__2CF2ADDF">
+    <default id="5774" parent="5587" name="DF__tbl_invoi__elect__2CF2ADDF">
       <ColNames>electronic_status</ColNames>
       <DefaultExpression>&apos;NO ENVIADO&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-04-24.08:21:42.460</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>754101727</ObjectId>
     </default>
-    <default id="5770" parent="5587" name="DF__tbl_invoi__invoi__2BFE89A6">
+    <default id="5775" parent="5587" name="DF__tbl_invoi__invoi__2BFE89A6">
       <ColNames>invoice_status</ColNames>
       <DefaultExpression>&apos;NO AUTORIZADO&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-04-22.09:38:02.790</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>738101670</ObjectId>
     </default>
-    <default id="5771" parent="5587" name="DF__tbl_invoi__autho__2EDAF651">
+    <default id="5776" parent="5587" name="DF__tbl_invoi__autho__2EDAF651">
       <ColNames>authorization_number</ColNames>
       <DefaultExpression>&apos;N/A&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-05-01.08:55:04.790</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>786101841</ObjectId>
     </default>
-    <foreign-key id="5772" parent="5587" name="tbl_invoice_tbl_sequence_id_sequence_fk">
+    <foreign-key id="5777" parent="5587" name="tbl_invoice_tbl_sequence_id_sequence_fk">
       <ColNames>sequence_id</ColNames>
       <CreatedTimestamp>2025-04-21.11:27:41.400</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-21.11:27:41.400</ModifiedTimestamp>
@@ -17995,7 +18035,7 @@
       <RefTableId>162099618</RefTableId>
       <RefTableName>tbl_sequence</RefTableName>
     </foreign-key>
-    <foreign-key id="5773" parent="5587" name="tbl_invoice_tbl_emission_point_id_e_p_fk">
+    <foreign-key id="5778" parent="5587" name="tbl_invoice_tbl_emission_point_id_e_p_fk">
       <ColNames>id_emission_point</ColNames>
       <CreatedTimestamp>2025-04-19.17:31:16.347</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.17:31:16.347</ModifiedTimestamp>
@@ -18004,7 +18044,7 @@
       <RefTableId>194099732</RefTableId>
       <RefTableName>tbl_emission_point</RefTableName>
     </foreign-key>
-    <foreign-key id="5774" parent="5587" name="tbl_invoice_tbl_enterprise_id_en_fk">
+    <foreign-key id="5779" parent="5587" name="tbl_invoice_tbl_enterprise_id_en_fk">
       <ColNames>company_id</ColNames>
       <CreatedTimestamp>2025-04-08.18:01:55.513</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-08.18:01:55.513</ModifiedTimestamp>
@@ -18013,7 +18053,7 @@
       <RefTableId>1653580929</RefTableId>
       <RefTableName>tbl_enterprise</RefTableName>
     </foreign-key>
-    <foreign-key id="5775" parent="5587" name="tbl_invoice_tbl_client_id_client_fk">
+    <foreign-key id="5780" parent="5587" name="tbl_invoice_tbl_client_id_client_fk">
       <ColNames>client_id</ColNames>
       <CreatedTimestamp>2025-04-21.11:23:04.293</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-21.11:23:04.293</ModifiedTimestamp>
@@ -18022,7 +18062,7 @@
       <RefTableId>562101043</RefTableId>
       <RefTableName>tbl_client</RefTableName>
     </foreign-key>
-    <foreign-key id="5776" parent="5587" name="tbl_invoice_tbl_branch_id_br_fk">
+    <foreign-key id="5781" parent="5587" name="tbl_invoice_tbl_branch_id_br_fk">
       <ColNames>branch_id</ColNames>
       <CreatedTimestamp>2025-04-19.17:31:16.273</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.17:31:16.273</ModifiedTimestamp>
@@ -18031,7 +18071,7 @@
       <RefTableId>1701581100</RefTableId>
       <RefTableName>tbl_branch</RefTableName>
     </foreign-key>
-    <foreign-key id="5777" parent="5587" name="tbl_invoice_tbl_document_type_id_d_t_fk">
+    <foreign-key id="5782" parent="5587" name="tbl_invoice_tbl_document_type_id_d_t_fk">
       <ColNames>receipt_id</ColNames>
       <CreatedTimestamp>2025-04-19.17:31:16.307</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.17:31:16.307</ModifiedTimestamp>
@@ -18040,107 +18080,107 @@
       <RefTableId>242099903</RefTableId>
       <RefTableName>tbl_document_type</RefTableName>
     </foreign-key>
-    <index id="5778" parent="5587" name="tbl_invoice_pk">
+    <index id="5783" parent="5587" name="tbl_invoice_pk">
       <Clustering>1</Clustering>
       <ColNames>inv_id</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5779" parent="5587" name="tbl_invoice_pk">
+    <key id="5784" parent="5587" name="tbl_invoice_pk">
       <CreatedTimestamp>2025-04-08.18:01:55.470</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-08.18:01:55.470</ModifiedTimestamp>
       <ObjectId>1797581442</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_invoice_pk</UnderlyingIndexName>
     </key>
-    <column id="5780" parent="5588" name="id_i_d">
+    <column id="5785" parent="5588" name="id_i_d">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(1096)</SequenceIdentity>
+      <SequenceIdentity>1(3167)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5781" parent="5588" name="code_stub">
+    <column id="5786" parent="5588" name="code_stub">
       <Position>2</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5782" parent="5588" name="description">
+    <column id="5787" parent="5588" name="description">
       <Position>3</Position>
       <StoredType>text|0s</StoredType>
     </column>
-    <column id="5783" parent="5588" name="amount">
+    <column id="5788" parent="5588" name="amount">
       <Position>4</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5784" parent="5588" name="price_unit">
+    <column id="5789" parent="5588" name="price_unit">
       <Position>5</Position>
       <StoredType>decimal(10,2)|0s</StoredType>
     </column>
-    <column id="5785" parent="5588" name="discount">
+    <column id="5790" parent="5588" name="discount">
       <Position>6</Position>
       <StoredType>decimal(10,2)|0s</StoredType>
     </column>
-    <column id="5786" parent="5588" name="price_with_discount">
+    <column id="5791" parent="5588" name="price_with_discount">
       <Position>7</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5787" parent="5588" name="neto">
+    <column id="5792" parent="5588" name="neto">
       <Position>8</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5788" parent="5588" name="iva_porc">
+    <column id="5793" parent="5588" name="iva_porc">
       <Position>9</Position>
       <StoredType>decimal(5,2)|0s</StoredType>
     </column>
-    <column id="5789" parent="5588" name="iva_valor">
+    <column id="5794" parent="5588" name="iva_valor">
       <Position>10</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5790" parent="5588" name="ice_porc">
+    <column id="5795" parent="5588" name="ice_porc">
       <Position>11</Position>
       <StoredType>decimal(5,2)|0s</StoredType>
     </column>
-    <column id="5791" parent="5588" name="ice_valor">
+    <column id="5796" parent="5588" name="ice_valor">
       <Position>12</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5792" parent="5588" name="irbp_valor">
+    <column id="5797" parent="5588" name="irbp_valor">
       <Position>13</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5793" parent="5588" name="subtotal">
+    <column id="5798" parent="5588" name="subtotal">
       <Position>14</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5794" parent="5588" name="total">
+    <column id="5799" parent="5588" name="total">
       <Position>15</Position>
       <StoredType>decimal(18,2)|0s</StoredType>
     </column>
-    <column id="5795" parent="5588" name="id_invoice">
+    <column id="5800" parent="5588" name="id_invoice">
       <Position>16</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5796" parent="5588" name="note1">
+    <column id="5801" parent="5588" name="note1">
       <Position>17</Position>
       <StoredType>nvarchar(max)|0s</StoredType>
     </column>
-    <column id="5797" parent="5588" name="note2">
+    <column id="5802" parent="5588" name="note2">
       <Position>18</Position>
       <StoredType>nvarchar(max)|0s</StoredType>
     </column>
-    <column id="5798" parent="5588" name="note3">
+    <column id="5803" parent="5588" name="note3">
       <Position>19</Position>
       <StoredType>nvarchar(max)|0s</StoredType>
     </column>
-    <column id="5799" parent="5588" name="id_tariff">
+    <column id="5804" parent="5588" name="id_tariff">
       <Position>20</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5800" parent="5588" name="id_article">
+    <column id="5805" parent="5588" name="id_article">
       <Position>21</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="5801" parent="5588" name="tbl_invoice_detail_tbl_invoice_inv_id_fk">
+    <foreign-key id="5806" parent="5588" name="tbl_invoice_detail_tbl_invoice_inv_id_fk">
       <ColNames>id_invoice</ColNames>
       <CreatedTimestamp>2025-04-19.17:48:14.693</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.17:48:14.693</ModifiedTimestamp>
@@ -18149,7 +18189,7 @@
       <RefTableId>1781581385</RefTableId>
       <RefTableName>tbl_invoice</RefTableName>
     </foreign-key>
-    <foreign-key id="5802" parent="5588" name="tbl_invoice_detail_tbl_fare_id_fare_fk">
+    <foreign-key id="5807" parent="5588" name="tbl_invoice_detail_tbl_fare_id_fare_fk">
       <ColNames>id_tariff</ColNames>
       <CreatedTimestamp>2025-04-19.17:48:14.697</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.17:48:14.697</ModifiedTimestamp>
@@ -18158,7 +18198,7 @@
       <RefTableId>2069582411</RefTableId>
       <RefTableName>tbl_fare</RefTableName>
     </foreign-key>
-    <foreign-key id="5803" parent="5588" name="tbl_invoice_detail_tbl_article_id_ar_fk">
+    <foreign-key id="5808" parent="5588" name="tbl_invoice_detail_tbl_article_id_ar_fk">
       <ColNames>id_article</ColNames>
       <CreatedTimestamp>2025-04-19.17:48:14.697</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.17:48:14.697</ModifiedTimestamp>
@@ -18167,47 +18207,47 @@
       <RefTableId>1909581841</RefTableId>
       <RefTableName>tbl_article</RefTableName>
     </foreign-key>
-    <index id="5804" parent="5588" name="tbl_invoice_detail_pk">
+    <index id="5809" parent="5588" name="tbl_invoice_detail_pk">
       <Clustering>1</Clustering>
       <ColNames>id_i_d</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5805" parent="5588" name="tbl_invoice_detail_pk">
+    <key id="5810" parent="5588" name="tbl_invoice_detail_pk">
       <CreatedTimestamp>2025-04-19.17:48:14.690</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.17:48:14.690</ModifiedTimestamp>
       <ObjectId>354100302</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_invoice_detail_pk</UnderlyingIndexName>
     </key>
-    <column id="5806" parent="5589" name="id_i_p">
+    <column id="5811" parent="5589" name="id_i_p">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(1091)</SequenceIdentity>
+      <SequenceIdentity>1(3155)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5807" parent="5589" name="id_invoice">
+    <column id="5812" parent="5589" name="id_invoice">
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5808" parent="5589" name="total">
+    <column id="5813" parent="5589" name="total">
       <Position>3</Position>
       <StoredType>decimal(10,2)|0s</StoredType>
     </column>
-    <column id="5809" parent="5589" name="deadline">
+    <column id="5814" parent="5589" name="deadline">
       <Position>4</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5810" parent="5589" name="unit_time">
+    <column id="5815" parent="5589" name="unit_time">
       <Position>5</Position>
       <StoredType>varchar(100 char)|0s</StoredType>
     </column>
-    <column id="5811" parent="5589" name="id_payment">
+    <column id="5816" parent="5589" name="id_payment">
       <Position>6</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="5812" parent="5589" name="tbl_invoice_payment_tbl_invoice_inv_id_fk">
+    <foreign-key id="5817" parent="5589" name="tbl_invoice_payment_tbl_invoice_inv_id_fk">
       <ColNames>id_invoice</ColNames>
       <CreatedTimestamp>2025-04-19.18:08:46.953</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.18:08:46.953</ModifiedTimestamp>
@@ -18216,7 +18256,7 @@
       <RefTableId>1781581385</RefTableId>
       <RefTableName>tbl_invoice</RefTableName>
     </foreign-key>
-    <foreign-key id="5813" parent="5589" name="tbl_invoice_payment_tbl_payment_id_payment_fk">
+    <foreign-key id="5818" parent="5589" name="tbl_invoice_payment_tbl_payment_id_payment_fk">
       <ColNames>id_payment</ColNames>
       <CreatedTimestamp>2025-04-19.18:08:47.060</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.18:08:47.060</ModifiedTimestamp>
@@ -18225,195 +18265,195 @@
       <RefTableId>466100701</RefTableId>
       <RefTableName>tbl_payment</RefTableName>
     </foreign-key>
-    <index id="5814" parent="5589" name="tbl_invoice_payment_pk">
+    <index id="5819" parent="5589" name="tbl_invoice_payment_pk">
       <Clustering>1</Clustering>
       <ColNames>id_i_p</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5815" parent="5589" name="tbl_invoice_payment_pk">
+    <key id="5820" parent="5589" name="tbl_invoice_payment_pk">
       <CreatedTimestamp>2025-04-19.18:06:14.480</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.18:06:14.480</ModifiedTimestamp>
       <ObjectId>514100872</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_invoice_payment_pk</UnderlyingIndexName>
     </key>
-    <column id="5816" parent="5590" name="id_payment">
+    <column id="5821" parent="5590" name="id_payment">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1(9)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5817" parent="5590" name="sri_detail">
+    <column id="5822" parent="5590" name="sri_detail">
       <Position>2</Position>
       <StoredType>text|0s</StoredType>
     </column>
-    <column id="5818" parent="5590" name="detail">
+    <column id="5823" parent="5590" name="detail">
       <Position>3</Position>
       <StoredType>text|0s</StoredType>
     </column>
-    <column id="5819" parent="5590" name="status">
+    <column id="5824" parent="5590" name="status">
       <Position>4</Position>
       <StoredType>bit|0s</StoredType>
     </column>
-    <index id="5820" parent="5590" name="tbl_payment_pk">
+    <index id="5825" parent="5590" name="tbl_payment_pk">
       <Clustering>1</Clustering>
       <ColNames>id_payment</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5821" parent="5590" name="tbl_payment_pk">
+    <key id="5826" parent="5590" name="tbl_payment_pk">
       <CreatedTimestamp>2025-04-19.18:02:36.377</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.18:02:36.377</ModifiedTimestamp>
       <ObjectId>482100758</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_payment_pk</UnderlyingIndexName>
     </key>
-    <column id="5822" parent="5591" name="id_re">
+    <column id="5827" parent="5591" name="id_re">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(1389)</SequenceIdentity>
+      <SequenceIdentity>1(3846)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5823" parent="5591" name="action_re">
+    <column id="5828" parent="5591" name="action_re">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5824" parent="5591" name="created_at_re">
+    <column id="5829" parent="5591" name="created_at_re">
       <Position>3</Position>
       <StoredType>datetime|0s</StoredType>
       <DefaultConstraintId>933578364</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_repor__creat__37A5467C</DefaultConstraintName>
     </column>
-    <column id="5825" parent="5591" name="user_re">
+    <column id="5830" parent="5591" name="user_re">
       <Position>4</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
       <DefaultConstraintId>949578421</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_repor__user___38996AB5</DefaultConstraintName>
     </column>
-    <column id="5826" parent="5591" name="dni_re">
+    <column id="5831" parent="5591" name="dni_re">
       <Position>5</Position>
       <StoredType>varchar(50 char)|0s</StoredType>
       <DefaultConstraintId>965578478</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_repor__dni_r__398D8EEE</DefaultConstraintName>
     </column>
-    <column id="5827" parent="5591" name="status_re">
+    <column id="5832" parent="5591" name="status_re">
       <Position>6</Position>
       <StoredType>char(1 char)|0s</StoredType>
       <DefaultConstraintId>981578535</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_repor__statu__3A81B327</DefaultConstraintName>
     </column>
-    <default id="5828" parent="5591" name="DF__tbl_repor__creat__37A5467C">
+    <default id="5833" parent="5591" name="DF__tbl_repor__creat__37A5467C">
       <ColNames>created_at_re</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:35.850</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>933578364</ObjectId>
     </default>
-    <default id="5829" parent="5591" name="DF__tbl_repor__user___38996AB5">
+    <default id="5834" parent="5591" name="DF__tbl_repor__user___38996AB5">
       <ColNames>user_re</ColNames>
       <DefaultExpression>&apos;Josue Ulloa&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:35.850</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>949578421</ObjectId>
     </default>
-    <default id="5830" parent="5591" name="DF__tbl_repor__dni_r__398D8EEE">
+    <default id="5835" parent="5591" name="DF__tbl_repor__dni_r__398D8EEE">
       <ColNames>dni_re</ColNames>
       <DefaultExpression>&apos;1755386099&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:35.850</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>965578478</ObjectId>
     </default>
-    <default id="5831" parent="5591" name="DF__tbl_repor__statu__3A81B327">
+    <default id="5836" parent="5591" name="DF__tbl_repor__statu__3A81B327">
       <ColNames>status_re</ColNames>
       <DefaultExpression>&apos;A&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:35.850</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>981578535</ObjectId>
     </default>
-    <index id="5832" parent="5591" name="tbl_report_pk">
+    <index id="5837" parent="5591" name="tbl_report_pk">
       <Clustering>1</Clustering>
       <ColNames>id_re</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5833" parent="5591" name="tbl_report_pk">
+    <key id="5838" parent="5591" name="tbl_report_pk">
       <CreatedTimestamp>2025-03-21.12:40:35.850</CreatedTimestamp>
       <ModifiedTimestamp>2025-03-21.12:40:35.850</ModifiedTimestamp>
       <ObjectId>917578307</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_report_pk</UnderlyingIndexName>
     </key>
-    <column id="5834" parent="5592" name="id_rol">
+    <column id="5839" parent="5592" name="id_rol">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(4)</SequenceIdentity>
+      <SequenceIdentity>1(5)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5835" parent="5592" name="name_rol">
+    <column id="5840" parent="5592" name="name_rol">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
       <DefaultConstraintId>1029578706</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_rol__name_ro__3D5E1FD2</DefaultConstraintName>
     </column>
-    <column id="5836" parent="5592" name="status_rol">
+    <column id="5841" parent="5592" name="status_rol">
       <Position>3</Position>
       <StoredType>char(1 char)|0s</StoredType>
       <DefaultConstraintId>1045578763</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_rol__status___3E52440B</DefaultConstraintName>
     </column>
-    <default id="5837" parent="5592" name="DF__tbl_rol__name_ro__3D5E1FD2">
+    <default id="5842" parent="5592" name="DF__tbl_rol__name_ro__3D5E1FD2">
       <ColNames>name_rol</ColNames>
       <DefaultExpression>&apos;User&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.017</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1029578706</ObjectId>
     </default>
-    <default id="5838" parent="5592" name="DF__tbl_rol__status___3E52440B">
+    <default id="5843" parent="5592" name="DF__tbl_rol__status___3E52440B">
       <ColNames>status_rol</ColNames>
       <DefaultExpression>&apos;A&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.017</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1045578763</ObjectId>
     </default>
-    <index id="5839" parent="5592" name="tbl_rol_pk">
+    <index id="5844" parent="5592" name="tbl_rol_pk">
       <Clustering>1</Clustering>
       <ColNames>id_rol</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5840" parent="5592" name="tbl_rol_pk">
+    <key id="5845" parent="5592" name="tbl_rol_pk">
       <CreatedTimestamp>2025-03-21.12:40:36.013</CreatedTimestamp>
       <ModifiedTimestamp>2025-03-21.12:40:36.013</ModifiedTimestamp>
       <ObjectId>1013578649</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_rol_pk</UnderlyingIndexName>
     </key>
-    <column id="5841" parent="5593" name="id_sequence">
+    <column id="5846" parent="5593" name="id_sequence">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(3)</SequenceIdentity>
+      <SequenceIdentity>1(4)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5842" parent="5593" name="id_emission_point">
+    <column id="5847" parent="5593" name="id_emission_point">
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5843" parent="5593" name="id_document_type">
+    <column id="5848" parent="5593" name="id_document_type">
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5844" parent="5593" name="code">
+    <column id="5849" parent="5593" name="code">
       <Position>4</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <foreign-key id="5845" parent="5593" name="tbl_sequence_tbl_emission_point_id_e_p_fk">
+    <foreign-key id="5850" parent="5593" name="tbl_sequence_tbl_emission_point_id_e_p_fk">
       <ColNames>id_emission_point</ColNames>
       <CreatedTimestamp>2025-04-21.08:09:44.647</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-21.08:09:44.647</ModifiedTimestamp>
@@ -18422,7 +18462,7 @@
       <RefTableId>194099732</RefTableId>
       <RefTableName>tbl_emission_point</RefTableName>
     </foreign-key>
-    <foreign-key id="5846" parent="5593" name="tbl_sequence_tbl_document_type_id_d_t_fk">
+    <foreign-key id="5851" parent="5593" name="tbl_sequence_tbl_document_type_id_d_t_fk">
       <ColNames>id_document_type</ColNames>
       <CreatedTimestamp>2025-04-21.08:09:44.587</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-21.08:09:44.587</ModifiedTimestamp>
@@ -18431,35 +18471,35 @@
       <RefTableId>242099903</RefTableId>
       <RefTableName>tbl_document_type</RefTableName>
     </foreign-key>
-    <index id="5847" parent="5593" name="tbl_sequence_pk">
+    <index id="5852" parent="5593" name="tbl_sequence_pk">
       <Clustering>1</Clustering>
       <ColNames>id_sequence</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5848" parent="5593" name="tbl_sequence_pk">
+    <key id="5853" parent="5593" name="tbl_sequence_pk">
       <CreatedTimestamp>2025-04-19.17:01:36.723</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.17:01:36.723</ModifiedTimestamp>
       <ObjectId>178099675</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_sequence_pk</UnderlyingIndexName>
     </key>
-    <column id="5849" parent="5594" name="id_t_a">
+    <column id="5854" parent="5594" name="id_t_a">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(24)</SequenceIdentity>
+      <SequenceIdentity>1(2051)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5850" parent="5594" name="id_fare">
+    <column id="5855" parent="5594" name="id_fare">
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5851" parent="5594" name="id_article">
+    <column id="5856" parent="5594" name="id_article">
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <foreign-key id="5852" parent="5594" name="tbl_tariff_article_tbl_fare_id_fare_fk">
+    <foreign-key id="5857" parent="5594" name="tbl_tariff_article_tbl_fare_id_fare_fk">
       <ColNames>id_fare</ColNames>
       <CreatedTimestamp>2025-04-10.10:52:41.257</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-11.09:20:42.017</ModifiedTimestamp>
@@ -18468,7 +18508,7 @@
       <RefTableId>2069582411</RefTableId>
       <RefTableName>tbl_fare</RefTableName>
     </foreign-key>
-    <foreign-key id="5853" parent="5594" name="tbl_tariff_article_tbl_article_id_ar_fk">
+    <foreign-key id="5858" parent="5594" name="tbl_tariff_article_tbl_article_id_ar_fk">
       <ColNames>id_article</ColNames>
       <CreatedTimestamp>2025-04-10.10:52:41.257</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-11.09:20:41.977</ModifiedTimestamp>
@@ -18477,79 +18517,79 @@
       <RefTableId>1909581841</RefTableId>
       <RefTableName>tbl_article</RefTableName>
     </foreign-key>
-    <index id="5854" parent="5594" name="tbl_tariff_article_pk">
+    <index id="5859" parent="5594" name="tbl_tariff_article_pk">
       <Clustering>1</Clustering>
       <ColNames>id_t_a</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5855" parent="5594" name="tbl_tariff_article_pk">
+    <key id="5860" parent="5594" name="tbl_tariff_article_pk">
       <CreatedTimestamp>2025-04-10.10:52:41.253</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-11.09:20:41.927</ModifiedTimestamp>
       <ObjectId>2099048</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_tariff_article_pk</UnderlyingIndexName>
     </key>
-    <column id="5856" parent="5595" name="id_ta">
+    <column id="5861" parent="5595" name="id_ta">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1(6)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5857" parent="5595" name="description">
+    <column id="5862" parent="5595" name="description">
       <Position>2</Position>
       <StoredType>varchar(100 char)|0s</StoredType>
     </column>
-    <index id="5858" parent="5595" name="tbl_tax_pk">
+    <index id="5863" parent="5595" name="tbl_tax_pk">
       <Clustering>1</Clustering>
       <ColNames>id_ta</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5859" parent="5595" name="tbl_tax_pk">
+    <key id="5864" parent="5595" name="tbl_tax_pk">
       <CreatedTimestamp>2025-04-10.10:50:23.920</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-10.10:50:23.920</ModifiedTimestamp>
       <ObjectId>2117582582</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_tax_pk</UnderlyingIndexName>
     </key>
-    <column id="5860" parent="5596" name="id_token">
+    <column id="5865" parent="5596" name="id_token">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(1301)</SequenceIdentity>
+      <SequenceIdentity>1(3735)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5861" parent="5596" name="user_id">
+    <column id="5866" parent="5596" name="user_id">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5862" parent="5596" name="token">
+    <column id="5867" parent="5596" name="token">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>nvarchar(max)|0s</StoredType>
     </column>
-    <column id="5863" parent="5596" name="created_at">
+    <column id="5868" parent="5596" name="created_at">
       <Position>4</Position>
       <StoredType>datetime|0s</StoredType>
       <DefaultConstraintId>1301579675</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_token__creat__4D94879B</DefaultConstraintName>
     </column>
-    <column id="5864" parent="5596" name="expires_at">
+    <column id="5869" parent="5596" name="expires_at">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>datetime|0s</StoredType>
     </column>
-    <default id="5865" parent="5596" name="DF__tbl_token__creat__4D94879B">
+    <default id="5870" parent="5596" name="DF__tbl_token__creat__4D94879B">
       <ColNames>created_at</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.167</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1301579675</ObjectId>
     </default>
-    <foreign-key id="5866" parent="5596" name="FK__tbl_token__user___4CA06362">
+    <foreign-key id="5871" parent="5596" name="FK__tbl_token__user___4CA06362">
       <ColNames>user_id</ColNames>
       <CreatedTimestamp>2025-03-21.12:40:36.163</CreatedTimestamp>
       <ModifiedTimestamp>2025-03-21.12:40:36.163</ModifiedTimestamp>
@@ -18559,7 +18599,7 @@
       <RefTableId>1061578820</RefTableId>
       <RefTableName>tbl_user</RefTableName>
     </foreign-key>
-    <index id="5867" parent="5596" name="PK__tbl_toke__3C2FA9C48645CE4D">
+    <index id="5872" parent="5596" name="PK__tbl_toke__3C2FA9C48645CE4D">
       <Clustering>1</Clustering>
       <ColNames>id_token</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -18567,7 +18607,7 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5868" parent="5596" name="PK__tbl_toke__3C2FA9C48645CE4D">
+    <key id="5873" parent="5596" name="PK__tbl_toke__3C2FA9C48645CE4D">
       <CreatedTimestamp>2025-03-21.12:40:36.163</CreatedTimestamp>
       <ModifiedTimestamp>2025-03-21.12:40:36.163</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -18575,197 +18615,197 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__tbl_toke__3C2FA9C48645CE4D</UnderlyingIndexName>
     </key>
-    <column id="5869" parent="5597" name="id_t_d">
+    <column id="5874" parent="5597" name="id_t_d">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1(8)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5870" parent="5597" name="name">
+    <column id="5875" parent="5597" name="name">
       <Position>2</Position>
       <StoredType>varchar(100 char)|0s</StoredType>
     </column>
-    <index id="5871" parent="5597" name="tbl_type_dni_pk">
+    <index id="5876" parent="5597" name="tbl_type_dni_pk">
       <Clustering>1</Clustering>
       <ColNames>id_t_d</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5872" parent="5597" name="tbl_type_dni_pk">
+    <key id="5877" parent="5597" name="tbl_type_dni_pk">
       <CreatedTimestamp>2025-04-19.18:15:33.903</CreatedTimestamp>
       <ModifiedTimestamp>2025-04-19.18:15:33.903</ModifiedTimestamp>
       <ObjectId>610101214</ObjectId>
       <Primary>1</Primary>
       <UnderlyingIndexName>tbl_type_dni_pk</UnderlyingIndexName>
     </key>
-    <column id="5873" parent="5598" name="id_us">
+    <column id="5878" parent="5598" name="id_us">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(9)</SequenceIdentity>
+      <SequenceIdentity>1(1017)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5874" parent="5598" name="name_us">
+    <column id="5879" parent="5598" name="name_us">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5875" parent="5598" name="lastname_us">
+    <column id="5880" parent="5598" name="lastname_us">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5876" parent="5598" name="email_us">
+    <column id="5881" parent="5598" name="email_us">
       <Position>4</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5877" parent="5598" name="password_us">
+    <column id="5882" parent="5598" name="password_us">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5878" parent="5598" name="created_at">
+    <column id="5883" parent="5598" name="created_at">
       <Position>6</Position>
       <StoredType>datetime|0s</StoredType>
       <DefaultConstraintId>1093578934</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__create__412EB0B6</DefaultConstraintName>
     </column>
-    <column id="5879" parent="5598" name="google_id">
+    <column id="5884" parent="5598" name="google_id">
       <Position>7</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5880" parent="5598" name="id_rol">
+    <column id="5885" parent="5598" name="id_rol">
       <Position>8</Position>
       <StoredType>int|0s</StoredType>
       <DefaultConstraintId>1109578991</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__id_rol__4222D4EF</DefaultConstraintName>
     </column>
-    <column id="5881" parent="5598" name="dni_us">
+    <column id="5886" parent="5598" name="dni_us">
       <Position>9</Position>
       <StoredType>varchar(10 char)|0s</StoredType>
       <DefaultConstraintId>1141579105</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__dni_us__440B1D61</DefaultConstraintName>
     </column>
-    <column id="5882" parent="5598" name="image_us">
+    <column id="5887" parent="5598" name="image_us">
       <Position>10</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <column id="5883" parent="5598" name="status_us">
+    <column id="5888" parent="5598" name="status_us">
       <Position>11</Position>
       <StoredType>char(1 char)|0s</StoredType>
       <DefaultConstraintId>1157579162</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__status__44FF419A</DefaultConstraintName>
     </column>
-    <column id="5884" parent="5598" name="birthday_us">
+    <column id="5889" parent="5598" name="birthday_us">
       <Position>12</Position>
       <StoredType>datetime|0s</StoredType>
     </column>
-    <column id="5885" parent="5598" name="fecha_arriendo_us">
+    <column id="5890" parent="5598" name="fecha_arriendo_us">
       <Position>13</Position>
       <StoredType>datetime|0s</StoredType>
       <DefaultConstraintId>1173579219</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__fecha___45F365D3</DefaultConstraintName>
     </column>
-    <column id="5886" parent="5598" name="age_us">
+    <column id="5891" parent="5598" name="age_us">
       <Position>14</Position>
       <StoredType>int|0s</StoredType>
     </column>
-    <column id="5887" parent="5598" name="nationality_us">
+    <column id="5892" parent="5598" name="nationality_us">
       <Position>15</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
       <DefaultConstraintId>1189579276</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__nation__46E78A0C</DefaultConstraintName>
     </column>
-    <column id="5888" parent="5598" name="update_at">
+    <column id="5893" parent="5598" name="update_at">
       <Position>16</Position>
       <StoredType>datetime|0s</StoredType>
       <DefaultConstraintId>1205579333</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__update__47DBAE45</DefaultConstraintName>
     </column>
-    <column id="5889" parent="5598" name="phone_us">
+    <column id="5894" parent="5598" name="phone_us">
       <Position>17</Position>
       <StoredType>varchar(10 char)|0s</StoredType>
     </column>
-    <column id="5890" parent="5598" name="terms_and_conditions">
+    <column id="5895" parent="5598" name="terms_and_conditions">
       <Position>18</Position>
       <StoredType>char(1 char)|0s</StoredType>
       <DefaultConstraintId>1221579390</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__terms___48CFD27E</DefaultConstraintName>
     </column>
-    <column id="5891" parent="5598" name="email_verified">
+    <column id="5896" parent="5598" name="email_verified">
       <Position>19</Position>
       <StoredType>char(1 char)|0s</StoredType>
       <DefaultConstraintId>1237579447</DefaultConstraintId>
       <DefaultConstraintName>DF__tbl_user__email___49C3F6B7</DefaultConstraintName>
     </column>
-    <column id="5892" parent="5598" name="gender_us">
+    <column id="5897" parent="5598" name="gender_us">
       <Position>20</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <default id="5893" parent="5598" name="DF__tbl_user__create__412EB0B6">
+    <default id="5898" parent="5598" name="DF__tbl_user__create__412EB0B6">
       <ColNames>created_at</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1093578934</ObjectId>
     </default>
-    <default id="5894" parent="5598" name="DF__tbl_user__id_rol__4222D4EF">
+    <default id="5899" parent="5598" name="DF__tbl_user__id_rol__4222D4EF">
       <ColNames>id_rol</ColNames>
       <DefaultExpression>1</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1109578991</ObjectId>
     </default>
-    <default id="5895" parent="5598" name="DF__tbl_user__dni_us__440B1D61">
+    <default id="5900" parent="5598" name="DF__tbl_user__dni_us__440B1D61">
       <ColNames>dni_us</ColNames>
       <DefaultExpression>&apos;1000000000&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1141579105</ObjectId>
     </default>
-    <default id="5896" parent="5598" name="DF__tbl_user__status__44FF419A">
+    <default id="5901" parent="5598" name="DF__tbl_user__status__44FF419A">
       <ColNames>status_us</ColNames>
       <DefaultExpression>&apos;I&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1157579162</ObjectId>
     </default>
-    <default id="5897" parent="5598" name="DF__tbl_user__fecha___45F365D3">
+    <default id="5902" parent="5598" name="DF__tbl_user__fecha___45F365D3">
       <ColNames>fecha_arriendo_us</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1173579219</ObjectId>
     </default>
-    <default id="5898" parent="5598" name="DF__tbl_user__nation__46E78A0C">
+    <default id="5903" parent="5598" name="DF__tbl_user__nation__46E78A0C">
       <ColNames>nationality_us</ColNames>
       <DefaultExpression>&apos;ECUATORIANA&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1189579276</ObjectId>
     </default>
-    <default id="5899" parent="5598" name="DF__tbl_user__update__47DBAE45">
+    <default id="5904" parent="5598" name="DF__tbl_user__update__47DBAE45">
       <ColNames>update_at</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1205579333</ObjectId>
     </default>
-    <default id="5900" parent="5598" name="DF__tbl_user__terms___48CFD27E">
+    <default id="5905" parent="5598" name="DF__tbl_user__terms___48CFD27E">
       <ColNames>terms_and_conditions</ColNames>
       <DefaultExpression>&apos;N&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1221579390</ObjectId>
     </default>
-    <default id="5901" parent="5598" name="DF__tbl_user__email___49C3F6B7">
+    <default id="5906" parent="5598" name="DF__tbl_user__email___49C3F6B7">
       <ColNames>email_verified</ColNames>
       <DefaultExpression>&apos;N&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1237579447</ObjectId>
     </default>
-    <foreign-key id="5902" parent="5598" name="tbl_user_tbl_rol_id_rol_fk">
+    <foreign-key id="5907" parent="5598" name="tbl_user_tbl_rol_id_rol_fk">
       <ColNames>id_rol</ColNames>
       <CreatedTimestamp>2025-03-21.12:40:36.090</CreatedTimestamp>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
@@ -18774,14 +18814,14 @@
       <RefTableId>997578592</RefTableId>
       <RefTableName>tbl_rol</RefTableName>
     </foreign-key>
-    <index id="5903" parent="5598" name="tbl_user_pk">
+    <index id="5908" parent="5598" name="tbl_user_pk">
       <Clustering>1</Clustering>
       <ColNames>id_us</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5904" parent="5598" name="tbl_user_pk">
+    <key id="5909" parent="5598" name="tbl_user_pk">
       <CreatedTimestamp>2025-03-21.12:40:36.090</CreatedTimestamp>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <ObjectId>1077578877</ObjectId>

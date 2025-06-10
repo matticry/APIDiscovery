@@ -1,4 +1,4 @@
-﻿namespace APIDiscovery.Services;
+﻿namespace APIDiscovery.Interfaces;
 
 public interface IImageService
 {

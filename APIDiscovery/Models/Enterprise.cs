@@ -54,6 +54,8 @@ public class Enterprise
     [MaxLength(250)]
     public string? key_signature { get; set; }
     
+    public char? status { get; set; } = 'A';
+    
     [MaxLength(250)]
     public string? logo { get; set; }
     

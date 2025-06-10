@@ -1,11 +1,14 @@
 ﻿using APIDiscovery.Interfaces;
 using APIDiscovery.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIDiscovery.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
+
 public class CertificadosController : ControllerBase
 {
     

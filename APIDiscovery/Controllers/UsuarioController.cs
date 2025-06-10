@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace APIDiscovery.Controllers;
 [ApiController]
 [Route("api/usuarios")]
+[Authorize]
 public class UsuarioController : ControllerBase
 {
     private readonly IUsuarioService _usuarioService;
@@ -17,7 +18,7 @@ public class UsuarioController : ControllerBase
     public UsuarioController(IUsuarioService usuarioService, RabbitMQService rabbitMqService)
     {
         _usuarioService = usuarioService;
-        _rabbitMqService = rabbitMqService; // Corregido: Asignar el servicio inyectado
+        _rabbitMqService = rabbitMqService; 
     }
 
     [HttpGet]
@@ -25,7 +26,6 @@ public class UsuarioController : ControllerBase
     {
         var usuarios = await _usuarioService.GetAllAsync();
         
-        // Registrar la acción de consulta
         _rabbitMqService.PublishUserAction(new UserActionEvent
         {
             Action = "GetAllUsers",
@@ -44,7 +44,6 @@ public class UsuarioController : ControllerBase
         {
             var usuario = await _usuarioService.GetByIdAsync(id);
             
-            // Registrar la acción de consulta por ID
             _rabbitMqService.PublishUserAction(new UserActionEvent
             {
                 Action = $"GetUserById: {id}",
@@ -69,9 +68,6 @@ public class UsuarioController : ControllerBase
         }
     }
     
-    
-    
-
     [HttpGet("email/{email}")]
     public async Task<ActionResult<Usuario>> GetByEmail(string email)
     {
