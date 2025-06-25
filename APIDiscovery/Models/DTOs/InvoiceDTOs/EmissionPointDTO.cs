@@ -2,7 +2,7 @@
 
 namespace APIDiscovery.Models.DTOs.InvoiceDTOs;
 
-public class EmissionPointDTO
+public class EmissionPointDto
 {
     public int IdEmissionPoint { get; set; }
     [Required(ErrorMessage = "El código es requerido")]
@@ -19,6 +19,5 @@ public class EmissionPointDTO
     public bool Type { get; set; }
     
     [Required(ErrorMessage = "La sucursal es requerida")]
-    [Range(1, int.MaxValue, ErrorMessage = "La sucursal debe ser mayor a 0")]
     public int IdBranch { get; set; }
 }

@@ -11,7 +11,6 @@ namespace APIDiscovery.Controllers;
 
 [Route("api/auth")]
 [ApiController]
-[Authorize]
 
 public class AuthController : ControllerBase
 {

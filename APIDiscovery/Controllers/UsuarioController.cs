@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace APIDiscovery.Controllers;
 [ApiController]
 [Route("api/usuarios")]
-[Authorize]
 public class UsuarioController : ControllerBase
 {
     private readonly IUsuarioService _usuarioService;
@@ -100,7 +99,7 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Usuario>> Create([FromForm] UsuarioRequest usuarioRequest)
+    public async Task<ActionResult<Usuario>> Create([FromBody] UsuarioRequest usuarioRequest)
     {
         try
         {
@@ -143,7 +142,7 @@ public class UsuarioController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<ActionResult<Usuario>> Update(int id, [FromForm] UsuarioRequest usuarioRequest)
+    public async Task<ActionResult<Usuario>> Update(int id, [FromBody] UsuarioRequest usuarioRequest)
     {
         try
         {

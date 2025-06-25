@@ -182,7 +182,7 @@ public class InvoiceService : IInvoiceService
             var ruc = enterprise.ruc?.PadLeft(13, '0');
             var numeroFactura = nextSequenceNumber.PadLeft(9, '0');
             var codigoNumerico = GenerarCodigoNumerico();
-            var tipoEmision = "1"; // Emisión normal
+            const string tipoEmision = "1"; // Emisión normal
 
             var claveAcceso = GenerarClaveAcceso(
                 invoiceDto.EmissionDate,
@@ -219,19 +219,11 @@ public class InvoiceService : IInvoiceService
                               ?? throw new EntityNotFoundException(
                                   $"Artículo con ID {detailDto.ArticleId} no encontrado");
 
-                var tariff = await _context.Fares
-                                 .FirstOrDefaultAsync(t => t.id_fare == detailDto.TariffId)
-                             ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
+                var tariff = await _context.Fares.FirstOrDefaultAsync(t => t.id_fare == detailDto.TariffId) ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
 
-                var articleTariff = await _context.TariffArticles
-                                        .FirstOrDefaultAsync(at =>
-                                            at.id_article == detailDto.ArticleId && at.id_fare == detailDto.TariffId)
-                                    ?? throw new BusinessException(
-                                        $"No existe relación entre el artículo {detailDto.ArticleId} y la tarifa {detailDto.TariffId}");
+                var articleTariff = await _context.TariffArticles.FirstOrDefaultAsync(at => at.id_article == detailDto.ArticleId && at.id_fare == detailDto.TariffId) ?? throw new BusinessException($"No existe relación entre el artículo {detailDto.ArticleId} y la tarifa {detailDto.TariffId}");
 
-                var fare = await _context.Fares
-                               .FirstOrDefaultAsync(f => f.id_fare == articleTariff.id_fare)
-                           ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
+                var fare = await _context.Fares.FirstOrDefaultAsync(f => f.id_fare == articleTariff.id_fare) ?? throw new EntityNotFoundException($"Tarifa con ID {detailDto.TariffId} no encontrada");
 
                 // NUEVA LÓGICA DE CÁLCULO CON IncludeVat
                 var precioOriginal = article.price_unit;
@@ -244,45 +236,48 @@ public class InvoiceService : IInvoiceService
                 decimal ivaValor;
                 decimal descuentoMonetario;
 
-                if (article.include_vat == 'I') // IVA INCLUIDO
+                switch (article.include_vat)
                 {
-                    // El precio ya incluye IVA, necesitamos extraer el valor base
-                    var factorIva = 1 + ivaPorc / 100;
-                    precioUnitario = Math.Round(precioOriginal / factorIva, 4); // Precio sin IVA
+                    // IVA INCLUIDO
+                    case 'I':
+                    {
+                        // El precio ya incluye IVA, necesitamos extraer el valor base
+                        var factorIva = 1 + ivaPorc / 100;
+                        precioUnitario = Math.Round(precioOriginal / factorIva, 4); // Precio sin IVA
 
-                    // Calcular descuento sobre el precio sin IVA
-                    descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
+                        // Calcular descuento sobre el precio sin IVA
+                        descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
 
-                    // Subtotal sin IVA después del descuento
-                    subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
+                        // Subtotal sin IVA después del descuento
+                        subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
 
-                    // IVA calculado sobre el subtotal
-                    ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
+                        // IVA calculado sobre el subtotal
+                        ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
 
-                    Console.WriteLine(
-                        $"Artículo {article.name} - IVA INCLUIDO: Precio original: {precioOriginal:C2}, Precio base: {precioUnitario:C2}, IVA: {ivaValor:C2}");
-                }
-                else if (article.include_vat == 'E') // IVA EXCLUIDO
-                {
-                    // El precio NO incluye IVA, cálculo tradicional
-                    precioUnitario = precioOriginal;
+                        Console.WriteLine(
+                            $"Artículo {article.name} - IVA INCLUIDO: Precio original: {precioOriginal:C2}, Precio base: {precioUnitario:C2}, IVA: {ivaValor:C2}");
+                        break;
+                    }
+                    // IVA EXCLUIDO
+                    case 'E':
+                        // El precio NO incluye IVA, cálculo tradicional
+                        precioUnitario = precioOriginal;
 
-                    // Calcular descuento sobre el precio sin IVA
-                    descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
+                        // Calcular descuento sobre el precio sin IVA
+                        descuentoMonetario = Math.Round(precioUnitario * cantidad * (descuentoPorcentaje / 100), 2);
 
-                    // Subtotal sin IVA después del descuento
-                    subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
+                        // Subtotal sin IVA después del descuento
+                        subtotal = Math.Round(cantidad * precioUnitario - descuentoMonetario, 2);
 
-                    // IVA calculado sobre el subtotal
-                    ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
+                        // IVA calculado sobre el subtotal
+                        ivaValor = Math.Round(subtotal * (ivaPorc / 100), 2);
 
-                    Console.WriteLine(
-                        $"Artículo {article.name} - IVA EXCLUIDO: Precio base: {precioUnitario:C2}, IVA: {ivaValor:C2}");
-                }
-                else
-                {
-                    throw new BusinessException(
-                        $"Valor de IncludeVat no válido para el artículo {article.name}. Debe ser 'I' (Incluido) o 'E' (Excluido). Valor actual: {article.include_vat}");
+                        Console.WriteLine(
+                            $"Artículo {article.name} - IVA EXCLUIDO: Precio base: {precioUnitario:C2}, IVA: {ivaValor:C2}");
+                        break;
+                    default:
+                        throw new BusinessException(
+                            $"Valor de IncludeVat no válido para el artículo {article.name}. Debe ser 'I' (Incluido) o 'E' (Excluido). Valor actual: {article.include_vat}");
                 }
 
                 totalSinImpuestos += subtotal;
@@ -412,11 +407,11 @@ public class InvoiceService : IInvoiceService
 
             return await GetInvoiceDtoById(invoice.inv_id);
         }
-        catch (EntityNotFoundException ex)
+        catch (EntityNotFoundException)
         {
             throw;
         }
-        catch (BusinessException ex)
+        catch (BusinessException)
         {
             throw;
         }
@@ -493,7 +488,7 @@ public class InvoiceService : IInvoiceService
                     Email = invoice.Enterprise.email,
                     Accountant = invoice.Enterprise.accountant
                 },
-                EmissionPoint = new EmissionPointDTO
+                EmissionPoint = new EmissionPointDto
                 {
                     IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code,
                     Details = invoice.EmissionPoint.details
@@ -738,7 +733,7 @@ public class InvoiceService : IInvoiceService
                     Email = invoice.Enterprise.email,
                     Accountant = invoice.Enterprise.accountant
                 },
-                EmissionPoint = new EmissionPointDTO
+                EmissionPoint = new EmissionPointDto
                 {
                     IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code,
                     Details = invoice.EmissionPoint.details
@@ -841,7 +836,7 @@ public class InvoiceService : IInvoiceService
                 Email = invoice.Enterprise.email,
                 Accountant = invoice.Enterprise.accountant
             },
-            EmissionPoint = new EmissionPointDTO
+            EmissionPoint = new EmissionPointDto
             {
                 IdEmissionPoint = invoice.EmissionPoint.id_e_p,
                 Code = invoice.EmissionPoint.code,
@@ -900,7 +895,7 @@ public class InvoiceService : IInvoiceService
 
     private static int CalcularDigitoVerificadorModulo11(string clave)
     {
-        int[] pesos = { 2, 3, 4, 5, 6, 7 };
+        int[] pesos = [2, 3, 4, 5, 6, 7];
         var suma = 0;
         var pesoIndex = 0;
 
@@ -914,8 +909,12 @@ public class InvoiceService : IInvoiceService
         var residuo = suma % 11;
         var digito = 11 - residuo;
 
-        if (digito == 11) digito = 0;
-        else if (digito == 10) digito = 1;
+        digito = digito switch
+        {
+            11 => 0,
+            10 => 1,
+            _ => digito
+        };
 
         return digito;
     }

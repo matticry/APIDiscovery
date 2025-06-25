@@ -45,7 +45,6 @@
 
     <ItemGroup>
       <Folder Include="Certificados\" />
-      <Folder Include="FacturasXml\" />
       <Folder Include="uploads\" />
     </ItemGroup>
 

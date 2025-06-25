@@ -6,7 +6,7 @@ public class InvoiceDTO
     public string? InvoiceStatus { get; set; }
     public EnterpriseDTO Enterprise { get; set; }
     public ClientDTO Client { get; set; }
-    public EmissionPointDTO EmissionPoint { get; set; }
+    public EmissionPointDto EmissionPoint { get; set; }
     public BranchDTO Branch { get; set; }
     public DocumentTypeDTO DocumentType { get; set; }
     public SequenceDTO Sequence { get; set; }

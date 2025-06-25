@@ -91,7 +91,7 @@ public class UsuarioService : IUsuarioService
             var uniqueFileName = $"{Guid.NewGuid()}_{usuarioRequest.image_us.FileName}";
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            await using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await usuarioRequest.image_us.CopyToAsync(fileStream);
             }
@@ -111,6 +111,7 @@ public class UsuarioService : IUsuarioService
             nationality_us = usuarioRequest.nationality_us,
             phone_us = usuarioRequest.phone_us,
             gender_us = usuarioRequest.gender_us,
+            status_us = 'A',
             age_us = usuarioRequest.CalculateAge(usuarioRequest.birthday_us),
             terms_and_conditions = usuarioRequest.terms_and_conditions,
             birthday_us = usuarioRequest.birthday_us

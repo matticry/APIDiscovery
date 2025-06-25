@@ -63,7 +63,7 @@ public class EmissionPointService : IEmissionPointService
         return result;
     }
 
-    public async Task<ResponseDto> CreateEmissionPoint(EmissionPointDTO emissionPointDto)
+    public async Task<ResponseDto> CreateEmissionPoint(EmissionPointDto emissionPointDto)
     {
         var stopwatch = Stopwatch.StartNew();
         var response = new ResponseDto();
@@ -221,7 +221,7 @@ public class EmissionPointService : IEmissionPointService
         return response;
     }
 
-    public async Task<ResponseDto> UpdateAsync(int id, EmissionPointDTO emissionPointDto)
+    public async Task<ResponseDto> UpdateAsync(int id, EmissionPointDto emissionPointDto)
     {
         var stopwatch = Stopwatch.StartNew();
         var response = new ResponseDto();

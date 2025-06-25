@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using APIDiscovery.Core;
@@ -11,16 +10,13 @@ using FirmaXadesNet;
 using FirmaXadesNet.Crypto;
 using FirmaXadesNet.Signature.Parameters;
 using Microsoft.EntityFrameworkCore;
-using ICertificadoService = Infoware.SRI.Firmar.ICertificadoService;
 
 
 namespace APIDiscovery.Services;
 
 public class XmlFacturaService : IXmlFacturaService
 {
-    private readonly ICertificadoService _certificadoService;
     private readonly string _certificadosPath;
-    private readonly IConfiguration _config;
     private readonly ApplicationDbContext _context;
     private readonly EncryptionHelper _encryptionHelper;
     private readonly string _xmlOutputDirectory;
@@ -28,13 +24,10 @@ public class XmlFacturaService : IXmlFacturaService
     public XmlFacturaService(
         ApplicationDbContext context,
         IConfiguration config,
-        EncryptionHelper encryptionHelper,
-        ICertificadoService certificadoService)
+        EncryptionHelper encryptionHelper)
     {
         _context = context;
-        _config = config;
         _encryptionHelper = encryptionHelper;
-        _certificadoService = certificadoService;
 
         _xmlOutputDirectory = config.GetValue<string>("XmlOutputDirectory") ?? "FacturasXml";
         _certificadosPath = config.GetValue<string>("CertificadosPath") ?? "Certificados";
@@ -247,7 +240,7 @@ public class XmlFacturaService : IXmlFacturaService
         infoFactura.Add(new XElement("moneda", invoice.currency));
 
 
-        if (!invoice.InvoicePayments.Any()) return infoFactura;
+        if (invoice.InvoicePayments.Count == 0) return infoFactura;
         var pagos = new XElement("pagos");
 
         foreach (var pagoItem in invoice.InvoicePayments)
@@ -353,7 +346,7 @@ public class XmlFacturaService : IXmlFacturaService
         return detalles;
     }
 
-    private XElement CrearInfoAdicional(Invoice invoice)
+    private static XElement CrearInfoAdicional(Invoice invoice)
     {
         var infoAdicional = new XElement("infoAdicional");
 
@@ -380,7 +373,7 @@ public class XmlFacturaService : IXmlFacturaService
         return infoAdicional;
     }
 
-    private string FormatDecimal(decimal? value, int decimals = 2, bool padSpaces = false)
+    private static string FormatDecimal(decimal? value, int decimals = 2, bool padSpaces = false)
     {
         var safeValue = value ?? 0m;
         var format = $"0.{new string('0', decimals)}";

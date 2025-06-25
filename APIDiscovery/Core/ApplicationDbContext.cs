@@ -29,6 +29,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
     public DbSet<TypeDni> TypeDnis { get; set; }
     public DbSet<EnterpriseClient> EnterpriseClients { get; set; }
+    public DbSet<CreditNote> CreditNotes { get; set; }        // ← AGREGAR
+    public DbSet<CreditNoteDetail> CreditNoteDetails { get; set; }
 
 
 

@@ -28,7 +28,7 @@ public class EmissionPointsController : ControllerBase
         return Ok(emissionPoints);
     }
     [HttpPost]
-    public async Task<IActionResult> CreateEmissionPoint([FromBody] EmissionPointDTO emissionPointDto)
+    public async Task<IActionResult> CreateEmissionPoint([FromBody] EmissionPointDto emissionPointDto)
     {
         var response = await _emissionPointService.CreateEmissionPoint(emissionPointDto);
         if (response.Success)
@@ -64,7 +64,7 @@ public class EmissionPointsController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateEmissionPoint(int id, [FromBody] EmissionPointDTO emissionPointDto)
+    public async Task<IActionResult> UpdateEmissionPoint(int id, [FromBody] EmissionPointDto emissionPointDto)
     {
         var response = await _emissionPointService.UpdateAsync(id, emissionPointDto);
         if (response.Success)

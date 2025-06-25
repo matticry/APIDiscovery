@@ -23,8 +23,7 @@ public class SriComprobantesService(
                                                                   "https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline";
     private readonly string _sriEndpointEnvioProduccion = configuration.GetValue<string>("SriEndpoints:Enviar_Produccion") ??
                                                           "https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline";
-    private readonly IXmlFacturaService _xmlFacturaService = xmlFacturaService;
-    
+
 
     public async Task<SriResponse> EnviarComprobanteAsync(int invoiceId)
     {
@@ -240,11 +239,24 @@ public class SriComprobantesService(
                             .FirstOrDefault(x => x.Name.LocalName == "fechaAutorizacion")?.Value;
 
                         DateTime fechaAutorizacion;
-                        if (!DateTime.TryParse(fechaStr, out fechaAutorizacion))
-                        {
-                            fechaAutorizacion = DateTime.Now; // Valor predeterminado
-                            logger.LogWarning($"No se pudo parsear la fecha: {fechaStr}");
-                        }
+                        if (DateTime.TryParse(fechaStr, out fechaAutorizacion))
+                            return new SriAutorizacion
+                            {
+                                Estado = a.Descendants().FirstOrDefault(x => x.Name.LocalName == "estado")?.Value ??
+                                         throw new InvalidOperationException(),
+                                NumeroAutorizacion = a.Descendants()
+                                                         .FirstOrDefault(x => x.Name.LocalName == "numeroAutorizacion")
+                                                         ?.Value ??
+                                                     throw new InvalidOperationException(),
+                                FechaAutorizacion = fechaAutorizacion,
+                                Ambiente = a.Descendants().FirstOrDefault(x => x.Name.LocalName == "ambiente")?.Value ??
+                                           throw new InvalidOperationException(),
+                                Comprobante =
+                                    a.Descendants().FirstOrDefault(x => x.Name.LocalName == "comprobante")?.Value ??
+                                    throw new InvalidOperationException()
+                            };
+                        fechaAutorizacion = DateTime.Now; // Valor predeterminado
+                        logger.LogWarning($"No se pudo parsear la fecha: {fechaStr}");
 
                         return new SriAutorizacion
                         {

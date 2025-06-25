@@ -10,7 +10,6 @@ namespace APIDiscovery.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-
 public class InvoicesController : ControllerBase
 {
     private readonly IInvoiceService _invoiceService;

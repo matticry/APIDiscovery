@@ -240,7 +240,7 @@ public partial class EmailSendService : IEmailSendService
                 Description = invoice.Branch.description
             },
 
-            EmissionPoint = new EmissionPointDTO
+            EmissionPoint = new EmissionPointDto
             {
                 IdEmissionPoint = invoice.EmissionPoint.id_e_p,
                 Code = invoice.EmissionPoint.code,
