@@ -12,12 +12,15 @@ namespace APIDiscovery.Services;
 public class CreditNoteService : ICreditNoteService
 {
     private readonly ApplicationDbContext _context;
+    private readonly ILogger<CreditNoteService> _logger;
     private readonly IXmlCreditNoteService _xmlCreditNoteService;
 
-    public CreditNoteService(ApplicationDbContext context, IXmlCreditNoteService xmlCreditNoteService)
+    public CreditNoteService(ApplicationDbContext context, IXmlCreditNoteService xmlCreditNoteService,
+        ILogger<CreditNoteService> logger)
     {
         _context = context;
         _xmlCreditNoteService = xmlCreditNoteService;
+        _logger = logger;
     }
 
     public async Task<CreditNoteDTO> CreateCreditNoteAsync(CreateCreditNoteDTO creditNoteDto)
@@ -47,6 +50,13 @@ public class CreditNoteService : ICreditNoteService
             // 3. Validar que la factura esté autorizada
             if (originalInvoice.electronic_status != "AUTORIZADO")
                 throw new BusinessException("Solo se pueden crear notas de crédito para facturas autorizadas");
+
+            if (originalInvoice.Client.dni == "9999999999999" ||
+                originalInvoice.Client.razon_social.ToUpper()
+                    .Contains("CONSUMIDOR FINAL", StringComparison.CurrentCultureIgnoreCase))
+                throw new BusinessException(
+                    "No se pueden crear notas de crédito para facturas emitidas a CONSUMIDOR FINAL. " +
+                    "Las notas de crédito requieren datos específicos del cliente.");
 
             // 4. Obtener la secuencia para notas de crédito (tipo documento 04)
             var creditNoteDocumentType = await _context.DocumentTypes
@@ -121,6 +131,10 @@ public class CreditNoteService : ICreditNoteService
 
             await _context.SaveChangesAsync();
 
+            if (creditNoteDto.CreditNoteType == CreditNoteType.ANULAR_TODA_FACTURA ||
+                creditNoteDto.CreditNoteType == CreditNoteType.ANULAR_PRODUCTOS_PARCIAL)
+                await ActualizarStockPorDevolucion(details, creditNoteDto.CreditNoteType);
+
             // 10. Generar XML
             var xml = await GenerateCreditNoteXmlAsync(creditNote.IdCreditNote);
             creditNote.Xml = xml;
@@ -142,97 +156,142 @@ public class CreditNoteService : ICreditNoteService
         }
     }
 
-        public async Task<CreditNoteDTO> GetCreditNoteDtoById(int creditNoteId)
-        {
-            var creditNote = await _context.CreditNotes
-                .Include(cn => cn.Enterprise)
-                .Include(cn => cn.Branch)
-                .Include(cn => cn.EmissionPoint)
-                .Include(cn => cn.Client)
-                .Include(cn => cn.DocumentType)
-                .Include(cn => cn.InvoiceOriginal)
-                .Include(cn => cn.CreditNoteDetails)
-                    .ThenInclude(d => d.Article)
-                .Include(cn => cn.CreditNoteDetails)
-                    .ThenInclude(d => d.Tariff)
-                .FirstOrDefaultAsync(cn => cn.IdCreditNote == creditNoteId)
-                ?? throw new EntityNotFoundException($"Nota de crédito con ID {creditNoteId} no encontrada");
+    public async Task<CreditNoteDTO> GetCreditNoteDtoById(int creditNoteId)
+    {
+        var creditNote = await _context.CreditNotes
+                             .Include(cn => cn.Enterprise)
+                             .Include(cn => cn.Branch)
+                             .Include(cn => cn.EmissionPoint)
+                             .Include(cn => cn.Client)
+                             .Include(cn => cn.DocumentType)
+                             .Include(cn => cn.InvoiceOriginal)
+                             .Include(cn => cn.CreditNoteDetails)
+                             .ThenInclude(d => d.Article)
+                             .Include(cn => cn.CreditNoteDetails)
+                             .ThenInclude(d => d.Tariff)
+                             .FirstOrDefaultAsync(cn => cn.IdCreditNote == creditNoteId)
+                         ?? throw new EntityNotFoundException($"Nota de crédito con ID {creditNoteId} no encontrada");
 
-            return new CreditNoteDTO
+        return new CreditNoteDTO
+        {
+            IdCreditNote = creditNote.IdCreditNote,
+            EmissionDate = creditNote.EmissionDate,
+            TotalWithoutTaxes = creditNote.TotalWithoutTaxes,
+            TotalDiscount = creditNote.TotalDiscount,
+            Tip = creditNote.Tip,
+            TotalAmount = creditNote.TotalAmount,
+            Currency = creditNote.Currency,
+            CodDocModificado = creditNote.CodDocModificado,
+            NumDocModificado = creditNote.NumDocModificado,
+            EmissionDateDocSustento = creditNote.EmissionDateDocSustento,
+            ModificationValue = creditNote.ModificationValue,
+            Motive = creditNote.Motive,
+            AccessKey = creditNote.AccessKey,
+            AuthorizationNumber = creditNote.AuthorizationNumber,
+            AuthorizationDate = creditNote.AuthorizationDate,
+            ElectronicStatus = creditNote.ElectronicStatus,
+            AditionalInfo = creditNote.AditionalInfo,
+            Message = creditNote.Message,
+            Sequence = creditNote.Sequence,
+            Xml = creditNote.Xml,
+            Enterprise = new EnterpriseDTO
             {
-                IdCreditNote = creditNote.IdCreditNote,
-                EmissionDate = creditNote.EmissionDate,
-                TotalWithoutTaxes = creditNote.TotalWithoutTaxes,
-                TotalDiscount = creditNote.TotalDiscount,
-                Tip = creditNote.Tip,
-                TotalAmount = creditNote.TotalAmount,
-                Currency = creditNote.Currency,
-                CodDocModificado = creditNote.CodDocModificado,
-                NumDocModificado = creditNote.NumDocModificado,
-                EmissionDateDocSustento = creditNote.EmissionDateDocSustento,
-                ModificationValue = creditNote.ModificationValue,
-                Motive = creditNote.Motive,
-                AccessKey = creditNote.AccessKey,
-                AuthorizationNumber = creditNote.AuthorizationNumber,
-                AuthorizationDate = creditNote.AuthorizationDate,
-                ElectronicStatus = creditNote.ElectronicStatus,
-                AditionalInfo = creditNote.AditionalInfo,
-                Message = creditNote.Message,
-                Sequence = creditNote.Sequence,
-                Xml = creditNote.Xml,
-                Enterprise = new EnterpriseDTO 
-                { 
-                    IdEnterprise = creditNote.Enterprise.id_en,
-                    ComercialName = creditNote.Enterprise.comercial_name,
-                    Ruc = creditNote.Enterprise.ruc
-                },
-                Branch = new BranchDTO 
-                { 
-                    IdBranch = creditNote.Branch.id_br,
-                    Code = creditNote.Branch.code,
-                    Address = creditNote.Branch.address
-                },
-                EmissionPoint = new EmissionPointDto
-                { 
-                    IdEmissionPoint = creditNote.EmissionPoint.id_e_p,
-                    Code = creditNote.EmissionPoint.code
-                },
-                Client = new ClientDTO 
-                { 
-                    RazonSocial = creditNote.Client.razon_social,
-                    Dni = creditNote.Client.dni
-                },
-                DocumentType = new DocumentTypeDTO 
-                { 
-                    IdDocumentType = creditNote.DocumentType.id_d_t,
-                    NameDocument = creditNote.DocumentType.name_document,
-                    Code = creditNote.DocumentType.code
-                },
-                Details = creditNote.CreditNoteDetails.Select(d => new CreditNoteDetailDTO
-                {
-                    IdCreditNoteDetail = d.IdCreditNoteDetail,
-                    CodeStub = d.CodeStub,
-                    Description = d.Description,
-                    Amount = d.Amount,
-                    PriceUnit = d.PriceUnit,
-                    Discount = d.Discount,
-                    Neto = d.Neto,
-                    IvaPorc = d.IvaPorc,
-                    IcePorc = d.IcePorc,
-                    IvaValor = d.IvaValor,
-                    IceValor = d.IceValor,
-                    Subtotal = d.Subtotal,
-                    Total = d.Total,
-                    Nota1 = d.Nota1,
-                    Nota2 = d.Nota2,
-                    Nota3 = d.Nota3
-                }).ToList()
-            };
-        }
+                IdEnterprise = creditNote.Enterprise.id_en,
+                ComercialName = creditNote.Enterprise.comercial_name,
+                Ruc = creditNote.Enterprise.ruc
+            },
+            Branch = new BranchDTO
+            {
+                IdBranch = creditNote.Branch.id_br,
+                Code = creditNote.Branch.code,
+                Address = creditNote.Branch.address
+            },
+            EmissionPoint = new EmissionPointDto
+            {
+                IdEmissionPoint = creditNote.EmissionPoint.id_e_p,
+                Code = creditNote.EmissionPoint.code
+            },
+            Client = new ClientDTO
+            {
+                RazonSocial = creditNote.Client.razon_social,
+                Dni = creditNote.Client.dni
+            },
+            DocumentType = new DocumentTypeDTO
+            {
+                IdDocumentType = creditNote.DocumentType.id_d_t,
+                NameDocument = creditNote.DocumentType.name_document,
+                Code = creditNote.DocumentType.code
+            },
+            Details = creditNote.CreditNoteDetails.Select(d => new CreditNoteDetailDTO
+            {
+                IdCreditNoteDetail = d.IdCreditNoteDetail,
+                CodeStub = d.CodeStub,
+                Description = d.Description,
+                Amount = d.Amount,
+                PriceUnit = d.PriceUnit,
+                Discount = d.Discount,
+                Neto = d.Neto,
+                IvaPorc = d.IvaPorc,
+                IcePorc = d.IcePorc,
+                IvaValor = d.IvaValor,
+                IceValor = d.IceValor,
+                Subtotal = d.Subtotal,
+                Total = d.Total,
+                Nota1 = d.Nota1,
+                Nota2 = d.Nota2,
+                Nota3 = d.Nota3
+            }).ToList()
+        };
+    }
 
     public async Task<string> GenerateCreditNoteXmlAsync(int creditNoteId)
     {
-        return await _xmlCreditNoteService.GenerarXmlNotaCreditoAsync(creditNoteId); 
+        return await _xmlCreditNoteService.GenerarXmlNotaCreditoAsync(creditNoteId);
+    }
+
+    private async Task ActualizarStockPorDevolucion(List<CreditNoteDetail> details, CreditNoteType creditNoteType)
+    {
+        _logger.LogInformation($"Iniciando actualización de stock por devolución. Tipo: {creditNoteType}");
+
+        foreach (var detail in details)
+        {
+            if (!detail.IdArticle.HasValue) continue;
+
+            var article = await _context.Articles.FindAsync(detail.IdArticle.Value);
+            if (article == null)
+            {
+                _logger.LogWarning($"No se encontró el artículo con ID {detail.IdArticle} para actualizar stock");
+                continue;
+            }
+
+            switch (article.type)
+            {
+                // Solo actualizar stock para artículos normales (tipo 'N'), no para servicios (tipo 'S')
+                case 'N':
+                {
+                    var stockAnterior = article.stock;
+                    article.stock += detail.Amount; // Incrementar stock por devolución
+
+                    _context.Articles.Update(article);
+
+                    _logger.LogInformation(
+                        $"Stock actualizado para artículo '{article.name}' (ID: {article.id_ar}): " +
+                        $"{stockAnterior} + {detail.Amount} = {article.stock}");
+                    break;
+                }
+                case 'S':
+                    _logger.LogInformation(
+                        $"Artículo de servicio '{article.name}' (ID: {article.id_ar}) - No se actualiza stock");
+                    break;
+                default:
+                    _logger.LogWarning(
+                        $"Tipo de artículo desconocido '{article.type}' para artículo '{article.name}' (ID: {article.id_ar})");
+                    break;
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        _logger.LogInformation("Actualización de stock por devolución completada");
     }
 
     private async Task<(List<CreditNoteDetail> details, decimal totalSinImpuestos, decimal totalDescuento, decimal
@@ -248,6 +307,18 @@ public class CreditNoteService : ICreditNoteService
         switch (creditNoteDto.CreditNoteType)
         {
             case CreditNoteType.ANULAR_TODA_FACTURA:
+
+                var notasPrevias = await _context.CreditNotes
+                    .Where(cn => cn.InvoiceOriginalId == originalInvoice.inv_id &&
+                                 cn.ElectronicStatus != "RECHAZADO")
+                    .CountAsync();
+
+                if (notasPrevias > 0)
+                    throw new BusinessException(
+                        $"No se puede anular toda la factura porque ya existen {notasPrevias} nota(s) de crédito " +
+                        "asociada(s) a esta factura. Verifique las anulaciones previas.");
+
+
                 // Anular todos los productos de la factura original
                 foreach (var originalDetail in originalInvoice.InvoiceDetails)
                 {
@@ -268,11 +339,21 @@ public class CreditNoteService : ICreditNoteService
 
                 foreach (var detailRequest in creditNoteDto.Details)
                 {
-                    var originalDetail = originalInvoice.InvoiceDetails.FirstOrDefault(d => d.id_article == detailRequest.ArticleId) ?? throw new BusinessException($"El artículo {detailRequest.ArticleId} no existe en la factura original");
+                    var originalDetail = originalInvoice.InvoiceDetails
+                                             .FirstOrDefault(d => d.id_article == detailRequest.ArticleId)
+                                         ?? throw new BusinessException(
+                                             $"El artículo {detailRequest.ArticleId} no existe en la factura original");
 
-                    if (detailRequest.Amount > originalDetail.amount)
+                    // ✅ VALIDACIÓN: Verificar cantidades disponibles considerando notas de crédito previas
+                    var cantidadYaAnulada =
+                        await ObtenerCantidadYaAnulada(originalInvoice.inv_id, detailRequest.ArticleId);
+                    var cantidadDisponible = originalDetail.amount - cantidadYaAnulada;
+
+                    if (detailRequest.Amount > cantidadDisponible)
                         throw new BusinessException(
-                            $"No puede anular más cantidad ({detailRequest.Amount}) de la que existe en la factura ({originalDetail.amount})");
+                            $"No puede anular {detailRequest.Amount} unidades del artículo '{originalDetail.description}'. " +
+                            $"Cantidad original: {originalDetail.amount}, Ya anulada: {cantidadYaAnulada}, " +
+                            $"Disponible para anular: {cantidadDisponible}");
 
                     var detail = CreateCreditNoteDetailFromRequest(detailRequest, originalDetail);
                     details.Add(detail);
@@ -310,6 +391,17 @@ public class CreditNoteService : ICreditNoteService
         }
 
         return (details, totalSinImpuestos, totalDescuento, totalImpuestos, valorModificacion);
+    }
+
+    private async Task<int> ObtenerCantidadYaAnulada(int invoiceId, int articleId)
+    {
+        var cantidadAnulada = await _context.CreditNoteDetails
+            .Where(cnd => cnd.CreditNote.InvoiceOriginalId == invoiceId &&
+                          cnd.IdArticle == articleId &&
+                          cnd.CreditNote.ElectronicStatus != "RECHAZADO") // Solo contar las no rechazadas
+            .SumAsync(cnd => cnd.Amount);
+
+        return cantidadAnulada;
     }
 
     private CreditNoteDetail CreateCreditNoteDetailFromInvoice(InvoiceDetail originalDetail)
