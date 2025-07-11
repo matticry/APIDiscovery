@@ -14,13 +14,15 @@ public class CreditNoteService : ICreditNoteService
     private readonly ApplicationDbContext _context;
     private readonly ILogger<CreditNoteService> _logger;
     private readonly IXmlCreditNoteService _xmlCreditNoteService;
+    private readonly IInvoiceService _invoiceService;
 
     public CreditNoteService(ApplicationDbContext context, IXmlCreditNoteService xmlCreditNoteService,
-        ILogger<CreditNoteService> logger)
+        ILogger<CreditNoteService> logger, IInvoiceService invoiceService)
     {
         _context = context;
         _xmlCreditNoteService = xmlCreditNoteService;
         _logger = logger;
+        _invoiceService = invoiceService;
     }
 
     public async Task<CreditNoteDTO> CreateCreditNoteAsync(CreateCreditNoteDTO creditNoteDto)
@@ -118,7 +120,9 @@ public class CreditNoteService : ICreditNoteService
                 ReceiptId = creditNoteDocumentType.id_d_t,
                 InvoiceOriginalId = originalInvoice.inv_id
             };
-
+            
+            await _invoiceService.ChangeElectronicStatus( "ANULADA" ,originalInvoice.inv_id);
+            
             _context.CreditNotes.Add(creditNote);
             await _context.SaveChangesAsync();
 

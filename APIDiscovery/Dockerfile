@@ -32,8 +32,8 @@ COPY --from=publish /app/publish .
 COPY --from=build /src/.env /app/.env
 
 # Crear las carpetas necesarias si no existen
-RUN mkdir -p /app/Certificados /app/FacturasXml /app/uploads && \
-    chmod -R 777 /app/Certificados /app/FacturasXml /app/uploads
+RUN mkdir -p /app/Certificados /app/FacturasXml /app/NotasCreditoXml /app/uploads && \
+    chmod -R 777 /app/Certificados /app/FacturasXml /app/NotasCreditoXml /app/uploads
 
 USER $APP_UID
 ENTRYPOINT ["dotnet", "APIDiscovery.dll"]

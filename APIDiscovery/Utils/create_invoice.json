@@ -1,83 +1,477 @@
-﻿{
-  "enterprise": {
-    "idEnterprise": 1,
-    "companyName": "DIEGO EDMUNDO ROMAN NOBOA",
-    "comercialName": "DIEGO EDMUNDO ROMAN NOBOA",
-    "ruc": "1717219586001",
-    "addressMatriz": "EL CONDADO OE7B Y N85",
-    "phone": "022094017",
-    "email": "info@empresa.com",
-    "accountant": "y"
+﻿[
+  {
+    "invoiceId": 3187,
+    "invoiceStatus": "AUTORIZADO",
+    "enterprise": {
+      "idEnterprise": 1,
+      "companyName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "comercialName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "ruc": "1717219586001",
+      "addressMatriz": "Calle Principal 123, Ciudad",
+      "phone": "(123) 456-7890",
+      "email": "toyotaro271@gmaiil.com",
+      "accountant": "Y",
+      "enviroment": 1
+    },
+    "client": {
+      "razonSocial": "ERAS TRAVEZ MATEO JOSUE",
+      "dni": "1755386099",
+      "address": "LA TOLA",
+      "phone": "099999999",
+      "info": null,
+      "email": "toyotaro271@gmail.com",
+      "typeDniId": 5
+    },
+    "emissionPoint": {
+      "idEmissionPoint": 1,
+      "code": "001",
+      "details": "Punto de emisión principal para la Sucursal en Sur",
+      "type": false,
+      "idBranch": 0
+    },
+    "branch": {
+      "idBranch": 1,
+      "code": "001",
+      "description": "Sucursal en Sur",
+      "address": "LA MARIN",
+      "phone": "0992810669"
+    },
+    "documentType": {
+      "idDocumentType": 1,
+      "nameDocument": "FACTURA",
+      "code": null
+    },
+    "sequence": {
+      "idSequence": 1,
+      "code": "000000160"
+    },
+    "details": [
+      {
+        "codeStub": "I1-6694",
+        "description": "iPhone de IOS",
+        "amount": 1,
+        "priceUnit": 850,
+        "discount": 0,
+        "priceWithDiscount": 0,
+        "neto": 850,
+        "ivaPorc": 15,
+        "ivaValor": 127.5,
+        "icePorc": 0,
+        "iceValor": 0,
+        "subtotal": 850,
+        "total": 977.5,
+        "note1": "iPhone de IOS",
+        "note2": "",
+        "note3": "",
+        "tariffId": 1,
+        "articleId": 2027
+      }
+    ],
+    "payments": [
+      {
+        "total": 977.5,
+        "deadline": 0,
+        "unitTime": null,
+        "paymentId": 1
+      }
+    ],
+    "emissionDate": "2025-06-09T10:36:17.373",
+    "totalWithoutTaxes": 850,
+    "totalDiscount": 0,
+    "tip": 0,
+    "totalAmount": 977.5,
+    "currency": "USD",
+    "accessKey": "0906202501171721958600110010010000001628326476813",
+    "electronicStatus": "AUTORIZADO",
+    "authorizationNumber": "0906202501171721958600110010010000001628326476813",
+    "authorizationDate": "2025-06-09T10:36:29",
+    "additionalInfo": "EXCELENTE SERVICIO",
+    "message": "",
+    "sequenceCode": "000000162",
+    "branchId": 0,
+    "companyId": 0,
+    "emissionPointId": 0,
+    "receiptId": 0,
+    "sequenceId": 0
   },
-  "client": {
-    "razonSocial": "DIEGO EDMUNDO ROMAN NOBOA",
-    "dni": "1717219586",
-    "address": "SOLANDA",
-    "phone": "0983824865",
-    "info": "cliente",
-    "email": "mateoeras07@gmail.com",
-    "typeDniId": 5
+  {
+    "invoiceId": 3189,
+    "invoiceStatus": "AUTORIZADO",
+    "enterprise": {
+      "idEnterprise": 1,
+      "companyName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "comercialName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "ruc": "1717219586001",
+      "addressMatriz": "Calle Principal 123, Ciudad",
+      "phone": "(123) 456-7890",
+      "email": "toyotaro271@gmaiil.com",
+      "accountant": "Y",
+      "enviroment": 1
+    },
+    "client": {
+      "razonSocial": "ERAS TRAVEZ MATEO JOSUE",
+      "dni": "1755386099",
+      "address": "LA TOLA",
+      "phone": "099999999",
+      "info": null,
+      "email": "toyotaro271@gmail.com",
+      "typeDniId": 5
+    },
+    "emissionPoint": {
+      "idEmissionPoint": 1,
+      "code": "001",
+      "details": "Punto de emisión principal para la Sucursal en Sur",
+      "type": false,
+      "idBranch": 0
+    },
+    "branch": {
+      "idBranch": 1,
+      "code": "001",
+      "description": "Sucursal en Sur",
+      "address": "LA MARIN",
+      "phone": "0992810669"
+    },
+    "documentType": {
+      "idDocumentType": 1,
+      "nameDocument": "FACTURA",
+      "code": null
+    },
+    "sequence": {
+      "idSequence": 1,
+      "code": "000000160"
+    },
+    "details": [
+      {
+        "codeStub": "I1-6694",
+        "description": "iPhone de IOS",
+        "amount": 2,
+        "priceUnit": 850,
+        "discount": 0,
+        "priceWithDiscount": 0,
+        "neto": 1700,
+        "ivaPorc": 15,
+        "ivaValor": 255,
+        "icePorc": 0,
+        "iceValor": 0,
+        "subtotal": 1700,
+        "total": 1955,
+        "note1": "iPhone de IOS",
+        "note2": "",
+        "note3": "",
+        "tariffId": 1,
+        "articleId": 2027
+      }
+    ],
+    "payments": [
+      {
+        "total": 1955,
+        "deadline": 0,
+        "unitTime": null,
+        "paymentId": 1
+      }
+    ],
+    "emissionDate": "2025-06-25T09:58:43.483",
+    "totalWithoutTaxes": 1700,
+    "totalDiscount": 0,
+    "tip": 0,
+    "totalAmount": 1955,
+    "currency": "USD",
+    "accessKey": "2506202501171721958600110010010000001646983184013",
+    "electronicStatus": "AUTORIZADO",
+    "authorizationNumber": "2506202501171721958600110010010000001646983184013",
+    "authorizationDate": "2025-06-25T09:59:02",
+    "additionalInfo": "EXCELENTE SERVICIO",
+    "message": "",
+    "sequenceCode": "000000164",
+    "branchId": 0,
+    "companyId": 0,
+    "emissionPointId": 0,
+    "receiptId": 0,
+    "sequenceId": 0
   },
-
-  "emissionPoint": {
-    "idEmissionPoint": 1,
-    "code": "001",
-    "details": "Punto de emisión principal para la Sucursal en Sur"
+  {
+    "invoiceId": 3190,
+    "invoiceStatus": "AUTORIZADO",
+    "enterprise": {
+      "idEnterprise": 1,
+      "companyName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "comercialName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "ruc": "1717219586001",
+      "addressMatriz": "Calle Principal 123, Ciudad",
+      "phone": "(123) 456-7890",
+      "email": "toyotaro271@gmaiil.com",
+      "accountant": "Y",
+      "enviroment": 1
+    },
+    "client": {
+      "razonSocial": "ERAS TRAVEZ MATEO JOSUE",
+      "dni": "1755386099",
+      "address": "LA TOLA",
+      "phone": "099999999",
+      "info": null,
+      "email": "toyotaro271@gmail.com",
+      "typeDniId": 5
+    },
+    "emissionPoint": {
+      "idEmissionPoint": 1,
+      "code": "001",
+      "details": "Punto de emisión principal para la Sucursal en Sur",
+      "type": false,
+      "idBranch": 0
+    },
+    "branch": {
+      "idBranch": 1,
+      "code": "001",
+      "description": "Sucursal en Sur",
+      "address": "LA MARIN",
+      "phone": "0992810669"
+    },
+    "documentType": {
+      "idDocumentType": 1,
+      "nameDocument": "FACTURA",
+      "code": null
+    },
+    "sequence": {
+      "idSequence": 1,
+      "code": "000000160"
+    },
+    "details": [
+      {
+        "codeStub": "I1-6694",
+        "description": "iPhone de IOS",
+        "amount": 3,
+        "priceUnit": 850,
+        "discount": 0,
+        "priceWithDiscount": 0,
+        "neto": 2550,
+        "ivaPorc": 15,
+        "ivaValor": 382.5,
+        "icePorc": 0,
+        "iceValor": 0,
+        "subtotal": 2550,
+        "total": 2932.5,
+        "note1": "iPhone de IOS",
+        "note2": "",
+        "note3": "",
+        "tariffId": 1,
+        "articleId": 2027
+      }
+    ],
+    "payments": [
+      {
+        "total": 2932.5,
+        "deadline": 0,
+        "unitTime": null,
+        "paymentId": 1
+      }
+    ],
+    "emissionDate": "2025-06-26T09:00:58.633",
+    "totalWithoutTaxes": 2550,
+    "totalDiscount": 0,
+    "tip": 0,
+    "totalAmount": 2932.5,
+    "currency": "USD",
+    "accessKey": "2606202501171721958600110010010000001650980808611",
+    "electronicStatus": "AUTORIZADO",
+    "authorizationNumber": "2606202501171721958600110010010000001650980808611",
+    "authorizationDate": "2025-06-26T09:02:37",
+    "additionalInfo": "EXCELENTE SERVICIO",
+    "message": "",
+    "sequenceCode": "000000165",
+    "branchId": 0,
+    "companyId": 0,
+    "emissionPointId": 0,
+    "receiptId": 0,
+    "sequenceId": 0
   },
-  "branch": {
-    "idBranch": 1,
-    "code": "001",
-    "description": "Sucursal en Sur",
-    "address": "LA MARIN",
-    "phone": "0992810669"
+  {
+    "invoiceId": 3191,
+    "invoiceStatus": "AUTORIZADO",
+    "enterprise": {
+      "idEnterprise": 1,
+      "companyName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "comercialName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "ruc": "1717219586001",
+      "addressMatriz": "Calle Principal 123, Ciudad",
+      "phone": "(123) 456-7890",
+      "email": "toyotaro271@gmaiil.com",
+      "accountant": "Y",
+      "enviroment": 1
+    },
+    "client": {
+      "razonSocial": "ERAS TRAVEZ MATEO JOSUE",
+      "dni": "1755386099",
+      "address": "LA TOLA",
+      "phone": "099999999",
+      "info": null,
+      "email": "toyotaro271@gmail.com",
+      "typeDniId": 5
+    },
+    "emissionPoint": {
+      "idEmissionPoint": 1,
+      "code": "001",
+      "details": "Punto de emisión principal para la Sucursal en Sur",
+      "type": false,
+      "idBranch": 0
+    },
+    "branch": {
+      "idBranch": 1,
+      "code": "001",
+      "description": "Sucursal en Sur",
+      "address": "LA MARIN",
+      "phone": "0992810669"
+    },
+    "documentType": {
+      "idDocumentType": 1,
+      "nameDocument": "FACTURA",
+      "code": null
+    },
+    "sequence": {
+      "idSequence": 1,
+      "code": "000000160"
+    },
+    "details": [
+      {
+        "codeStub": "ML-5529",
+        "description": "medias",
+        "amount": 3,
+        "priceUnit": 5,
+        "discount": 0,
+        "priceWithDiscount": 0,
+        "neto": 15,
+        "ivaPorc": 15,
+        "ivaValor": 2.25,
+        "icePorc": 0,
+        "iceValor": 0,
+        "subtotal": 15,
+        "total": 17.25,
+        "note1": "medias",
+        "note2": "",
+        "note3": "",
+        "tariffId": 1,
+        "articleId": 2028
+      }
+    ],
+    "payments": [
+      {
+        "total": 17.25,
+        "deadline": 0,
+        "unitTime": null,
+        "paymentId": 1
+      }
+    ],
+    "emissionDate": "2025-06-26T09:06:24.643",
+    "totalWithoutTaxes": 15,
+    "totalDiscount": 0,
+    "tip": 0,
+    "totalAmount": 17.25,
+    "currency": "USD",
+    "accessKey": "2606202501171721958600110010010000001664977501018",
+    "electronicStatus": "AUTORIZADO",
+    "authorizationNumber": "2606202501171721958600110010010000001664977501018",
+    "authorizationDate": "2025-06-26T09:07:30",
+    "additionalInfo": "EXCELENTE SERVICIO",
+    "message": "",
+    "sequenceCode": "000000166",
+    "branchId": 0,
+    "companyId": 0,
+    "emissionPointId": 0,
+    "receiptId": 0,
+    "sequenceId": 0
   },
-  "documentType": {
-    "idDocumentType": 1,
-    "nameDocument": "FACTURA"
-  },
-  "sequence": {
-    "idSequence": 1,
-    "code": "000000090"
-  },
-  "details": [
-    {
-      "codeStub": "0301009",
-      "description": "COMPRA DE FRIJOLES",
-      "amount": 1,
-      "discount": 0,
-      "ivaPorc": 15,
-      "icePorc": 0,
-      "iceValor": 0,
-      "note1": "Licencia indefinida",
-      "note2": "",
-      "note3": "",
-      "tariffId": 1,
-      "articleId": 1
-    }
-  ],
-  "payments": [
-    {
-      "total": 93.14,
-      "deadline": 30,
-      "unitTime": "dias",
-      "paymentId": 1
-    }  
-  ],
-  "emissionDate": "2025-06-16T08:14:15.263Z",
-  "totalWithoutTaxes": 80.99,
-  "totalDiscount": 0,
-  "tip": 0,
-  "totalAmount": 93.14,
-  "currency": "USD",
-  "accessKey": "string",
-  "electronicStatus": "PENDIENTE",
-  "authorizationNumber": "string",
-  "authorizationDate": "2025-04-29T15:21:15.263Z",
-  "additionalInfo": "EXELENTE SERVICIO",
-  "message": "excelente",
-  "branchId": 1,
-  "companyId": 1,
-  "emissionPointId": 1,
-  "receiptId": 1,
-  "sequenceId": 1
-}
+  {
+    "invoiceId": 3196,
+    "invoiceStatus": "AUTORIZADO",
+    "enterprise": {
+      "idEnterprise": 1,
+      "companyName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "comercialName": "ROMAN NOBOA DIEGO EDMUNDO",
+      "ruc": "1717219586001",
+      "addressMatriz": "Calle Principal 123, Ciudad",
+      "phone": "(123) 456-7890",
+      "email": "toyotaro271@gmaiil.com",
+      "accountant": "Y",
+      "enviroment": 1
+    },
+    "client": {
+      "razonSocial": "ERAS TRAVEZ MATEO JOSUE",
+      "dni": "1755386099",
+      "address": "LA TOLA",
+      "phone": "099999999",
+      "info": null,
+      "email": "toyotaro271@gmail.com",
+      "typeDniId": 5
+    },
+    "emissionPoint": {
+      "idEmissionPoint": 1,
+      "code": "001",
+      "details": "Punto de emisión principal para la Sucursal en Sur",
+      "type": false,
+      "idBranch": 0
+    },
+    "branch": {
+      "idBranch": 1,
+      "code": "001",
+      "description": "Sucursal en Sur",
+      "address": "LA MARIN",
+      "phone": "0992810669"
+    },
+    "documentType": {
+      "idDocumentType": 1,
+      "nameDocument": "FACTURA",
+      "code": null
+    },
+    "sequence": {
+      "idSequence": 1,
+      "code": "000000160"
+    },
+    "details": [
+      {
+        "codeStub": "I1-6694",
+        "description": "iPhone de IOS",
+        "amount": 1,
+        "priceUnit": 850,
+        "discount": 0,
+        "priceWithDiscount": 0,
+        "neto": 850,
+        "ivaPorc": 15,
+        "ivaValor": 127.5,
+        "icePorc": 0,
+        "iceValor": 0,
+        "subtotal": 850,
+        "total": 977.5,
+        "note1": "iPhone de IOS",
+        "note2": "",
+        "note3": "",
+        "tariffId": 1,
+        "articleId": 2027
+      }
+    ],
+    "payments": [
+      {
+        "total": 977.5,
+        "deadline": 0,
+        "unitTime": null,
+        "paymentId": 1
+      }
+    ],
+    "emissionDate": "2025-07-10T20:39:57.963",
+    "totalWithoutTaxes": 850,
+    "totalDiscount": 0,
+    "tip": 0,
+    "totalAmount": 977.5,
+    "currency": "USD",
+    "accessKey": "1007202501171721958600110010010000001670638399013",
+    "electronicStatus": "ANULADA",
+    "authorizationNumber": "1007202501171721958600110010010000001670638399013",
+    "authorizationDate": "2025-07-10T20:41:31",
+    "additionalInfo": "EXCELENTE SERVICIO",
+    "message": "",
+    "sequenceCode": "000000167",
+    "branchId": 0,
+    "companyId": 0,
+    "emissionPointId": 0,
+    "receiptId": 0,
+    "sequenceId": 0
+  }
+]

@@ -7,41 +7,33 @@ using Microsoft.AspNetCore.Mvc;
 namespace APIDiscovery.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-public class CreditNoteController : ControllerBase
+
+public class CreditNoteController(
+    ICreditNoteService creditNoteService,
+    ILogger<CreditNoteController> logger,
+    ISriCreditNoteService sriCreditNoteService)
+    : ControllerBase
 {
-    
-    private readonly ICreditNoteService _creditNoteService;
-    private readonly ILogger<CreditNoteController> _logger;
-    private readonly ISriCreditNoteService _sriCreditNoteService;
-
-    
-    public CreditNoteController(ICreditNoteService creditNoteService, ILogger<CreditNoteController> logger , ISriCreditNoteService sriCreditNoteService)
-    {
-        _creditNoteService = creditNoteService;
-        _logger = logger;
-        _sriCreditNoteService = sriCreditNoteService;
-    }
-
     [HttpPost("{creditNoteId}/enviar")]
     public async Task<ActionResult<SriResponse>> EnviarNotaCredito(int creditNoteId)
     {
         try
         {
-            _logger.LogInformation($"Iniciando envío de nota de crédito {creditNoteId} al SRI");
+            logger.LogInformation($"Iniciando envío de nota de crédito {creditNoteId} al SRI");
 
-            var response = await _sriCreditNoteService.EnviarNotaCreditoAsync(creditNoteId);
+            var response = await sriCreditNoteService.EnviarNotaCreditoAsync(creditNoteId);
 
             // ✅ CORRECCIÓN: Estados válidos del SRI para envío exitoso
             var estadosExitosos = new[] { "RECIBIDA", "OK", "DEVUELTA" };
             
             if (estadosExitosos.Contains(response.Estado))
             {
-                _logger.LogInformation($"Nota de crédito {creditNoteId} enviada exitosamente al SRI. Estado: {response.Estado}");
+                logger.LogInformation($"Nota de crédito {creditNoteId} enviada exitosamente al SRI. Estado: {response.Estado}");
                 
                 return Ok(response);
             }
 
-            _logger.LogWarning($"Nota de crédito {creditNoteId} no fue aceptada por el SRI. Estado: {response.Estado}");
+            logger.LogWarning($"Nota de crédito {creditNoteId} no fue aceptada por el SRI. Estado: {response.Estado}");
                 
             return BadRequest(new
             {
@@ -53,7 +45,7 @@ public class CreditNoteController : ControllerBase
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error al enviar nota de crédito {CreditNoteId} al SRI", creditNoteId);
+            logger.LogError(e, "Error al enviar nota de crédito {CreditNoteId} al SRI", creditNoteId);
             return StatusCode(500, "Error interno del servidor");
         }
     }
@@ -63,12 +55,12 @@ public class CreditNoteController : ControllerBase
     {
         try
         {
-            _logger.LogInformation($"Iniciando autorización de nota de crédito {creditNoteId}");
+            logger.LogInformation($"Iniciando autorización de nota de crédito {creditNoteId}");
 
             // Si no se proporciona clave de acceso, obtenerla de la base de datos
             if (string.IsNullOrEmpty(claveAcceso))
             {
-                var creditNote = await _creditNoteService.GetCreditNoteDtoById(creditNoteId);
+                var creditNote = await creditNoteService.GetCreditNoteDtoById(creditNoteId);
                 if (creditNote == null)
                 {
                     return NotFound($"No se encontró la nota de crédito con ID {creditNoteId}");
@@ -81,13 +73,13 @@ public class CreditNoteController : ControllerBase
                 }
             }
 
-            _logger.LogInformation($"Consultando autorización para clave de acceso: {claveAcceso}");
+            logger.LogInformation($"Consultando autorización para clave de acceso: {claveAcceso}");
 
-            var response = await _sriCreditNoteService.AutorizarNotaCreditoAsync(claveAcceso, creditNoteId);
+            var response = await sriCreditNoteService.AutorizarNotaCreditoAsync(claveAcceso, creditNoteId);
 
             if (!string.IsNullOrEmpty(response.Error))
             {
-                _logger.LogError($"Error al autorizar nota de crédito {creditNoteId}: {response.Error}");
+                logger.LogError($"Error al autorizar nota de crédito {creditNoteId}: {response.Error}");
                 return BadRequest(new
                 {
                     error = "Error al autorizar en el SRI",
@@ -98,13 +90,13 @@ public class CreditNoteController : ControllerBase
             }
 
             var estadoAutorizacion = response.Autorizaciones?.FirstOrDefault()?.Estado ?? "DESCONOCIDO";
-            _logger.LogInformation($"Nota de crédito {creditNoteId} procesada. Estado: {estadoAutorizacion}");
+            logger.LogInformation($"Nota de crédito {creditNoteId} procesada. Estado: {estadoAutorizacion}");
 
             return Ok(response);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error al autorizar nota de crédito {CreditNoteId} al SRI", creditNoteId);
+            logger.LogError(e, "Error al autorizar nota de crédito {CreditNoteId} al SRI", creditNoteId);
             return StatusCode(500, "Error interno del servidor");
         }
     }
@@ -114,27 +106,27 @@ public class CreditNoteController : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Creando nota de crédito para factura {InvoiceId}", createCreditNoteDto.InvoiceOriginalId);
+            logger.LogInformation("Creando nota de crédito para factura {InvoiceId}", createCreditNoteDto.InvoiceOriginalId);
 
-            var creditNoteDto = await _creditNoteService.CreateCreditNoteAsync(createCreditNoteDto);
-            _logger.LogInformation("Nota de crédito {CreditNoteId} creada exitosamente", creditNoteDto.IdCreditNote);
+            var creditNoteDto = await creditNoteService.CreateCreditNoteAsync(createCreditNoteDto);
+            logger.LogInformation("Nota de crédito {CreditNoteId} creada exitosamente", creditNoteDto.IdCreditNote);
 
             return Ok(creditNoteDto);
 
         }
         catch (EntityNotFoundException ex)
         {
-            _logger.LogWarning(ex, "Entidad no encontrada al crear nota de crédito");
+            logger.LogWarning(ex, "Entidad no encontrada al crear nota de crédito");
             return NotFound(ex.Message);
         }
         catch (BusinessException ex)
         {
-            _logger.LogWarning(ex, "Error de validación al crear nota de crédito");
+            logger.LogWarning(ex, "Error de validación al crear nota de crédito");
             return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error interno al crear nota de crédito");
+            logger.LogError(ex, "Error interno al crear nota de crédito");
             return StatusCode(500, "Error interno del servidor");
         }
     }
@@ -144,7 +136,7 @@ public class CreditNoteController : ControllerBase
     {
         try
         {
-            var creditNote = await _creditNoteService.GetCreditNoteDtoById(id);
+            var creditNote = await creditNoteService.GetCreditNoteDtoById(id);
             return Ok(creditNote);
         }
         catch (EntityNotFoundException ex)
@@ -153,7 +145,7 @@ public class CreditNoteController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error al obtener nota de crédito {CreditNoteId}", id);
+            logger.LogError(ex, "Error al obtener nota de crédito {CreditNoteId}", id);
             return StatusCode(500, "Error interno del servidor");
         }
     }
@@ -163,7 +155,7 @@ public class CreditNoteController : ControllerBase
     {
         try
         {
-            var xml = await _creditNoteService.GenerateCreditNoteXmlAsync(id);
+            var xml = await creditNoteService.GenerateCreditNoteXmlAsync(id);
             return Ok(xml);
         }
         catch (EntityNotFoundException ex)
@@ -172,7 +164,7 @@ public class CreditNoteController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error al generar XML de nota de crédito {CreditNoteId}", id);
+            logger.LogError(ex, "Error al generar XML de nota de crédito {CreditNoteId}", id);
             return StatusCode(500, "Error interno del servidor");
         }
         

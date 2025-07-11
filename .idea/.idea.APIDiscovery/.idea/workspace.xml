@@ -16,7 +16,13 @@
   <component name="ChangeListManager">
     <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/CreditNoteController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/CreditNoteController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IInvoiceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IInvoiceService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/CreditNoteService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/CreditNoteService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Utils/create_invoice.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Utils/create_invoice.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
@@ -74,6 +80,7 @@
     <setting file="file://$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/InvoiceSummaryDTO.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIDiscovery/Models/Invoice.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIDiscovery/Services/ClientService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/matticry/RiderProjects/APIDiscovery/APIDiscovery/Services/CreditNoteService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -363,7 +370,10 @@
       <workItem from="1751292755051" duration="2350000" />
       <workItem from="1751378879969" duration="1806000" />
       <workItem from="1751898332047" duration="517000" />
-      <workItem from="1752006155987" duration="3266000" />
+      <workItem from="1752006155987" duration="5877000" />
+      <workItem from="1752110242337" duration="834000" />
+      <workItem from="1752111585883" duration="1944000" />
+      <workItem from="1752196383495" duration="4795000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -629,7 +639,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750867146469</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="new updates note credit">
+      <option name="closed" value="true" />
+      <created>1752015646373</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1752015646373</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -658,7 +676,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Commit: I fix new bugs aplication and created new modules Category.cs and Article.cs" />
     <MESSAGE value="Commit: Module Article" />
     <MESSAGE value="NEW MODULES" />
     <MESSAGE value="Commit news updates &#10;More Dtos" />
@@ -683,7 +700,8 @@
     <MESSAGE value="News Commits" />
     <MESSAGE value="Commit: News uPDATES&#10;&#10;- Se aplico el Authorize en los controllers, &#10;- Se crearon nuevos modulos para Enterprise y Sequence &#10;- Se ocupara para una nueva aplicacion administrativa" />
     <MESSAGE value="About's changes an updates&#10;&#10;- Creation of the new NoteCredit Service in /Services in the project &#10;&#10;- Validations in the NoteCreditService" />
-    <option name="LAST_COMMIT_MESSAGE" value="About's changes an updates&#10;&#10;- Creation of the new NoteCredit Service in /Services in the project &#10;&#10;- Validations in the NoteCreditService" />
+    <MESSAGE value="new updates note credit" />
+    <option name="LAST_COMMIT_MESSAGE" value="new updates note credit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

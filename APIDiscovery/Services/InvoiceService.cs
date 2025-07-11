@@ -572,6 +572,16 @@ public class InvoiceService : IInvoiceService
         return invoice.XmlBase64 ?? string.Empty;
     }
 
+    public async Task ChangeElectronicStatus(string newStatus, int invoiceId)
+    {
+        var invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.inv_id == invoiceId);
+        if (invoice == null)
+            throw new EntityNotFoundException($"No se encontró la factura con ID {invoiceId}");
+
+        invoice.electronic_status = newStatus;
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<int> GetTotalInvoiceUnAuthorizedCountByCompanyIdAsync(int companyId)
     {
         try
@@ -766,6 +776,115 @@ public class InvoiceService : IInvoiceService
             })
             .ToList();
     }
+    
+    
+    
+    
+    
+    
+    // este metodo es para obtener facturas autorizadas por empresa y que no sean con consumidor final
+    
+     public async Task<List<InvoiceDTO>> GetAuthorizedBusinessInvoicesByEnterpriseId(int enterpriseId)
+    {
+        var invoices = await _context.Invoices
+            .Include(i => i.Client)
+            .Include(i => i.Branch)
+            .Include(i => i.Sequence)
+            .Include(i => i.DocumentType)
+            .Include(i => i.Enterprise)
+            .Include(i => i.EmissionPoint)
+            .Include(i => i.InvoiceDetails)
+            .Include(i => i.InvoicePayments)
+            .Where(i => i.company_id == enterpriseId && i.invoice_status == "AUTORIZADO" && i.Client.razon_social != "CONSUMIDOR FINAL")
+            .ToListAsync();
+
+        if (invoices.Count == 0)
+            throw new EntityNotFoundException(
+                $"No se encontraron facturas no autorizadas para la empresa con ID {enterpriseId}");
+
+        return invoices.Select(invoice => new InvoiceDTO
+            {
+                InvoiceId = invoice.inv_id,
+                EmissionDate = invoice.emission_date,
+                sequenceCode = invoice.sequence,
+                TotalAmount = invoice.total_amount,
+                TotalWithoutTaxes = invoice.total_without_taxes,
+                TotalDiscount = invoice.total_discount,
+                Tip = invoice.tip,
+                Currency = invoice.currency,
+                AccessKey = invoice.access_key,
+                ElectronicStatus = invoice.electronic_status,
+                InvoiceStatus = invoice.invoice_status,
+                AuthorizationNumber = invoice.authorization_number,
+                AuthorizationDate = invoice.authorization_date,
+                AdditionalInfo = invoice.additional_info,
+                Message = invoice.message,
+                Client = new ClientDTO
+                {
+                    RazonSocial = invoice.Client.razon_social,
+                    Dni = invoice.Client.dni,
+                    Address = invoice.Client.address,
+                    Phone = invoice.Client.phone,
+                    Email = invoice.Client.email,
+                    TypeDniId = invoice.Client.id_type_dni
+                },
+                Branch = new BranchDTO
+                {
+                    IdBranch = invoice.Branch.id_br,
+                    Code = invoice.Branch.code,
+                    Description = invoice.Branch.description,
+                    Address = invoice.Branch.address,
+                    Phone = invoice.Branch.phone
+                },
+                Sequence = new SequenceDTO { IdSequence = invoice.Sequence.id_sequence, Code = invoice.Sequence.code },
+                DocumentType = new DocumentTypeDTO
+                    { IdDocumentType = invoice.DocumentType.id_d_t, NameDocument = invoice.DocumentType.name_document },
+                Enterprise = new EnterpriseDTO
+                {
+                    IdEnterprise = invoice.Enterprise.id_en,
+                    CompanyName = invoice.Enterprise.company_name,
+                    ComercialName = invoice.Enterprise.comercial_name,
+                    Ruc = invoice.Enterprise.ruc,
+                    AddressMatriz = invoice.Enterprise.address_matriz,
+                    Phone = invoice.Enterprise.phone,
+                    Email = invoice.Enterprise.email,
+                    Accountant = invoice.Enterprise.accountant,
+                    Enviroment = invoice.Enterprise.environment
+
+                },
+                EmissionPoint = new EmissionPointDto
+                {
+                    IdEmissionPoint = invoice.EmissionPoint.id_e_p, Code = invoice.EmissionPoint.code,
+                    Details = invoice.EmissionPoint.details
+                },
+                Details = invoice.InvoiceDetails.Select(d => new InvoiceDetailDTO
+                    {
+                        CodeStub = d.code_stub,
+                        Description = d.description,
+                        Amount = d.amount,
+                        PriceUnit = d.price_unit,
+                        Discount = d.discount,
+                        PriceWithDiscount = d.price_with_discount,
+                        Neto = d.neto,
+                        IvaPorc = d.iva_porc,
+                        IvaValor = d.iva_valor,
+                        IcePorc = d.ice_porc,
+                        IceValor = d.ice_valor,
+                        Subtotal = d.subtotal,
+                        Total = d.total,
+                        Note1 = d.note1,
+                        Note2 = d.note2,
+                        Note3 = d.note3,
+                        ArticleId = d.id_article,
+                        TariffId = d.id_tariff
+                    })
+                    .ToList(),
+                Payments = invoice.InvoicePayments.Select(p => new InvoicePaymentDTO
+                        { Total = p.total, Deadline = p.deadline, UnitTime = p.unit_time, PaymentId = p.id_payment })
+                    .ToList()
+            })
+            .ToList();
+    }
 
     public async Task<InvoiceDTO> GetInvoiceDtoById(int invoiceId)
     {
@@ -834,7 +953,7 @@ public class InvoiceService : IInvoiceService
                 AddressMatriz = invoice.Enterprise.address_matriz,
                 Phone = invoice.Enterprise.phone,
                 Email = invoice.Enterprise.email,
-                Accountant = invoice.Enterprise.accountant
+                Accountant = invoice.Enterprise.accountant,
             },
             EmissionPoint = new EmissionPointDto
             {
