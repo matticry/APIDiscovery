@@ -232,7 +232,7 @@ public partial class EmailSendService : IEmailSendService
                 Enviroment = invoice.Enterprise.environment
             },
 
-            Branch = new BranchDTO
+            Branch = new BranchDto
             {
                 IdBranch = invoice.Branch.id_br,
                 Code = invoice.Branch.code,

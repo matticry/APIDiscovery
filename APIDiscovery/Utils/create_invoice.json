@@ -285,193 +285,27 @@
     "sequenceId": 0
   },
   {
-    "invoiceId": 3191,
-    "invoiceStatus": "AUTORIZADO",
-    "enterprise": {
-      "idEnterprise": 1,
-      "companyName": "ROMAN NOBOA DIEGO EDMUNDO",
-      "comercialName": "ROMAN NOBOA DIEGO EDMUNDO",
-      "ruc": "1717219586001",
-      "addressMatriz": "Calle Principal 123, Ciudad",
-      "phone": "(123) 456-7890",
-      "email": "toyotaro271@gmaiil.com",
-      "accountant": "Y",
-      "enviroment": 1
-    },
-    "client": {
-      "razonSocial": "ERAS TRAVEZ MATEO JOSUE",
-      "dni": "1755386099",
-      "address": "LA TOLA",
-      "phone": "099999999",
-      "info": null,
-      "email": "toyotaro271@gmail.com",
-      "typeDniId": 5
-    },
-    "emissionPoint": {
-      "idEmissionPoint": 1,
-      "code": "001",
-      "details": "Punto de emisión principal para la Sucursal en Sur",
-      "type": false,
-      "idBranch": 0
-    },
-    "branch": {
-      "idBranch": 1,
-      "code": "001",
-      "description": "Sucursal en Sur",
-      "address": "LA MARIN",
-      "phone": "0992810669"
-    },
-    "documentType": {
-      "idDocumentType": 1,
-      "nameDocument": "FACTURA",
-      "code": null
-    },
-    "sequence": {
-      "idSequence": 1,
-      "code": "000000160"
-    },
-    "details": [
+    "success": true,
+    "message": "📊 Reporte generado: 1 productos con stock bajo",
+    "enterpriseId": 1,
+    "enterpriseName": "ROMAN NOBOA DIEGO EDMUNDO",
+    "totalLowStockItems": 1,
+    "items": [
       {
-        "codeStub": "ML-5529",
-        "description": "medias",
-        "amount": 3,
-        "priceUnit": 5,
-        "discount": 0,
-        "priceWithDiscount": 0,
-        "neto": 15,
-        "ivaPorc": 15,
-        "ivaValor": 2.25,
-        "icePorc": 0,
-        "iceValor": 0,
-        "subtotal": 15,
-        "total": 17.25,
-        "note1": "medias",
-        "note2": "",
-        "note3": "",
-        "tariffId": 1,
-        "articleId": 2028
-      }
-    ],
-    "payments": [
-      {
-        "total": 17.25,
-        "deadline": 0,
-        "unitTime": null,
-        "paymentId": 1
-      }
-    ],
-    "emissionDate": "2025-06-26T09:06:24.643",
-    "totalWithoutTaxes": 15,
-    "totalDiscount": 0,
-    "tip": 0,
-    "totalAmount": 17.25,
-    "currency": "USD",
-    "accessKey": "2606202501171721958600110010010000001664977501018",
-    "electronicStatus": "AUTORIZADO",
-    "authorizationNumber": "2606202501171721958600110010010000001664977501018",
-    "authorizationDate": "2025-06-26T09:07:30",
-    "additionalInfo": "EXCELENTE SERVICIO",
-    "message": "",
-    "sequenceCode": "000000166",
-    "branchId": 0,
-    "companyId": 0,
-    "emissionPointId": 0,
-    "receiptId": 0,
-    "sequenceId": 0
-  },
-  {
-    "invoiceId": 3196,
-    "invoiceStatus": "AUTORIZADO",
-    "enterprise": {
-      "idEnterprise": 1,
-      "companyName": "ROMAN NOBOA DIEGO EDMUNDO",
-      "comercialName": "ROMAN NOBOA DIEGO EDMUNDO",
-      "ruc": "1717219586001",
-      "addressMatriz": "Calle Principal 123, Ciudad",
-      "phone": "(123) 456-7890",
-      "email": "toyotaro271@gmaiil.com",
-      "accountant": "Y",
-      "enviroment": 1
-    },
-    "client": {
-      "razonSocial": "ERAS TRAVEZ MATEO JOSUE",
-      "dni": "1755386099",
-      "address": "LA TOLA",
-      "phone": "099999999",
-      "info": null,
-      "email": "toyotaro271@gmail.com",
-      "typeDniId": 5
-    },
-    "emissionPoint": {
-      "idEmissionPoint": 1,
-      "code": "001",
-      "details": "Punto de emisión principal para la Sucursal en Sur",
-      "type": false,
-      "idBranch": 0
-    },
-    "branch": {
-      "idBranch": 1,
-      "code": "001",
-      "description": "Sucursal en Sur",
-      "address": "LA MARIN",
-      "phone": "0992810669"
-    },
-    "documentType": {
-      "idDocumentType": 1,
-      "nameDocument": "FACTURA",
-      "code": null
-    },
-    "sequence": {
-      "idSequence": 1,
-      "code": "000000160"
-    },
-    "details": [
-      {
-        "codeStub": "I1-6694",
+        "id": 2027,
+        "name": "IPHONE 14",
+        "code": "I1-6694",
+        "currentStock": 8,
+        "unitPrice": 850,
         "description": "iPhone de IOS",
-        "amount": 1,
-        "priceUnit": 850,
-        "discount": 0,
-        "priceWithDiscount": 0,
-        "neto": 850,
-        "ivaPorc": 15,
-        "ivaValor": 127.5,
-        "icePorc": 0,
-        "iceValor": 0,
-        "subtotal": 850,
-        "total": 977.5,
-        "note1": "iPhone de IOS",
-        "note2": "",
-        "note3": "",
-        "tariffId": 1,
-        "articleId": 2027
+        "category": "Tecnologia",
+        "recommendedQuantity": 20,
+        "priority": "MODERADO",
+        "recommendation": "📋 PROGRAMAR: Reponer 20 unidades en la próxima semana.",
+        "estimatedCost": 17000
       }
     ],
-    "payments": [
-      {
-        "total": 977.5,
-        "deadline": 0,
-        "unitTime": null,
-        "paymentId": 1
-      }
-    ],
-    "emissionDate": "2025-07-10T20:39:57.963",
-    "totalWithoutTaxes": 850,
-    "totalDiscount": 0,
-    "tip": 0,
-    "totalAmount": 977.5,
-    "currency": "USD",
-    "accessKey": "1007202501171721958600110010010000001670638399013",
-    "electronicStatus": "ANULADA",
-    "authorizationNumber": "1007202501171721958600110010010000001670638399013",
-    "authorizationDate": "2025-07-10T20:41:31",
-    "additionalInfo": "EXCELENTE SERVICIO",
-    "message": "",
-    "sequenceCode": "000000167",
-    "branchId": 0,
-    "companyId": 0,
-    "emissionPointId": 0,
-    "receiptId": 0,
-    "sequenceId": 0
+    "aiRecommendation": "**Análisis de Stock Bajo y Recomendaciones de Reposición**\n\n---\n\n### **Resumen General de la Situación**\nLa empresa ROMAN NOBOA DIEGO EDMUNDO cuenta con un solo producto con stock bajo, el **iPhone 14 (Código: I1-6694)**, con un stock actual de **8 unidades**. Este producto pertenece a la categoría de **Tecnología**, lo que sugiere que es un artículo con probable alta rotación y demanda. Dado que el stock es muy limitado, es fundamental tomar medidas inmediatas para evitar agotamiento y asegurar la disponibilidad para los clientes.\n\n---\n\n### **Productos Más Críticos**\nEl único producto con stock bajo es el **iPhone 14**, con un stock de **8 unidades**. Este producto es crítico debido a su bajo nivel de stock y su pertenencia a una categoría de alto interés y demanda.\n\n---\n\n### **Recomendaciones Específicas de Reposición**\nPara cada producto, se recomienda lo siguiente:\n\n1. **iPhone 14 (Código: I1-6694)**  \n   - **Stock actual:** 8 unidades.  \n   - **Precio unitario:** $850,00.  \n   - **Recomendación de reposición:**  \n     - **Reposición mínima recomendada:** 20 unidades. Esto permitirá cubrir la demanda inmediata y evitar el agotamiento del producto.  \n     - **Reposición óptima recomendada:** 50 unidades. Esto garantizará un stock seguro durante un período más prolongado, considerando posibles incrementos en la demanda o retrasos en el suministro.  \n\n   - **Presupuesto estimado para la reposición:**  \n     - Reposición mínima (20 unidades): $17,000.00.  \n     - Reposición óptima (50 unidades): $42,500.00.  \n\n---\n\n### **Presupuesto Estimado Total**\nEl presupuesto total para la reposición dependerá de la cantidad de unidades que se decida reponer. A continuación, se presentan las opciones:  \n- **Reposición mínima:** $17,000.00.  \n- **Reposición óptima:** $42,500.00.  \n\n---\n\n### **Recomendaciones Prácticas**\n1. **Priorización por criticidad:** Dado que el iPhone 14 es el único producto con stock bajo, debe ser la prioridad absoluta para su reposición.  \n2. **Análisis de demanda:** Antes",
+    "generatedAt": "2025-07-13T12:22:56.2159296-05:00"
   }
 ]

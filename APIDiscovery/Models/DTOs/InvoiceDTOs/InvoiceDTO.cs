@@ -7,7 +7,7 @@ public class InvoiceDTO
     public EnterpriseDTO Enterprise { get; set; }
     public ClientDTO Client { get; set; }
     public EmissionPointDto EmissionPoint { get; set; }
-    public BranchDTO Branch { get; set; }
+    public BranchDto Branch { get; set; }
     public DocumentTypeDTO DocumentType { get; set; }
     public SequenceDTO Sequence { get; set; }
     public List<InvoiceDetailDTO> Details { get; set; }

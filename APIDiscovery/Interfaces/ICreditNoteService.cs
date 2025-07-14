@@ -7,4 +7,5 @@ public interface ICreditNoteService
     Task<CreditNoteDTO> CreateCreditNoteAsync(CreateCreditNoteDTO creditNoteDto);
     Task<CreditNoteDTO> GetCreditNoteDtoById(int creditNoteId);
     Task<string> GenerateCreditNoteXmlAsync(int creditNoteId);
+    Task<List<CreditNoteDTO>> GetAllCreditNotesByEnterpriseId(int enterpriseId);
 }

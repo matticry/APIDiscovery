@@ -15,19 +15,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6514e05b-9e35-4090-a456-505d80f71e52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/AIStockController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IAIService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/IADTOs/AIStockReportResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/IADTOs/LowStockItem.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIDiscovery/Services/AIService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIDiscovery/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/.env" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/CreditNoteController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/CreditNoteController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoicesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/IInvoiceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/IInvoiceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoiceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Controllers/InvoiceController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Interfaces/ICreditNoteService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Interfaces/ICreditNoteService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/CreditNoteDTOs/CreditNoteDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/CreditNoteDTOs/CreditNoteDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/BranchDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/BranchDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/InvoiceDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Models/DTOs/InvoiceDTOs/InvoiceDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/CreditNoteService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/CreditNoteService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/EmailSendService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/EmailSendService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Services/InvoiceService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/Utils/create_invoice.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/Utils/create_invoice.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/Utils/create_invoice.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/bin/Debug/net8.0/Utils/create_invoice.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIDiscovery/obj/Debug/net8.0/APIDiscovery.sourcelink.json" afterDir="false" />
@@ -374,6 +386,10 @@
       <workItem from="1752110242337" duration="834000" />
       <workItem from="1752111585883" duration="1944000" />
       <workItem from="1752196383495" duration="4795000" />
+      <workItem from="1752271138327" duration="3111000" />
+      <workItem from="1752354056372" duration="4645000" />
+      <workItem from="1752422228608" duration="4795000" />
+      <workItem from="1752530892538" duration="2679000" />
     </task>
     <task id="LOCAL-00001" summary="Commit: I add security modules like JWT ,fixes: bug User">
       <option name="closed" value="true" />
@@ -647,7 +663,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752015646373</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Cambios en la nota de credito">
+      <option name="closed" value="true" />
+      <created>1752271367222</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1752271367222</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -676,7 +700,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Commit: Module Article" />
     <MESSAGE value="NEW MODULES" />
     <MESSAGE value="Commit news updates &#10;More Dtos" />
     <MESSAGE value="Commit: Module Inoice" />
@@ -701,7 +724,8 @@
     <MESSAGE value="Commit: News uPDATES&#10;&#10;- Se aplico el Authorize en los controllers, &#10;- Se crearon nuevos modulos para Enterprise y Sequence &#10;- Se ocupara para una nueva aplicacion administrativa" />
     <MESSAGE value="About's changes an updates&#10;&#10;- Creation of the new NoteCredit Service in /Services in the project &#10;&#10;- Validations in the NoteCreditService" />
     <MESSAGE value="new updates note credit" />
-    <option name="LAST_COMMIT_MESSAGE" value="new updates note credit" />
+    <MESSAGE value="Cambios en la nota de credito" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cambios en la nota de credito" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

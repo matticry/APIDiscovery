@@ -79,6 +79,8 @@ builder.Services.AddScoped<IClientService , ClientService>();
 builder.Services.AddScoped<ICreditNoteService , CreditNoteService>();
 builder.Services.AddScoped<IXmlCreditNoteService , XmlCreditNoteService>();
 builder.Services.AddScoped<ISriCreditNoteService , SriCreditNoteService>();
+builder.Services.AddScoped<IAiService, AiService>();
+
 builder.Services.AddScoped<ICertificadoService, CertificadoService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IEmissionPointService , EmissionPointService>();

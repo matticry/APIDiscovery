@@ -1,6 +1,6 @@
 ﻿namespace APIDiscovery.Models.DTOs.InvoiceDTOs;
 
-public class BranchDTO
+public class BranchDto
 {
     public int IdBranch { get; set; }
     public string? Code { get; set; }

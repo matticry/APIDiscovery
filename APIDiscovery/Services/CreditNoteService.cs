@@ -204,7 +204,7 @@ public class CreditNoteService : ICreditNoteService
                 ComercialName = creditNote.Enterprise.comercial_name,
                 Ruc = creditNote.Enterprise.ruc
             },
-            Branch = new BranchDTO
+            Branch = new BranchDto
             {
                 IdBranch = creditNote.Branch.id_br,
                 Code = creditNote.Branch.code,
@@ -252,6 +252,105 @@ public class CreditNoteService : ICreditNoteService
     {
         return await _xmlCreditNoteService.GenerarXmlNotaCreditoAsync(creditNoteId);
     }
+
+public async Task<List<CreditNoteDTO>> GetAllCreditNotesByEnterpriseId(int enterpriseId)
+{
+    var creditNotes = await _context.CreditNotes
+        .Include(cn => cn.Enterprise)
+        .Include(cn => cn.Branch)
+        .Include(cn => cn.EmissionPoint)
+        .Include(cn => cn.Client)
+        .Include(cn => cn.DocumentType)
+        .Include(cn => cn.CreditNoteDetails)
+            .ThenInclude(d => d.Article)
+        .Include(cn => cn.CreditNoteDetails)
+            .ThenInclude(d => d.Tariff)
+        .Where(cn => cn.CompanyId == enterpriseId) // ✅ CAMBIO 1: Where en lugar de FirstOrDefaultAsync
+        .OrderByDescending(cn => cn.EmissionDate)  // ✅ CAMBIO 2: Ordenar por fecha
+        .ToListAsync();                            // ✅ CAMBIO 3: ToListAsync para obtener todas
+
+    if (creditNotes.Count == 0) // ✅ CAMBIO 4: Verificar si hay elementos
+        throw new EntityNotFoundException($"No se encontraron notas de crédito para la empresa con ID {enterpriseId}");
+
+    // ✅ CAMBIO 5: Mapear TODAS las notas de crédito
+    return creditNotes.Select(creditNote => new CreditNoteDTO
+    {
+        IdCreditNote = creditNote.IdCreditNote,
+        EmissionDate = creditNote.EmissionDate,
+        InvoiceOriginalId = (int)creditNote.InvoiceOriginalId!,
+        TotalWithoutTaxes = creditNote.TotalWithoutTaxes,
+        TotalDiscount = creditNote.TotalDiscount,
+        Tip = creditNote.Tip,
+        TotalAmount = creditNote.TotalAmount,
+        Currency = creditNote.Currency,
+        CodDocModificado = creditNote.CodDocModificado,
+        NumDocModificado = creditNote.NumDocModificado,
+        EmissionDateDocSustento = creditNote.EmissionDateDocSustento,
+        ModificationValue = creditNote.ModificationValue,
+        Motive = creditNote.Motive,
+        AccessKey = creditNote.AccessKey,
+        AuthorizationNumber = creditNote.AuthorizationNumber,
+        AuthorizationDate = creditNote.AuthorizationDate,
+        ElectronicStatus = creditNote.ElectronicStatus,
+        AditionalInfo = creditNote.AditionalInfo,
+        Message = creditNote.Message,
+        Sequence = creditNote.Sequence,
+        Xml = creditNote.Xml,
+        Enterprise = new EnterpriseDTO
+        {
+            IdEnterprise = creditNote.Enterprise.id_en,
+            CompanyName = creditNote.Enterprise.company_name,
+            ComercialName = creditNote.Enterprise.comercial_name,
+            Ruc = creditNote.Enterprise.ruc,
+            AddressMatriz = creditNote.Enterprise.address_matriz,
+            Phone = creditNote.Enterprise.phone,
+            Email = creditNote.Enterprise.email,
+            Enviroment = creditNote.Enterprise.environment
+        },
+        Branch = new BranchDto
+        {
+            IdBranch = creditNote.Branch.id_br,
+            Code = creditNote.Branch.code,
+            Address = creditNote.Branch.address
+        },
+        EmissionPoint = new EmissionPointDto
+        {
+            IdEmissionPoint = creditNote.EmissionPoint.id_e_p,
+            Code = creditNote.EmissionPoint.code
+        },
+        Client = new ClientDTO
+        {
+            RazonSocial = creditNote.Client.razon_social,
+            Dni = creditNote.Client.dni
+        },
+        DocumentType = new DocumentTypeDTO
+        {
+            IdDocumentType = creditNote.DocumentType.id_d_t,
+            NameDocument = creditNote.DocumentType.name_document,
+            Code = creditNote.DocumentType.code
+        },
+        
+        Details = creditNote.CreditNoteDetails.Select(d => new CreditNoteDetailDTO
+        {
+            IdCreditNoteDetail = d.IdCreditNoteDetail,
+            CodeStub = d.CodeStub,
+            Description = d.Description,
+            Amount = d.Amount,
+            PriceUnit = d.PriceUnit,
+            Discount = d.Discount,
+            Neto = d.Neto,
+            IvaPorc = d.IvaPorc,
+            IcePorc = d.IcePorc,
+            IvaValor = d.IvaValor,
+            IceValor = d.IceValor,
+            Subtotal = d.Subtotal,
+            Total = d.Total,
+            Nota1 = d.Nota1,
+            Nota2 = d.Nota2,
+            Nota3 = d.Nota3
+        }).ToList()
+    }).ToList();
+}
 
     private async Task ActualizarStockPorDevolucion(List<CreditNoteDetail> details, CreditNoteType creditNoteType)
     {

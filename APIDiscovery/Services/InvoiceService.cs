@@ -466,7 +466,7 @@ public class InvoiceService : IInvoiceService
                     Email = invoice.Client.email,
                     TypeDniId = invoice.Client.id_type_dni
                 },
-                Branch = new BranchDTO
+                Branch = new BranchDto
                 {
                     IdBranch = invoice.Branch.id_br,
                     Code = invoice.Branch.code,
@@ -721,7 +721,7 @@ public class InvoiceService : IInvoiceService
                     Email = invoice.Client.email,
                     TypeDniId = invoice.Client.id_type_dni
                 },
-                Branch = new BranchDTO
+                Branch = new BranchDto
                 {
                     IdBranch = invoice.Branch.id_br,
                     Code = invoice.Branch.code,
@@ -828,7 +828,7 @@ public class InvoiceService : IInvoiceService
                     Email = invoice.Client.email,
                     TypeDniId = invoice.Client.id_type_dni
                 },
-                Branch = new BranchDTO
+                Branch = new BranchDto
                 {
                     IdBranch = invoice.Branch.id_br,
                     Code = invoice.Branch.code,
@@ -926,7 +926,7 @@ public class InvoiceService : IInvoiceService
                 Email = invoice.Client.email,
                 TypeDniId = invoice.Client.id_type_dni
             },
-            Branch = new BranchDTO
+            Branch = new BranchDto
             {
                 IdBranch = invoice.Branch.id_br,
                 Code = invoice.Branch.code,

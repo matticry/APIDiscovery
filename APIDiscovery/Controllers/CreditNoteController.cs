@@ -170,4 +170,23 @@ public class CreditNoteController(
         
     }
     
+    [HttpGet("GetAllCreditNotesByEnterpriseId/{enterpriseId}")]
+    public async Task<IActionResult> GetAllCreditNotesByEnterpriseId(int enterpriseId)
+    {
+        try
+        {
+            var creditNotes = await creditNoteService.GetAllCreditNotesByEnterpriseId(enterpriseId);
+            return Ok(creditNotes);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error al obtener notas de crédito para la empresa {EnterpriseId}", enterpriseId);
+            return StatusCode(500, "Error interno del servidor");
+        }
+    }
+    
 }

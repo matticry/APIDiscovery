@@ -22,12 +22,13 @@ public class CreditNoteDTO
     public string ElectronicStatus { get; set; }
     public string AditionalInfo { get; set; }
     public string Message { get; set; }
+    public int InvoiceOriginalId { get; set; }
     public string Sequence { get; set; }
     public string Xml { get; set; }
 
     // Relaciones
     public EnterpriseDTO Enterprise { get; set; }
-    public BranchDTO Branch { get; set; }
+    public InvoiceDTOs.BranchDto Branch { get; set; }
     public EmissionPointDto EmissionPoint { get; set; }
     public ClientDTO Client { get; set; }
     public DocumentTypeDTO DocumentType { get; set; }
