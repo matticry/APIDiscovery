@@ -59,6 +59,7 @@ public class Usuario
     public string gender_us { get; set; }
     
     public char status_us { get; set; }
+    public bool is_web { get; set; }
 
     
     

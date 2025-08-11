@@ -126,14 +126,15 @@ namespace APIDiscovery.Services.Security;
             {
                 throw new BadRequestException("El usuario se encuentra inactivo.");
             }
-    
-            var rol = await _context.Roles.FirstOrDefaultAsync(r => r.name_rol == role);
-            if (rol == null)
-            {
-                throw new NotFoundException("Rol no encontrado.");
-            }
             
+            var validateisWeb = await _context.Usuarios.FirstOrDefaultAsync(u => u.is_web == true && u.dni_us == dni);
     
+            // Aquí agregas la validación
+            if (validateisWeb == null)
+            {
+                throw new BadRequestException("El usuario no tiene permisos para acceso web.");
+            }           
+            
             var emailVerified = await _context.Usuarios.FirstOrDefaultAsync(u => u.email_verified == 'N' && u.dni_us == dni);
             if (emailVerified != null)
             {

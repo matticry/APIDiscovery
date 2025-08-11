@@ -17029,7 +17029,7 @@
     <table id="5600" parent="5573" name="tbl_user">
       <CreatedTimestamp>2025-03-21.12:40:36.090</CreatedTimestamp>
       <DataRetentionPeriod>-1</DataRetentionPeriod>
-      <ModifiedTimestamp>2025-04-09.09:09:56.720</ModifiedTimestamp>
+      <ModifiedTimestamp>2025-08-11.17:09:42.053</ModifiedTimestamp>
       <ObjectId>1061578820</ObjectId>
       <LobDataSpaceId>0</LobDataSpaceId>
     </table>
@@ -19169,7 +19169,7 @@
     <column id="5967" parent="5600" name="id_us">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(1030)</SequenceIdentity>
+      <SequenceIdentity>1(2032)</SequenceIdentity>
       <StoredType>int|0s</StoredType>
     </column>
     <column id="5968" parent="5600" name="name_us">
@@ -19269,70 +19269,74 @@
       <Position>20</Position>
       <StoredType>varchar(250 char)|0s</StoredType>
     </column>
-    <default id="5987" parent="5600" name="DF__tbl_user__create__412EB0B6">
+    <column id="5987" parent="5600" name="is_web">
+      <Position>23</Position>
+      <StoredType>bit|0s</StoredType>
+    </column>
+    <default id="5988" parent="5600" name="DF__tbl_user__create__412EB0B6">
       <ColNames>created_at</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1093578934</ObjectId>
     </default>
-    <default id="5988" parent="5600" name="DF__tbl_user__id_rol__4222D4EF">
+    <default id="5989" parent="5600" name="DF__tbl_user__id_rol__4222D4EF">
       <ColNames>id_rol</ColNames>
       <DefaultExpression>1</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1109578991</ObjectId>
     </default>
-    <default id="5989" parent="5600" name="DF__tbl_user__dni_us__440B1D61">
+    <default id="5990" parent="5600" name="DF__tbl_user__dni_us__440B1D61">
       <ColNames>dni_us</ColNames>
       <DefaultExpression>&apos;1000000000&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1141579105</ObjectId>
     </default>
-    <default id="5990" parent="5600" name="DF__tbl_user__status__44FF419A">
+    <default id="5991" parent="5600" name="DF__tbl_user__status__44FF419A">
       <ColNames>status_us</ColNames>
       <DefaultExpression>&apos;I&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1157579162</ObjectId>
     </default>
-    <default id="5991" parent="5600" name="DF__tbl_user__fecha___45F365D3">
+    <default id="5992" parent="5600" name="DF__tbl_user__fecha___45F365D3">
       <ColNames>fecha_arriendo_us</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1173579219</ObjectId>
     </default>
-    <default id="5992" parent="5600" name="DF__tbl_user__nation__46E78A0C">
+    <default id="5993" parent="5600" name="DF__tbl_user__nation__46E78A0C">
       <ColNames>nationality_us</ColNames>
       <DefaultExpression>&apos;ECUATORIANA&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1189579276</ObjectId>
     </default>
-    <default id="5993" parent="5600" name="DF__tbl_user__update__47DBAE45">
+    <default id="5994" parent="5600" name="DF__tbl_user__update__47DBAE45">
       <ColNames>update_at</ColNames>
       <DefaultExpression>getdate()</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1205579333</ObjectId>
     </default>
-    <default id="5994" parent="5600" name="DF__tbl_user__terms___48CFD27E">
+    <default id="5995" parent="5600" name="DF__tbl_user__terms___48CFD27E">
       <ColNames>terms_and_conditions</ColNames>
       <DefaultExpression>&apos;N&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1221579390</ObjectId>
     </default>
-    <default id="5995" parent="5600" name="DF__tbl_user__email___49C3F6B7">
+    <default id="5996" parent="5600" name="DF__tbl_user__email___49C3F6B7">
       <ColNames>email_verified</ColNames>
       <DefaultExpression>&apos;N&apos;</DefaultExpression>
       <ModifiedTimestamp>2025-03-21.12:40:36.093</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1237579447</ObjectId>
     </default>
-    <foreign-key id="5996" parent="5600" name="tbl_user_tbl_rol_id_rol_fk">
+    <foreign-key id="5997" parent="5600" name="tbl_user_tbl_rol_id_rol_fk">
       <ColNames>id_rol</ColNames>
       <CreatedTimestamp>2025-03-21.12:40:36.090</CreatedTimestamp>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
@@ -19341,14 +19345,14 @@
       <RefTableId>997578592</RefTableId>
       <RefTableName>tbl_rol</RefTableName>
     </foreign-key>
-    <index id="5997" parent="5600" name="tbl_user_pk">
+    <index id="5998" parent="5600" name="tbl_user_pk">
       <Clustering>1</Clustering>
       <ColNames>id_us</ColNames>
       <Position>1</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5998" parent="5600" name="tbl_user_pk">
+    <key id="5999" parent="5600" name="tbl_user_pk">
       <CreatedTimestamp>2025-03-21.12:40:36.090</CreatedTimestamp>
       <ModifiedTimestamp>2025-03-21.12:40:36.090</ModifiedTimestamp>
       <ObjectId>1077578877</ObjectId>
