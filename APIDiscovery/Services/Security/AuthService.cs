@@ -133,7 +133,7 @@ namespace APIDiscovery.Services.Security;
             if (validateisWeb == null)
             {
                 throw new BadRequestException("El usuario no tiene permisos para acceso web.");
-            }           
+            }             
             
             var emailVerified = await _context.Usuarios.FirstOrDefaultAsync(u => u.email_verified == 'N' && u.dni_us == dni);
             if (emailVerified != null)

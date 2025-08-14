@@ -17,11 +17,16 @@ public class UsuarioService : IUsuarioService
         _context = context;
     }
 
-    public async Task<IEnumerable<Usuario>> GetAllAsync()
+    public async Task<List<Usuario>> GetAllAsync()
     {
-        return await _context.Usuarios
+        var usuarios = await _context.Usuarios
             .Include(u => u.Rol)
             .ToListAsync();
+
+        if (usuarios == null)
+            throw new NotFoundException("No se encontraron usuarios.");
+
+        return usuarios;
     }
 
     public async Task<Usuario> GetByIdAsync(int id)
